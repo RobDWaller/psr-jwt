@@ -10,6 +10,9 @@ use ReflectionMethod;
 
 class JwtAuthInvokableTest extends TestCase
 {
+    /**
+     * @covers PsrJwt\JwtAuthInvokable
+     */
     public function testJwtAuthInokable()
     {
         $invokable = new JwtAuthInvokable();
@@ -17,13 +20,19 @@ class JwtAuthInvokableTest extends TestCase
         $this->assertInstanceOf(JwtAuthInvokable::class, $invokable);
     }
 
+    /**
+     * @covers PsrJwt\JwtAuthInvokable
+     */
     public function testJwtAuthInokableIsJwtAuth()
     {
         $invokable = new JwtAuthInvokable();
 
-        $this->assertInstanceOf(JwtAuth::class, $invokable);
+        $this->assertInstanceOf(JwtAuthInvokable::class, $invokable);
     }
 
+    /**
+     * @covers PsrJwt\JwtAuth::hasJwt
+     */
     public function testJwtAuthHasJwt()
     {
         $invokable = new JwtAuthInvokable();
@@ -31,13 +40,16 @@ class JwtAuthInvokableTest extends TestCase
         $data['jwt'] = 'abc.abc.abc';
         $data['foo'] = 'bar';
 
-        $method = new ReflectionMethod(JwtAuth::class, 'hasJwt');
+        $method = new ReflectionMethod(JwtAuthInvokable::class, 'hasJwt');
         $method->setAccessible(true);
         $result = $method->invokeArgs($invokable, [$data]);
 
         $this->assertTrue($result);
     }
 
+    /**
+     * @covers PsrJwt\JwtAuth::hasJwt
+     */
     public function testJwtAuthHasJwtFalse()
     {
         $invokable = new JwtAuthInvokable();
@@ -45,13 +57,17 @@ class JwtAuthInvokableTest extends TestCase
         $data['token'] = 'abc.abc.abc';
         $data['foo'] = 'bar';
 
-        $method = new ReflectionMethod(JwtAuth::class, 'hasJwt');
+        $method = new ReflectionMethod(JwtAuthInvokable::class, 'hasJwt');
         $method->setAccessible(true);
         $result = $method->invokeArgs($invokable, [$data]);
 
         $this->assertFalse($result);
     }
 
+    /**
+     * @covers PsrJwt\JwtAuth::getToken
+     * @uses PsrJwt\JwtAuth::hasJwt
+     */
     public function testGetToken()
     {
         $server = ['jwt' => 'abc.def.ghi'];
@@ -61,13 +77,17 @@ class JwtAuthInvokableTest extends TestCase
 
         $invokable = new JwtAuthInvokable();
 
-        $method = new ReflectionMethod(JwtAuth::class, 'getToken');
+        $method = new ReflectionMethod(JwtAuthInvokable::class, 'getToken');
         $method->setAccessible(true);
         $result = $method->invokeArgs($invokable, [$server, $cookie, $query, $body]);
 
         $this->assertSame($result, 'abc.def.ghi');
     }
 
+    /**
+     * @covers PsrJwt\JwtAuth::getToken
+     * @uses PsrJwt\JwtAuth::hasJwt
+     */
     public function testGetTokenFromCookie()
     {
         $server = ['foo' => 'bar'];
@@ -77,13 +97,17 @@ class JwtAuthInvokableTest extends TestCase
 
         $invokable = new JwtAuthInvokable();
 
-        $method = new ReflectionMethod(JwtAuth::class, 'getToken');
+        $method = new ReflectionMethod(JwtAuthInvokable::class, 'getToken');
         $method->setAccessible(true);
         $result = $method->invokeArgs($invokable, [$server, $cookie, $query, $body]);
 
         $this->assertSame($result, 'abc.def.ghi');
     }
 
+    /**
+     * @covers PsrJwt\JwtAuth::getToken
+     * @uses PsrJwt\JwtAuth::hasJwt
+     */
     public function testGetTokenFromQuery()
     {
         $server = ['foo' => 'bar'];
@@ -93,13 +117,17 @@ class JwtAuthInvokableTest extends TestCase
 
         $invokable = new JwtAuthInvokable();
 
-        $method = new ReflectionMethod(JwtAuth::class, 'getToken');
+        $method = new ReflectionMethod(JwtAuthInvokable::class, 'getToken');
         $method->setAccessible(true);
         $result = $method->invokeArgs($invokable, [$server, $cookie, $query, $body]);
 
         $this->assertSame($result, 'abc.def.ghi');
     }
 
+    /**
+     * @covers PsrJwt\JwtAuth::getToken
+     * @uses PsrJwt\JwtAuth::hasJwt
+     */
     public function testGetTokenFromBody()
     {
         $server = ['foo' => 'bar'];
@@ -109,7 +137,7 @@ class JwtAuthInvokableTest extends TestCase
 
         $invokable = new JwtAuthInvokable();
 
-        $method = new ReflectionMethod(JwtAuth::class, 'getToken');
+        $method = new ReflectionMethod(JwtAuthInvokable::class, 'getToken');
         $method->setAccessible(true);
         $result = $method->invokeArgs($invokable, [$server, $cookie, $query, $body]);
 
@@ -117,6 +145,9 @@ class JwtAuthInvokableTest extends TestCase
     }
 
     /**
+     * @covers PsrJwt\JwtAuth::getToken
+     * @uses PsrJwt\JwtAuth::hasJwt
+     * @uses PsrJwt\JwtAuthException::__construct
      * @expectedException PsrJwt\JwtAuthException
      * @expectedMessage JWT Token not set
      * @expectedExceptionCode 1
@@ -130,7 +161,7 @@ class JwtAuthInvokableTest extends TestCase
 
         $invokable = new JwtAuthInvokable();
 
-        $method = new ReflectionMethod(JwtAuth::class, 'getToken');
+        $method = new ReflectionMethod(JwtAuthInvokable::class, 'getToken');
         $method->setAccessible(true);
         $method->invokeArgs($invokable, [$server, $cookie, $query, $body]);
     }
