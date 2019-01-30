@@ -7,6 +7,9 @@ use Tests\Assets\ServerRequest;
 
 class ServerRequestTest extends TestCase
 {
+    /**
+     * @covers Tests\Assets\ServerRequest::__construct
+     */
     public function testServerRequest()
     {
         $server = [];
@@ -19,6 +22,9 @@ class ServerRequestTest extends TestCase
         $this->assertInstanceOf(ServerRequest::class, $request);
     }
 
+    /**
+     * @covers Tests\Assets\ServerRequest::getServerParams
+     */
     public function testGetServer()
     {
         $server = ['one' => 'two'];
@@ -31,6 +37,9 @@ class ServerRequestTest extends TestCase
         $this->assertSame($request->getServerParams()['one'], 'two');
     }
 
+    /**
+     * @covers Tests\Assets\ServerRequest::getCookieParams
+     */
     public function testGetCookies()
     {
         $server = ['one' => 'two'];
@@ -43,6 +52,9 @@ class ServerRequestTest extends TestCase
         $this->assertSame($request->getCookieParams()[3], 4);
     }
 
+    /**
+     * @covers Tests\Assets\ServerRequest::getQueryParams
+     */
     public function testGetQuery()
     {
         $server = ['one' => 'two'];
@@ -55,6 +67,9 @@ class ServerRequestTest extends TestCase
         $this->assertSame($request->getQueryParams()['five'], 'six');
     }
 
+    /**
+     * @covers Tests\Assets\ServerRequest::getParsedBody
+     */
     public function testGetBody()
     {
         $server = ['one' => 'two'];
@@ -67,6 +82,9 @@ class ServerRequestTest extends TestCase
         $this->assertSame($request->getParsedBody()[7], 8);
     }
 
+    /**
+     * @covers Tests\Assets\ServerRequest::getParsedBody
+     */
     public function testGetBodyAsObject()
     {
         $server = ['one' => 'two'];
@@ -81,6 +99,9 @@ class ServerRequestTest extends TestCase
         $this->assertSame($request->getParsedBody()->seven, 8);
     }
 
+    /**
+     * @covers Tests\Assets\ServerRequest::getParsedBody
+     */
     public function testGetBodyNull()
     {
         $server = ['one' => 'two'];
