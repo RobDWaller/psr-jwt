@@ -1,12 +1,16 @@
 <?php
 
-namespace Test;
+namespace Tests;
 
 use PHPUnit\Framework\TestCase;
 use PsrJwt\JwtAuthInvokable;
 use PsrJwt\JwtAuth;
 use PsrJwt\JwtAuthException;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use ReallySimpleJWT\Token;
 use ReflectionMethod;
+use Mockery as m;
 
 class JwtAuthInvokableTest extends TestCase
 {
@@ -165,4 +169,26 @@ class JwtAuthInvokableTest extends TestCase
         $method->setAccessible(true);
         $method->invokeArgs($invokable, [$server, $cookie, $query, $body]);
     }
+
+    /**
+     * @covers PsrJwt\JwtAuthInvokable::__invoke
+     */
+     public function testInvoke()
+     {
+         $token = Token::create(1, '123Secret!!456', time() + 10, 'localhost');
+
+         $request = m::mock(ServerRequestInterface::class);
+
+         $response = m::mock(ResponseInterface::class);
+
+         $next = function($request, $response) {
+             return $response;
+         };
+
+         $invokable = new JwtAuthInvokable();
+
+         $result = $invokable($request, $response, $next);
+
+         $this->assertInstanceOf(ResponseInterface::class, $result);
+     }
 }
