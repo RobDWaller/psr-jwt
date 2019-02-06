@@ -8,6 +8,13 @@ use PsrJwt\JwtAuthException;
 
 abstract class JwtAuth
 {
+    private $secret;
+
+    public function __construct(string $secret)
+    {
+        $this->secret = $secret;
+    }
+
     protected function hasJwt(array $data): bool
     {
         return array_key_exists('jwt', $data);
@@ -32,5 +39,10 @@ abstract class JwtAuth
         }
 
         throw new JwtAuthException('JWT Token not set', 1);
+    }
+
+    protected function getSecret(): string
+    {
+        return $this->secret;
     }
 }

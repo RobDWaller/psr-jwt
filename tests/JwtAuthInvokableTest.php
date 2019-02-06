@@ -19,7 +19,7 @@ class JwtAuthInvokableTest extends TestCase
      */
     public function testJwtAuthInokable()
     {
-        $invokable = new JwtAuthInvokable();
+        $invokable = new JwtAuthInvokable('secret');
 
         $this->assertInstanceOf(JwtAuthInvokable::class, $invokable);
     }
@@ -29,7 +29,7 @@ class JwtAuthInvokableTest extends TestCase
      */
     public function testJwtAuthInokableIsJwtAuth()
     {
-        $invokable = new JwtAuthInvokable();
+        $invokable = new JwtAuthInvokable('secret');
 
         $this->assertInstanceOf(JwtAuthInvokable::class, $invokable);
     }
@@ -39,7 +39,7 @@ class JwtAuthInvokableTest extends TestCase
      */
     public function testJwtAuthHasJwt()
     {
-        $invokable = new JwtAuthInvokable();
+        $invokable = new JwtAuthInvokable('secret');
 
         $data['jwt'] = 'abc.abc.abc';
         $data['foo'] = 'bar';
@@ -56,7 +56,7 @@ class JwtAuthInvokableTest extends TestCase
      */
     public function testJwtAuthHasJwtFalse()
     {
-        $invokable = new JwtAuthInvokable();
+        $invokable = new JwtAuthInvokable('secret');
 
         $data['token'] = 'abc.abc.abc';
         $data['foo'] = 'bar';
@@ -79,7 +79,7 @@ class JwtAuthInvokableTest extends TestCase
         $query = ['hello' => 'world'];
         $body = ['car' => 'park'];
 
-        $invokable = new JwtAuthInvokable();
+        $invokable = new JwtAuthInvokable('secret');
 
         $method = new ReflectionMethod(JwtAuthInvokable::class, 'getToken');
         $method->setAccessible(true);
@@ -99,7 +99,7 @@ class JwtAuthInvokableTest extends TestCase
         $query = ['hello' => 'world'];
         $body = ['car' => 'park'];
 
-        $invokable = new JwtAuthInvokable();
+        $invokable = new JwtAuthInvokable('secret');
 
         $method = new ReflectionMethod(JwtAuthInvokable::class, 'getToken');
         $method->setAccessible(true);
@@ -119,7 +119,7 @@ class JwtAuthInvokableTest extends TestCase
         $query = ['jwt' => 'abc.def.ghi'];
         $body = ['car' => 'park'];
 
-        $invokable = new JwtAuthInvokable();
+        $invokable = new JwtAuthInvokable('secret');
 
         $method = new ReflectionMethod(JwtAuthInvokable::class, 'getToken');
         $method->setAccessible(true);
@@ -139,7 +139,7 @@ class JwtAuthInvokableTest extends TestCase
         $query = ['car' => 'park'];
         $body = ['jwt' => 'abc.def.ghi'];
 
-        $invokable = new JwtAuthInvokable();
+        $invokable = new JwtAuthInvokable('secret');
 
         $method = new ReflectionMethod(JwtAuthInvokable::class, 'getToken');
         $method->setAccessible(true);
@@ -163,7 +163,7 @@ class JwtAuthInvokableTest extends TestCase
         $query = ['car' => 'park'];
         $body = ['michael' => 'jackson'];
 
-        $invokable = new JwtAuthInvokable();
+        $invokable = new JwtAuthInvokable('secret');
 
         $method = new ReflectionMethod(JwtAuthInvokable::class, 'getToken');
         $method->setAccessible(true);
@@ -171,12 +171,25 @@ class JwtAuthInvokableTest extends TestCase
     }
 
     /**
+     * @covers PsrJwt\JwtAuth::getSecret
+     * @uses PsrJwt\JwtAuthInvokable::__construct
+     */
+    public function testGetSecret()
+    {
+        $invokable = new JwtAuthInvokable('secret');
+
+        $method = new ReflectionMethod(JwtAuthInvokable::class, 'getSecret');
+        $method->setAccessible(true);
+        $result = $method->invoke($invokable);
+
+        $this->assertSame('secret', $result);
+    }
+
+    /**
      * @covers PsrJwt\JwtAuthInvokable::__invoke
      */
      public function testInvoke()
      {
-         $token = Token::create(1, '123Secret!!456', time() + 10, 'localhost');
-
          $request = m::mock(ServerRequestInterface::class);
 
          $response = m::mock(ResponseInterface::class);
@@ -185,7 +198,7 @@ class JwtAuthInvokableTest extends TestCase
              return $response;
          };
 
-         $invokable = new JwtAuthInvokable();
+         $invokable = new JwtAuthInvokable('secret');
 
          $result = $invokable($request, $response, $next);
 
