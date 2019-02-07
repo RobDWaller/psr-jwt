@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PsrJwt;
 
 use PsrJwt\JwtAuthException;
+use Throwable;
 
 abstract class JwtAuth
 {
@@ -13,6 +14,20 @@ abstract class JwtAuth
     public function __construct(string $secret)
     {
         $this->secret = $secret;
+    }
+
+    protected function validate(string $token): bool
+    {
+        $parse = Jwt::parser($token, $this->getSecret());
+
+        try {
+            $parse->validate();
+        }
+        catch (Throwable $e) {
+            throw new JwtAuthException('Fail!!');
+        }
+
+        return true;
     }
 
     protected function hasJwt(array $data): bool

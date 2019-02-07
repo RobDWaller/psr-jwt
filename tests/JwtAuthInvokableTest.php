@@ -4,11 +4,11 @@ namespace Tests;
 
 use PHPUnit\Framework\TestCase;
 use PsrJwt\JwtAuthInvokable;
+use PsrJwt\Jwt;
 use PsrJwt\JwtAuth;
 use PsrJwt\JwtAuthException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use ReallySimpleJWT\Token;
 use ReflectionMethod;
 use Mockery as m;
 
@@ -186,22 +186,61 @@ class JwtAuthInvokableTest extends TestCase
     }
 
     /**
+     * @covers PsrJwt\JwtAuth::validate
+     */
+    public function testValidate()
+    {
+        $jwt = Jwt::builder();
+        $token = $jwt->setSecret('Secret123!456$')
+            ->setIssuer('localhost')
+            ->build()
+            ->getToken();
+
+        $invokable = new JwtAuthInvokable('Secret123!456$');
+
+        $method = new ReflectionMethod(JwtAuthInvokable::class, 'validate');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($invokable, [$token]);
+
+        $this->assertTrue($result);
+    }
+
+    /**
+     * @covers PsrJwt\JwtAuth::validate
+     * @expectedException PsrJwt\JwtAuthException
+     */
+    public function testValidateBadSecret()
+    {
+        $jwt = Jwt::builder();
+        $token = $jwt->setSecret('Secret123!456$')
+            ->setIssuer('localhost')
+            ->build()
+            ->getToken();
+
+        $invokable = new JwtAuthInvokable('Secret');
+
+        $method = new ReflectionMethod(JwtAuthInvokable::class, 'validate');
+        $method->setAccessible(true);
+        $method->invokeArgs($invokable, [$token]);
+    }
+
+    /**
      * @covers PsrJwt\JwtAuthInvokable::__invoke
      */
-     public function testInvoke()
-     {
-         $request = m::mock(ServerRequestInterface::class);
+    public function testInvoke()
+    {
+        $request = m::mock(ServerRequestInterface::class);
 
-         $response = m::mock(ResponseInterface::class);
+        $response = m::mock(ResponseInterface::class);
 
-         $next = function($request, $response) {
-             return $response;
-         };
+        $next = function($request, $response) {
+            return $response;
+        };
 
-         $invokable = new JwtAuthInvokable('secret');
+        $invokable = new JwtAuthInvokable('secret');
 
-         $result = $invokable($request, $response, $next);
+        $result = $invokable($request, $response, $next);
 
-         $this->assertInstanceOf(ResponseInterface::class, $result);
-     }
+        $this->assertInstanceOf(ResponseInterface::class, $result);
+    }
 }
