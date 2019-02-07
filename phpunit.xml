@@ -7,7 +7,9 @@
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTodoAnnotatedTests="true"
          verbose="true"
-         colors="true">
+         colors="true"
+         executionOrder="random"
+         resolveDependencies="true">
     <testsuites>
         <testsuite name="default">
             <directory suffix="Test.php">tests</directory>
