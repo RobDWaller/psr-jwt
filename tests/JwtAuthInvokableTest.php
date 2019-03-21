@@ -208,6 +208,8 @@ class JwtAuthInvokableTest extends TestCase
     /**
      * @covers PsrJwt\JwtAuth::validate
      * @expectedException PsrJwt\JwtAuthException
+     * @expectedExceptionMessage Signature is invalid.
+     * @expectedExceptionCode 3
      */
     public function testValidateBadSecret()
     {
@@ -218,6 +220,50 @@ class JwtAuthInvokableTest extends TestCase
             ->getToken();
 
         $invokable = new JwtAuthInvokable('Secret');
+
+        $method = new ReflectionMethod(JwtAuthInvokable::class, 'validate');
+        $method->setAccessible(true);
+        $method->invokeArgs($invokable, [$token]);
+    }
+
+    /**
+     * @covers PsrJwt\JwtAuth::validate
+     * @expectedException PsrJwt\JwtAuthException
+     * @expectedExceptionMessage Expiration claim has expired.
+     * @expectedExceptionCode 4
+     */
+    public function testValidateBadExpiration()
+    {
+        $jwt = Jwt::builder();
+        $token = $jwt->setSecret('Secret123!456$')
+            ->setIssuer('localhost')
+            ->setPayloadClaim('exp', time() - 10)
+            ->build()
+            ->getToken();
+
+        $invokable = new JwtAuthInvokable('Secret123!456$');
+
+        $method = new ReflectionMethod(JwtAuthInvokable::class, 'validate');
+        $method->setAccessible(true);
+        $method->invokeArgs($invokable, [$token]);
+    }
+
+    /**
+     * @covers PsrJwt\JwtAuth::validate
+     * @expectedException PsrJwt\JwtAuthException
+     * @expectedExceptionMessage Not Before claim has not elapsed.
+     * @expectedExceptionCode 5
+     */
+    public function testValidateBadNotBefore()
+    {
+        $jwt = Jwt::builder();
+        $token = $jwt->setSecret('Secret123!456$')
+            ->setIssuer('localhost')
+            ->setPayloadClaim('nbf', time() + 60)
+            ->build()
+            ->getToken();
+
+        $invokable = new JwtAuthInvokable('Secret123!456$');
 
         $method = new ReflectionMethod(JwtAuthInvokable::class, 'validate');
         $method->setAccessible(true);

@@ -21,10 +21,22 @@ abstract class JwtAuth
         $parse = Jwt::parser($token, $this->getSecret());
 
         try {
-            $parse->validate();
+            $parse->validate()
+                ->validateExpiration();
         }
         catch (Throwable $e) {
-            throw new JwtAuthException('Fail!!');
+            if (in_array($e->getCode(), [1, 2, 3, 4, 5], true)) {
+                throw new JwtAuthException($e->getMessage(), $e->getCode());
+            }
+        }
+
+        try {
+            $parse->validateNotBefore();
+        }
+        catch (Throwable $e) {
+            if (in_array($e->getCode(), [5], true)) {
+                throw new JwtAuthException($e->getMessage(), $e->getCode());
+            }
         }
 
         return true;
