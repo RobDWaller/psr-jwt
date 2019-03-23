@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PsrJwt;
 
 use PsrJwt\JwtAuthException;
+use Psr\Http\Message\ServerRequestInterface;
 use Throwable;
 
 abstract class JwtAuth
@@ -25,7 +26,7 @@ abstract class JwtAuth
                 ->validateExpiration();
         }
         catch (Throwable $e) {
-            if (in_array($e->getCode(), [1, 2, 3, 4, 5], true)) {
+            if (in_array($e->getCode(), [1, 2, 3, 4], true)) {
                 throw new JwtAuthException($e->getMessage(), $e->getCode());
             }
         }
@@ -47,22 +48,22 @@ abstract class JwtAuth
         return array_key_exists('jwt', $data);
     }
 
-    protected function getToken(array $server, array $cookie, array $query, array $body): string
+    protected function getToken(ServerRequestInterface $request): string
     {
-        if ($this->hasJwt($server)) {
-            return $server['jwt'];
+        if ($this->hasJwt($request->getServerParams())) {
+            return $request->getServerParams()['jwt'];
         }
 
-        if ($this->hasJwt($cookie)) {
-            return $cookie['jwt'];
+        if ($this->hasJwt($request->getCookieParams())) {
+            return $request->getCookieParams()['jwt'];
         }
 
-        if ($this->hasJwt($query)) {
-            return $query['jwt'];
+        if ($this->hasJwt($request->getQueryParams())) {
+            return $request->getQueryParams()['jwt'];
         }
 
-        if ($this->hasJwt($body)) {
-            return $body['jwt'];
+        if ($this->hasJwt($request->getParsedBody())) {
+            return $request->getParsedBody()['jwt'];
         }
 
         throw new JwtAuthException('JWT Token not set', 1);

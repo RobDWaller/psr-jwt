@@ -69,21 +69,37 @@ class JwtAuthInvokableTest extends TestCase
     }
 
     /**
+     * @covers PsrJwt\JwtAuth::hasJwt
+     */
+    public function testJwtAuthHasJwtEmpty()
+    {
+        $invokable = new JwtAuthInvokable('secret');
+
+        $data = [];
+
+        $method = new ReflectionMethod(JwtAuthInvokable::class, 'hasJwt');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($invokable, [$data]);
+
+        $this->assertFalse($result);
+    }
+
+    /**
      * @covers PsrJwt\JwtAuth::getToken
      * @uses PsrJwt\JwtAuth::hasJwt
      */
     public function testGetToken()
     {
-        $server = ['jwt' => 'abc.def.ghi'];
-        $cookie = ['foo' => 'bar'];
-        $query = ['hello' => 'world'];
-        $body = ['car' => 'park'];
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getServerParams')
+            ->twice()
+            ->andReturn(['jwt' => 'abc.def.ghi']);
 
         $invokable = new JwtAuthInvokable('secret');
 
         $method = new ReflectionMethod(JwtAuthInvokable::class, 'getToken');
         $method->setAccessible(true);
-        $result = $method->invokeArgs($invokable, [$server, $cookie, $query, $body]);
+        $result = $method->invokeArgs($invokable, [$request]);
 
         $this->assertSame($result, 'abc.def.ghi');
     }
@@ -94,16 +110,19 @@ class JwtAuthInvokableTest extends TestCase
      */
     public function testGetTokenFromCookie()
     {
-        $server = ['foo' => 'bar'];
-        $cookie = ['jwt' => 'abc.def.ghi'];
-        $query = ['hello' => 'world'];
-        $body = ['car' => 'park'];
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getServerParams')
+            ->once()
+            ->andReturn(['foo' => 'bar']);
+        $request->shouldReceive('getCookieParams')
+            ->twice()
+            ->andReturn(['jwt' => 'abc.def.ghi']);
 
         $invokable = new JwtAuthInvokable('secret');
 
         $method = new ReflectionMethod(JwtAuthInvokable::class, 'getToken');
         $method->setAccessible(true);
-        $result = $method->invokeArgs($invokable, [$server, $cookie, $query, $body]);
+        $result = $method->invokeArgs($invokable, [$request]);
 
         $this->assertSame($result, 'abc.def.ghi');
     }
@@ -114,16 +133,22 @@ class JwtAuthInvokableTest extends TestCase
      */
     public function testGetTokenFromQuery()
     {
-        $server = ['foo' => 'bar'];
-        $cookie = ['hello' => 'world'];
-        $query = ['jwt' => 'abc.def.ghi'];
-        $body = ['car' => 'park'];
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getServerParams')
+            ->once()
+            ->andReturn(['foo' => 'bar']);
+        $request->shouldReceive('getCookieParams')
+            ->once()
+            ->andReturn(['hello' => 'world']);
+        $request->shouldReceive('getQueryParams')
+            ->twice()
+            ->andReturn(['jwt' => 'abc.def.ghi']);
 
         $invokable = new JwtAuthInvokable('secret');
 
         $method = new ReflectionMethod(JwtAuthInvokable::class, 'getToken');
         $method->setAccessible(true);
-        $result = $method->invokeArgs($invokable, [$server, $cookie, $query, $body]);
+        $result = $method->invokeArgs($invokable, [$request]);
 
         $this->assertSame($result, 'abc.def.ghi');
     }
@@ -134,16 +159,25 @@ class JwtAuthInvokableTest extends TestCase
      */
     public function testGetTokenFromBody()
     {
-        $server = ['foo' => 'bar'];
-        $cookie = ['hello' => 'world'];
-        $query = ['car' => 'park'];
-        $body = ['jwt' => 'abc.def.ghi'];
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getServerParams')
+            ->once()
+            ->andReturn(['foo' => 'bar']);
+        $request->shouldReceive('getCookieParams')
+            ->once()
+            ->andReturn(['hello' => 'world']);
+        $request->shouldReceive('getQueryParams')
+            ->once()
+            ->andReturn(['car' => 'park']);
+        $request->shouldReceive('getParsedBody')
+            ->twice()
+            ->andReturn(['jwt' => 'abc.def.ghi']);
 
         $invokable = new JwtAuthInvokable('secret');
 
         $method = new ReflectionMethod(JwtAuthInvokable::class, 'getToken');
         $method->setAccessible(true);
-        $result = $method->invokeArgs($invokable, [$server, $cookie, $query, $body]);
+        $result = $method->invokeArgs($invokable, [$request]);
 
         $this->assertSame($result, 'abc.def.ghi');
     }
@@ -158,16 +192,25 @@ class JwtAuthInvokableTest extends TestCase
      */
     public function testGetTokenNoJwt()
     {
-        $server = ['foo' => 'bar'];
-        $cookie = ['hello' => 'world'];
-        $query = ['car' => 'park'];
-        $body = ['michael' => 'jackson'];
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getServerParams')
+            ->once()
+            ->andReturn(['foo' => 'bar']);
+        $request->shouldReceive('getCookieParams')
+            ->once()
+            ->andReturn(['hello' => 'world']);
+        $request->shouldReceive('getQueryParams')
+            ->once()
+            ->andReturn(['car' => 'park']);
+        $request->shouldReceive('getParsedBody')
+            ->once()
+            ->andReturn(['gary' => 'barlow']);
 
         $invokable = new JwtAuthInvokable('secret');
 
         $method = new ReflectionMethod(JwtAuthInvokable::class, 'getToken');
         $method->setAccessible(true);
-        $method->invokeArgs($invokable, [$server, $cookie, $query, $body]);
+        $method->invokeArgs($invokable, [$request]);
     }
 
     /**
@@ -275,7 +318,40 @@ class JwtAuthInvokableTest extends TestCase
      */
     public function testInvoke()
     {
+        $jwt = Jwt::builder();
+        $token = $jwt->setSecret('Secret123!456$')
+            ->setIssuer('localhost')
+            ->setPayloadClaim('nbf', time() - 60)
+            ->build()
+            ->getToken();
+
         $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getServerParams')
+            ->twice()
+            ->andReturn(['jwt' => $token]);
+
+        $response = m::mock(ResponseInterface::class);
+
+        $next = function($request, $response) {
+            return $response;
+        };
+
+        $invokable = new JwtAuthInvokable('Secret123!456$');
+
+        $result = $invokable($request, $response, $next);
+
+        $this->assertInstanceOf(ResponseInterface::class, $result);
+    }
+
+    /**
+     * @expectedException PsrJwt\JwtAuthException
+     */
+    public function testInvokeFail()
+    {
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getServerParams')
+            ->twice()
+            ->andReturn(['jwt' => 'abc.abc.abc']);
 
         $response = m::mock(ResponseInterface::class);
 
@@ -286,7 +362,5 @@ class JwtAuthInvokableTest extends TestCase
         $invokable = new JwtAuthInvokable('secret');
 
         $result = $invokable($request, $response, $next);
-
-        $this->assertInstanceOf(ResponseInterface::class, $result);
     }
 }

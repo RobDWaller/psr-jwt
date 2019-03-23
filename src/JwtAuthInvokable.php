@@ -16,6 +16,10 @@ class JwtAuthInvokable extends JwtAuth
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
     {
-        return $response;
+        $token = $this->getToken($request);
+
+        $this->validate($token);
+
+        return $next($request, $response);
     }
 }
