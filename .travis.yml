@@ -11,7 +11,7 @@ before_script:
 
 script:
     - vendor/bin/phpcs --standard=psr12 src
-    - vendor/bin/phpstan analyse -l 7 tests src
+    - vendor/bin/phpstan analyse -l 7 src
     - vendor/bin/phpmd src text ruleset.xml
     - vendor/bin/phpunit --coverage-clover=coverage.xml
 
