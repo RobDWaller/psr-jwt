@@ -14,8 +14,11 @@ class JwtAuthInvokable extends JwtAuth
         parent::__construct($secret);
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequestInterface $request,
+        ResponseInterface $response,
+        callable $next
+    ): ResponseInterface {
         $token = $this->getToken($request);
 
         $this->validate($token);

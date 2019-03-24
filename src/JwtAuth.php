@@ -24,8 +24,7 @@ abstract class JwtAuth
         try {
             $parse->validate()
                 ->validateExpiration();
-        }
-        catch (Throwable $e) {
+        } catch (Throwable $e) {
             if (in_array($e->getCode(), [1, 2, 3, 4], true)) {
                 throw new JwtAuthException($e->getMessage(), $e->getCode());
             }
@@ -33,8 +32,7 @@ abstract class JwtAuth
 
         try {
             $parse->validateNotBefore();
-        }
-        catch (Throwable $e) {
+        } catch (Throwable $e) {
             if (in_array($e->getCode(), [5], true)) {
                 throw new JwtAuthException($e->getMessage(), $e->getCode());
             }
