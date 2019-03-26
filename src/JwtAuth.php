@@ -60,8 +60,8 @@ abstract class JwtAuth
             return $request->getQueryParams()['jwt'];
         }
 
-        if ($this->hasJwt($request->getParsedBody())) {
-            return $request->getParsedBody()['jwt'];
+        if ($this->hasJwt($this->parseRequestBody($request))) {
+            return $this->parseRequestBody($request)['jwt'];
         }
 
         throw new JwtAuthException('JWT Token not set', 1);
@@ -70,5 +70,18 @@ abstract class JwtAuth
     protected function getSecret(): string
     {
         return $this->secret;
+    }
+
+    private function parseRequestBody(ServerRequestInterface $request): array
+    {
+        if (is_array($request->getParsedBody()) && isset($request->getParsedBody()['jwt'])) {
+            return $request->getParsedBody();
+        }
+
+        if (is_object($request->getParsedBody()) && isset($request->getParsedBody()->jwt)) {
+            return ['jwt' => $request->getParsedBody()->jwt];
+        }
+
+        return [];
     }
 }

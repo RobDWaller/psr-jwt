@@ -11,6 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use ReflectionMethod;
 use Mockery as m;
+use stdClass;
 
 class JwtAuthInvokableTest extends TestCase
 {
@@ -180,6 +181,67 @@ class JwtAuthInvokableTest extends TestCase
         $result = $method->invokeArgs($invokable, [$request]);
 
         $this->assertSame($result, 'abc.def.ghi');
+    }
+
+    /**
+     * @covers PsrJwt\JwtAuth::getToken
+     * @uses PsrJwt\JwtAuth::hasJwt
+     */
+    public function testGetTokenFromBodyObject()
+    {
+        $object = new stdClass();
+        $object->jwt = 'abc.def.ghi';
+
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getServerParams')
+            ->once()
+            ->andReturn(['foo' => 'bar']);
+        $request->shouldReceive('getCookieParams')
+            ->once()
+            ->andReturn(['hello' => 'world']);
+        $request->shouldReceive('getQueryParams')
+            ->once()
+            ->andReturn(['car' => 'park']);
+        $request->shouldReceive('getParsedBody')
+            ->twice()
+            ->andReturn($object);
+
+        $invokable = new JwtAuthInvokable('secret');
+
+        $method = new ReflectionMethod(JwtAuthInvokable::class, 'getToken');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($invokable, [$request]);
+
+        $this->assertSame($result, 'abc.def.ghi');
+    }
+
+    /**
+     * @covers PsrJwt\JwtAuth::getToken
+     * @uses PsrJwt\JwtAuth::hasJwt
+     * @expectedException PsrJwt\JwtAuthException
+     * @expectedExceptionMessage JWT Token not set
+     */
+    public function testGetTokenFromBodyNull()
+    {
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getServerParams')
+            ->once()
+            ->andReturn(['foo' => 'bar']);
+        $request->shouldReceive('getCookieParams')
+            ->once()
+            ->andReturn(['hello' => 'world']);
+        $request->shouldReceive('getQueryParams')
+            ->once()
+            ->andReturn(['car' => 'park']);
+        $request->shouldReceive('getParsedBody')
+            ->once()
+            ->andReturn(null);
+
+        $invokable = new JwtAuthInvokable('secret');
+
+        $method = new ReflectionMethod(JwtAuthInvokable::class, 'getToken');
+        $method->setAccessible(true);
+        $method->invokeArgs($invokable, [$request]);
     }
 
     /**
@@ -362,5 +424,76 @@ class JwtAuthInvokableTest extends TestCase
         $invokable = new JwtAuthInvokable('secret');
 
         $result = $invokable($request, $response, $next);
+    }
+
+    public function testParseRequestBody()
+    {
+        $invokable = new JwtAuthInvokable('secret');
+
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getParsedBody')
+            ->times(3)
+            ->andReturn(['jwt' => 'abc.abc.abc']);
+
+        $method = new ReflectionMethod(JwtAuthInvokable::class, 'parseRequestBody');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($invokable, [$request]);
+
+        $this->assertCount(1, $result);
+        $this->assertSame('abc.abc.abc', $result['jwt']);
+    }
+
+    public function testParseRequestBodyNull()
+    {
+        $invokable = new JwtAuthInvokable('secret');
+
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getParsedBody')
+            ->times(1)
+            ->andReturn(null);
+
+        $method = new ReflectionMethod(JwtAuthInvokable::class, 'parseRequestBody');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($invokable, [$request]);
+
+        $this->assertCount(0, $result);
+    }
+
+    public function testParseRequestBodyObject()
+    {
+        $invokable = new JwtAuthInvokable('secret');
+
+        $object = new stdClass();
+        $object->jwt = 'abc.def.ghi';
+
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getParsedBody')
+            ->times(3)
+            ->andReturn($object);
+
+        $method = new ReflectionMethod(JwtAuthInvokable::class, 'parseRequestBody');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($invokable, [$request]);
+
+        $this->assertCount(1, $result);
+        $this->assertSame('abc.def.ghi', $result['jwt']);
+    }
+
+    public function testParseRequestBodyObjectNoKey()
+    {
+        $invokable = new JwtAuthInvokable('secret');
+
+        $object = new stdClass();
+
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getParsedBody')
+            ->times(3)
+            ->andReturn($object);
+
+        $method = new ReflectionMethod(JwtAuthInvokable::class, 'parseRequestBody');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($invokable, [$request]);
+
+        $this->assertCount(0, $result);
     }
 }
