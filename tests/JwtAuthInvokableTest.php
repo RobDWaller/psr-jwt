@@ -532,4 +532,20 @@ class JwtAuthInvokableTest extends TestCase
 
         $this->assertCount(0, $result);
     }
+
+    public function testGetBearerToken()
+    {
+        $invokable = new JwtAuthInvokable('jwt', 'secret');
+
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->andReturn(['bearer abc.def.ghi']);
+
+        $method = new ReflectionMethod(JwtAuthInvokable::class, 'getBearerToken');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($invokable, [$request]);
+
+        $this->assertSame('abc.def.ghi', $result);
+    }
 }
