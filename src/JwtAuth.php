@@ -10,10 +10,14 @@ use Throwable;
 
 abstract class JwtAuth
 {
+    private $tokenKey;
+
     private $secret;
 
-    public function __construct(string $secret)
+    public function __construct(string $tokenKey, string $secret)
     {
+        $this->tokenKey = $tokenKey;
+
         $this->secret = $secret;
     }
 
@@ -43,7 +47,7 @@ abstract class JwtAuth
 
     protected function hasJwt(array $data): bool
     {
-        return array_key_exists('jwt', $data);
+        return array_key_exists($this->tokenKey, $data);
     }
 
     protected function getToken(ServerRequestInterface $request): string
@@ -56,7 +60,7 @@ abstract class JwtAuth
         );
 
         if ($this->hasJwt($merge)) {
-            return $merge['jwt'];
+            return $merge[$this->tokenKey];
         }
 
         throw new JwtAuthException('JWT Token not set', 1);
@@ -69,12 +73,12 @@ abstract class JwtAuth
 
     private function parseRequestBody(ServerRequestInterface $request): array
     {
-        if (is_array($request->getParsedBody()) && isset($request->getParsedBody()['jwt'])) {
+        if (is_array($request->getParsedBody()) && isset($request->getParsedBody()[$this->tokenKey])) {
             return $request->getParsedBody();
         }
 
         if (is_object($request->getParsedBody()) && isset($request->getParsedBody()->jwt)) {
-            return ['jwt' => $request->getParsedBody()->jwt];
+            return [$this->tokenKey => $request->getParsedBody()->jwt];
         }
 
         return [];

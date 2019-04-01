@@ -9,9 +9,9 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class JwtAuthInvokable extends JwtAuth
 {
-    public function __construct(string $secret)
+    public function __construct(string $tokenKey, string $secret)
     {
-        parent::__construct($secret);
+        parent::__construct($tokenKey, $secret);
     }
 
     public function __invoke(

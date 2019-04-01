@@ -20,7 +20,7 @@ class JwtAuthInvokableTest extends TestCase
      */
     public function testJwtAuthInokable()
     {
-        $invokable = new JwtAuthInvokable('secret');
+        $invokable = new JwtAuthInvokable('jwt', 'secret');
 
         $this->assertInstanceOf(JwtAuthInvokable::class, $invokable);
     }
@@ -30,7 +30,7 @@ class JwtAuthInvokableTest extends TestCase
      */
     public function testJwtAuthInokableIsJwtAuth()
     {
-        $invokable = new JwtAuthInvokable('secret');
+        $invokable = new JwtAuthInvokable('jwt', 'secret');
 
         $this->assertInstanceOf(JwtAuthInvokable::class, $invokable);
     }
@@ -40,7 +40,7 @@ class JwtAuthInvokableTest extends TestCase
      */
     public function testJwtAuthHasJwt()
     {
-        $invokable = new JwtAuthInvokable('secret');
+        $invokable = new JwtAuthInvokable('jwt', 'secret');
 
         $data['jwt'] = 'abc.abc.abc';
         $data['foo'] = 'bar';
@@ -57,7 +57,7 @@ class JwtAuthInvokableTest extends TestCase
      */
     public function testJwtAuthHasJwtFalse()
     {
-        $invokable = new JwtAuthInvokable('secret');
+        $invokable = new JwtAuthInvokable('jwt', 'secret');
 
         $data['token'] = 'abc.abc.abc';
         $data['foo'] = 'bar';
@@ -74,7 +74,7 @@ class JwtAuthInvokableTest extends TestCase
      */
     public function testJwtAuthHasJwtEmpty()
     {
-        $invokable = new JwtAuthInvokable('secret');
+        $invokable = new JwtAuthInvokable('jwt', 'secret');
 
         $data = [];
 
@@ -105,7 +105,7 @@ class JwtAuthInvokableTest extends TestCase
             ->twice()
             ->andReturn([]);
 
-        $invokable = new JwtAuthInvokable('secret');
+        $invokable = new JwtAuthInvokable('jwt', 'secret');
 
         $method = new ReflectionMethod(JwtAuthInvokable::class, 'getToken');
         $method->setAccessible(true);
@@ -134,7 +134,7 @@ class JwtAuthInvokableTest extends TestCase
             ->twice()
             ->andReturn([]);
 
-        $invokable = new JwtAuthInvokable('secret');
+        $invokable = new JwtAuthInvokable('jwt', 'secret');
 
         $method = new ReflectionMethod(JwtAuthInvokable::class, 'getToken');
         $method->setAccessible(true);
@@ -163,7 +163,7 @@ class JwtAuthInvokableTest extends TestCase
             ->twice()
             ->andReturn([]);
 
-        $invokable = new JwtAuthInvokable('secret');
+        $invokable = new JwtAuthInvokable('jwt', 'secret');
 
         $method = new ReflectionMethod(JwtAuthInvokable::class, 'getToken');
         $method->setAccessible(true);
@@ -192,7 +192,7 @@ class JwtAuthInvokableTest extends TestCase
             ->times(3)
             ->andReturn(['jwt' => 'abc.def.ghi']);
 
-        $invokable = new JwtAuthInvokable('secret');
+        $invokable = new JwtAuthInvokable('jwt', 'secret');
 
         $method = new ReflectionMethod(JwtAuthInvokable::class, 'getToken');
         $method->setAccessible(true);
@@ -224,7 +224,7 @@ class JwtAuthInvokableTest extends TestCase
             ->times(3)
             ->andReturn($object);
 
-        $invokable = new JwtAuthInvokable('secret');
+        $invokable = new JwtAuthInvokable('jwt', 'secret');
 
         $method = new ReflectionMethod(JwtAuthInvokable::class, 'getToken');
         $method->setAccessible(true);
@@ -255,7 +255,7 @@ class JwtAuthInvokableTest extends TestCase
             ->once()
             ->andReturn(null);
 
-        $invokable = new JwtAuthInvokable('secret');
+        $invokable = new JwtAuthInvokable('jwt', 'secret');
 
         $method = new ReflectionMethod(JwtAuthInvokable::class, 'getToken');
         $method->setAccessible(true);
@@ -286,7 +286,7 @@ class JwtAuthInvokableTest extends TestCase
             ->twice()
             ->andReturn(['gary' => 'barlow']);
 
-        $invokable = new JwtAuthInvokable('secret');
+        $invokable = new JwtAuthInvokable('jwt', 'secret');
 
         $method = new ReflectionMethod(JwtAuthInvokable::class, 'getToken');
         $method->setAccessible(true);
@@ -299,7 +299,7 @@ class JwtAuthInvokableTest extends TestCase
      */
     public function testGetSecret()
     {
-        $invokable = new JwtAuthInvokable('secret');
+        $invokable = new JwtAuthInvokable('jwt', 'secret');
 
         $method = new ReflectionMethod(JwtAuthInvokable::class, 'getSecret');
         $method->setAccessible(true);
@@ -319,7 +319,7 @@ class JwtAuthInvokableTest extends TestCase
             ->build()
             ->getToken();
 
-        $invokable = new JwtAuthInvokable('Secret123!456$');
+        $invokable = new JwtAuthInvokable('jwt', 'Secret123!456$');
 
         $method = new ReflectionMethod(JwtAuthInvokable::class, 'validate');
         $method->setAccessible(true);
@@ -342,7 +342,7 @@ class JwtAuthInvokableTest extends TestCase
             ->build()
             ->getToken();
 
-        $invokable = new JwtAuthInvokable('Secret');
+        $invokable = new JwtAuthInvokable('jwt', 'Secret');
 
         $method = new ReflectionMethod(JwtAuthInvokable::class, 'validate');
         $method->setAccessible(true);
@@ -364,7 +364,7 @@ class JwtAuthInvokableTest extends TestCase
             ->build()
             ->getToken();
 
-        $invokable = new JwtAuthInvokable('Secret123!456$');
+        $invokable = new JwtAuthInvokable('jwt', 'Secret123!456$');
 
         $method = new ReflectionMethod(JwtAuthInvokable::class, 'validate');
         $method->setAccessible(true);
@@ -386,7 +386,7 @@ class JwtAuthInvokableTest extends TestCase
             ->build()
             ->getToken();
 
-        $invokable = new JwtAuthInvokable('Secret123!456$');
+        $invokable = new JwtAuthInvokable('jwt', 'Secret123!456$');
 
         $method = new ReflectionMethod(JwtAuthInvokable::class, 'validate');
         $method->setAccessible(true);
@@ -425,7 +425,7 @@ class JwtAuthInvokableTest extends TestCase
             return $response;
         };
 
-        $invokable = new JwtAuthInvokable('Secret123!456$');
+        $invokable = new JwtAuthInvokable('jwt', 'Secret123!456$');
 
         $result = $invokable($request, $response, $next);
 
@@ -457,14 +457,14 @@ class JwtAuthInvokableTest extends TestCase
             return $response;
         };
 
-        $invokable = new JwtAuthInvokable('secret');
+        $invokable = new JwtAuthInvokable('jwt', 'secret');
 
         $result = $invokable($request, $response, $next);
     }
 
     public function testParseRequestBody()
     {
-        $invokable = new JwtAuthInvokable('secret');
+        $invokable = new JwtAuthInvokable('jwt', 'secret');
 
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getParsedBody')
@@ -481,7 +481,7 @@ class JwtAuthInvokableTest extends TestCase
 
     public function testParseRequestBodyNull()
     {
-        $invokable = new JwtAuthInvokable('secret');
+        $invokable = new JwtAuthInvokable('jwt', 'secret');
 
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getParsedBody')
@@ -497,7 +497,7 @@ class JwtAuthInvokableTest extends TestCase
 
     public function testParseRequestBodyObject()
     {
-        $invokable = new JwtAuthInvokable('secret');
+        $invokable = new JwtAuthInvokable('jwt', 'secret');
 
         $object = new stdClass();
         $object->jwt = 'abc.def.ghi';
@@ -517,7 +517,7 @@ class JwtAuthInvokableTest extends TestCase
 
     public function testParseRequestBodyObjectNoKey()
     {
-        $invokable = new JwtAuthInvokable('secret');
+        $invokable = new JwtAuthInvokable('jwt', 'secret');
 
         $object = new stdClass();
 

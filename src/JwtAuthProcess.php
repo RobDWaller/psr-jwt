@@ -12,9 +12,9 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class JwtAuthProcess extends JwtAuth implements MiddlewareInterface
 {
-    public function __construct(string $secret)
+    public function __construct(string $tokenKey, string $secret)
     {
-        parent::__construct($secret);
+        parent::__construct($tokenKey, $secret);
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

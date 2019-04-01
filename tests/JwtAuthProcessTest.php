@@ -18,7 +18,7 @@ class JwtAuthProcessTest extends TestCase
      */
     public function testJwtAuthProcess()
     {
-        $process = new JwtAuthProcess('secret');
+        $process = new JwtAuthProcess('jwt', 'secret');
 
         $this->assertInstanceOf(JwtAuthProcess::class, $process);
         $this->assertInstanceOf(MiddlewareInterface::class, $process);
@@ -54,7 +54,7 @@ class JwtAuthProcessTest extends TestCase
             ->once()
             ->andReturn($response);
 
-        $process = new JwtAuthProcess('Secret123!456$');
+        $process = new JwtAuthProcess('jwt', 'Secret123!456$');
 
         $result = $process->process($request, $handler);
 
