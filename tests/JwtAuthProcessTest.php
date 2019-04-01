@@ -35,8 +35,17 @@ class JwtAuthProcessTest extends TestCase
 
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getServerParams')
-            ->twice()
+            ->once()
             ->andReturn(['jwt' => $token]);
+        $request->shouldReceive('getCookieParams')
+            ->once()
+            ->andReturn(['hello' => 'world']);
+        $request->shouldReceive('getQueryParams')
+            ->once()
+            ->andReturn(['car' => 'park']);
+        $request->shouldReceive('getParsedBody')
+            ->twice()
+            ->andReturn(['gary' => 'barlow']);
 
         $response = m::mock(ResponseInterface::class);
 

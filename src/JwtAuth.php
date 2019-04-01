@@ -48,20 +48,15 @@ abstract class JwtAuth
 
     protected function getToken(ServerRequestInterface $request): string
     {
-        if ($this->hasJwt($request->getServerParams())) {
-            return $request->getServerParams()['jwt'];
-        }
+        $merge = array_merge(
+            $request->getServerParams(),
+            $request->getCookieParams(),
+            $request->getQueryParams(),
+            $this->parseRequestBody($request)
+        );
 
-        if ($this->hasJwt($request->getCookieParams())) {
-            return $request->getCookieParams()['jwt'];
-        }
-
-        if ($this->hasJwt($request->getQueryParams())) {
-            return $request->getQueryParams()['jwt'];
-        }
-
-        if ($this->hasJwt($this->parseRequestBody($request))) {
-            return $this->parseRequestBody($request)['jwt'];
+        if ($this->hasJwt($merge)) {
+            return $merge['jwt'];
         }
 
         throw new JwtAuthException('JWT Token not set', 1);
