@@ -84,6 +84,13 @@ abstract class JwtAuth
         return [];
     }
 
+    private function parseBearerToken(ServerRequestInterface $request): array
+    {
+        $token = $this->getBearerToken($request);
+
+        return !empty($token) ? [$this->tokenKey => $token] : [];
+    }
+
     private function getBearerToken(ServerRequestInterface $request): string
     {
         $authorization = $request->getHeader('authorization');
