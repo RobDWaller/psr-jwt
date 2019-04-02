@@ -21,6 +21,11 @@ abstract class JwtAuth
         $this->secret = $secret;
     }
 
+    protected function getSecret(): string
+    {
+        return $this->secret;
+    }
+
     protected function validate(string $token): bool
     {
         $parse = Jwt::parser($token, $this->getSecret());
@@ -66,11 +71,6 @@ abstract class JwtAuth
         throw new JwtAuthException('JWT Token not set', 1);
     }
 
-    protected function getSecret(): string
-    {
-        return $this->secret;
-    }
-
     private function parseRequestBody(ServerRequestInterface $request): array
     {
         if (is_array($request->getParsedBody()) && isset($request->getParsedBody()[$this->tokenKey])) {
@@ -84,10 +84,14 @@ abstract class JwtAuth
         return [];
     }
 
-    private function getBearerToken(ServerRequestInterface $request)
+    private function getBearerToken(ServerRequestInterface $request): string
     {
         $authorization = $request->getHeader('authorization');
 
-        return explode(' ', $authorization[0])[1];
+        $bearer = array_filter($authorization, function($item) {
+            return (bool) preg_match('/^bearer\s.+/', $item);
+        });
+
+        return explode(' ', $authorization[0] ?? '')[1] ?? '';
     }
 }
