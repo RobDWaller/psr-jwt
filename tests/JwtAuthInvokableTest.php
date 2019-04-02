@@ -104,6 +104,10 @@ class JwtAuthInvokableTest extends TestCase
         $request->shouldReceive('getParsedBody')
             ->twice()
             ->andReturn([]);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->once()
+            ->andReturn([]);
 
         $invokable = new JwtAuthInvokable('jwt', 'secret');
 
@@ -132,6 +136,10 @@ class JwtAuthInvokableTest extends TestCase
             ->andReturn(['hello' => 'world']);
         $request->shouldReceive('getParsedBody')
             ->twice()
+            ->andReturn([]);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->once()
             ->andReturn([]);
 
         $invokable = new JwtAuthInvokable('jwt', 'secret');
@@ -162,6 +170,10 @@ class JwtAuthInvokableTest extends TestCase
         $request->shouldReceive('getParsedBody')
             ->twice()
             ->andReturn([]);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->once()
+            ->andReturn([]);
 
         $invokable = new JwtAuthInvokable('jwt', 'secret');
 
@@ -191,6 +203,10 @@ class JwtAuthInvokableTest extends TestCase
         $request->shouldReceive('getParsedBody')
             ->times(3)
             ->andReturn(['jwt' => 'abc.def.ghi']);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->once()
+            ->andReturn([]);
 
         $invokable = new JwtAuthInvokable('jwt', 'secret');
 
@@ -223,6 +239,10 @@ class JwtAuthInvokableTest extends TestCase
         $request->shouldReceive('getParsedBody')
             ->times(3)
             ->andReturn($object);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->once()
+            ->andReturn([]);
 
         $invokable = new JwtAuthInvokable('jwt', 'secret');
 
@@ -254,12 +274,48 @@ class JwtAuthInvokableTest extends TestCase
         $request->shouldReceive('getParsedBody')
             ->once()
             ->andReturn(null);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->once()
+            ->andReturn([]);
 
         $invokable = new JwtAuthInvokable('jwt', 'secret');
 
         $method = new ReflectionMethod(JwtAuthInvokable::class, 'getToken');
         $method->setAccessible(true);
         $method->invokeArgs($invokable, [$request]);
+    }
+
+    public function testGetTokenFromBearer()
+    {
+        $object = new stdClass();
+        $object->jwt = 'abc.def.ghi';
+
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getServerParams')
+            ->once()
+            ->andReturn(['foo' => 'bar']);
+        $request->shouldReceive('getCookieParams')
+            ->once()
+            ->andReturn(['hello' => 'world']);
+        $request->shouldReceive('getQueryParams')
+            ->once()
+            ->andReturn(['car' => 'park']);
+        $request->shouldReceive('getParsedBody')
+            ->times(3)
+            ->andReturn(null);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->once()
+            ->andReturn(['bearer abc.def.ghi']);
+
+        $invokable = new JwtAuthInvokable('jwt', 'secret');
+
+        $method = new ReflectionMethod(JwtAuthInvokable::class, 'getToken');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($invokable, [$request]);
+
+        $this->assertSame($result, 'abc.def.ghi');
     }
 
     /**
@@ -285,6 +341,10 @@ class JwtAuthInvokableTest extends TestCase
         $request->shouldReceive('getParsedBody')
             ->twice()
             ->andReturn(['gary' => 'barlow']);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->once()
+            ->andReturn([]);
 
         $invokable = new JwtAuthInvokable('jwt', 'secret');
 
@@ -418,6 +478,10 @@ class JwtAuthInvokableTest extends TestCase
         $request->shouldReceive('getParsedBody')
             ->twice()
             ->andReturn(['gary' => 'barlow']);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->once()
+            ->andReturn([]);
 
         $response = m::mock(ResponseInterface::class);
 
@@ -450,6 +514,10 @@ class JwtAuthInvokableTest extends TestCase
         $request->shouldReceive('getParsedBody')
             ->twice()
             ->andReturn(['gary' => 'barlow']);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->once()
+            ->andReturn([]);
 
         $response = m::mock(ResponseInterface::class);
 

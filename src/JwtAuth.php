@@ -61,7 +61,8 @@ abstract class JwtAuth
             $request->getServerParams(),
             $request->getCookieParams(),
             $request->getQueryParams(),
-            $this->parseRequestBody($request)
+            $this->parseRequestBody($request),
+            $this->parseBearerToken($request)
         );
 
         if ($this->hasJwt($merge)) {

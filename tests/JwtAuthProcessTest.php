@@ -46,6 +46,10 @@ class JwtAuthProcessTest extends TestCase
         $request->shouldReceive('getParsedBody')
             ->twice()
             ->andReturn(['gary' => 'barlow']);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->once()
+            ->andReturn([]);
 
         $response = m::mock(ResponseInterface::class);
 
