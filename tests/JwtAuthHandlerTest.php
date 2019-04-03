@@ -3,27 +3,27 @@
 namespace Test;
 
 use PHPUnit\Framework\TestCase;
-use PsrJwt\JwtHandler;
+use PsrJwt\JwtAuthHandler;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Mockery as m;
 
-class JwtHandlerTest extends TestCase
+class JwtAuthHandlerTest extends TestCase
 {
-    public function testJwtHandler()
+    public function testJwtAuthHandler()
     {
-        $handler = new JwtHandler();
+        $handler = new JwtAuthHandler();
 
-        $this->assertInstanceOf(JwtHandler::class, $handler);
+        $this->assertInstanceOf(JwtAuthHandler::class, $handler);
         $this->assertInstanceOf(RequestHandlerInterface::class, $handler);
     }
 
-    public function testJwtHandlerResponse()
+    public function testJwtAuthHandlerResponse()
     {
         $request = m::mock(ServerRequestInterface::class);
 
-        $handler = new JwtHandler();
+        $handler = new JwtAuthHandler();
 
         $result = $handler->handle($request);
 
