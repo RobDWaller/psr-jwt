@@ -4,23 +4,23 @@ namespace Tests;
 
 use PHPUnit\Framework\TestCase;
 use PsrJwt\Jwt;
-use PsrJwt\JwtAuthProcess;
+use PsrJwt\JwtAuthMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Mockery as m;
 
-class JwtAuthProcessTest extends TestCase
+class JwtAuthMiddlewareTest extends TestCase
 {
     /**
      * @covers PsrJwt\JwtAuthProcess
      */
     public function testJwtAuthProcess()
     {
-        $process = new JwtAuthProcess('jwt', 'secret');
+        $process = new JwtAuthMiddleware('jwt', 'secret');
 
-        $this->assertInstanceOf(JwtAuthProcess::class, $process);
+        $this->assertInstanceOf(JwtAuthMiddleware::class, $process);
         $this->assertInstanceOf(MiddlewareInterface::class, $process);
     }
 
@@ -58,7 +58,7 @@ class JwtAuthProcessTest extends TestCase
             ->once()
             ->andReturn($response);
 
-        $process = new JwtAuthProcess('jwt', 'Secret123!456$');
+        $process = new JwtAuthMiddleware('jwt', 'Secret123!456$');
 
         $result = $process->process($request, $handler);
 
