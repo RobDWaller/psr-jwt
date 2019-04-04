@@ -3,15 +3,18 @@
 declare(strict_types=1);
 
 namespace PsrJwt;
-use PsrJwt\JwtAuth;
+
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use PsrJwt\JwtAuthHandler;
 
-class JwtAuthInvokable extends JwtAuth
+class JwtAuthInvokable
 {
-    public function __construct(string $tokenKey, string $secret)
+    private $handler;
+
+    public function __construct(JwtAuthHandler $handler)
     {
-        parent::__construct($tokenKey, $secret);
+        $this->handler = $handler;
     }
 
     public function __invoke(
@@ -19,10 +22,6 @@ class JwtAuthInvokable extends JwtAuth
         ResponseInterface $response,
         callable $next
     ): ResponseInterface {
-        $token = $this->getToken($request);
-
-        $this->validate($token);
-
-        return $next($request, $response);
+        return $next($request, $this->handler->handle($request));
     }
 }

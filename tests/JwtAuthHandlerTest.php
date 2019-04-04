@@ -471,4 +471,155 @@ class JwtAuthHandlerTest extends TestCase
         $method->setAccessible(true);
         $method->invokeArgs($handler, [$token]);
     }
+    
+    public function testParseRequestBody()
+    {
+        $handler = new JwtAuthHandler('jwt', 'secret');
+
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getParsedBody')
+            ->times(3)
+            ->andReturn(['jwt' => 'abc.abc.abc']);
+
+        $method = new ReflectionMethod(JwtAuthHandler::class, 'parseRequestBody');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($handler, [$request]);
+
+        $this->assertCount(1, $result);
+        $this->assertSame('abc.abc.abc', $result['jwt']);
+    }
+
+    public function testParseRequestBodyNull()
+    {
+        $handler = new JwtAuthHandler('jwt', 'secret');
+
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getParsedBody')
+            ->times(1)
+            ->andReturn(null);
+
+        $method = new ReflectionMethod(JwtAuthHandler::class, 'parseRequestBody');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($handler, [$request]);
+
+        $this->assertCount(0, $result);
+    }
+
+    public function testParseRequestBodyObject()
+    {
+        $handler = new JwtAuthHandler('jwt', 'secret');
+
+        $object = new stdClass();
+        $object->jwt = 'abc.def.ghi';
+
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getParsedBody')
+            ->times(3)
+            ->andReturn($object);
+
+        $method = new ReflectionMethod(JwtAuthHandler::class, 'parseRequestBody');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($handler, [$request]);
+
+        $this->assertCount(1, $result);
+        $this->assertSame('abc.def.ghi', $result['jwt']);
+    }
+
+    public function testParseRequestBodyObjectNoKey()
+    {
+        $handler = new JwtAuthHandler('jwt', 'secret');
+
+        $object = new stdClass();
+
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getParsedBody')
+            ->times(3)
+            ->andReturn($object);
+
+        $method = new ReflectionMethod(JwtAuthHandler::class, 'parseRequestBody');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($handler, [$request]);
+
+        $this->assertCount(0, $result);
+    }
+
+    public function testGetBearerToken()
+    {
+        $handler = new JwtAuthHandler('jwt', 'secret');
+
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->andReturn(['bearer abc.def.ghi']);
+
+        $method = new ReflectionMethod(JwtAuthHandler::class, 'getBearerToken');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($handler, [$request]);
+
+        $this->assertSame('abc.def.ghi', $result);
+    }
+
+    public function testGetBearerTokenNoBearer()
+    {
+        $handler = new JwtAuthHandler('jwt', 'secret');
+
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->andReturn(['foo', 'bar']);
+
+        $method = new ReflectionMethod(JwtAuthHandler::class, 'getBearerToken');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($handler, [$request]);
+
+        $this->assertEmpty($result);
+    }
+
+    public function testGetBearerTokenNoAuthorization()
+    {
+        $handler = new JwtAuthHandler('jwt', 'secret');
+
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->andReturn([]);
+
+        $method = new ReflectionMethod(JwtAuthHandler::class, 'getBearerToken');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($handler, [$request]);
+
+        $this->assertEmpty($result);
+    }
+
+    public function testParseBearerToken()
+    {
+        $handler = new JwtAuthHandler('jwt', 'secret');
+
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->andReturn(['bearer abc.def.ghi']);
+
+        $method = new ReflectionMethod(JwtAuthHandler::class, 'parseBearerToken');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($handler, [$request]);
+
+        $this->assertSame('abc.def.ghi', $result['jwt']);
+    }
+
+    public function testParseBearerTokenNoBearer()
+    {
+        $handler = new JwtAuthHandler('jwt', 'secret');
+
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->andReturn(['foo', 'bar']);
+
+        $method = new ReflectionMethod(JwtAuthHandler::class, 'parseBearerToken');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($handler, [$request]);
+
+        $this->assertEmpty($result);
+    }
 }
