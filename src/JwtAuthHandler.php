@@ -102,7 +102,7 @@ class JwtAuthHandler implements RequestHandlerInterface
     {
         $authorization = $request->getHeader('authorization');
 
-        $bearer = array_filter($authorization, function($item) {
+        $bearer = array_filter($authorization, function ($item) {
             return (bool) preg_match('/^bearer\s.+/', $item);
         });
 
@@ -113,8 +113,7 @@ class JwtAuthHandler implements RequestHandlerInterface
     {
         try {
             $token = $this->getToken($request);
-        }
-        catch (ValidateException $e) {
+        } catch (ValidateException $e) {
             $factory = new Psr17Factory();
             return $factory->createResponse(400, 'Bad Request: ' . $e->getMessage());
         }
