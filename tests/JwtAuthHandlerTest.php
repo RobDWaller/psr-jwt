@@ -274,10 +274,11 @@ class JwtAuthHandlerTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\JwtAuth::getToken
-     * @uses PsrJwt\JwtAuth::hasJwt
-     * @expectedException PsrJwt\JwtAuthException
-     * @expectedExceptionMessage JWT Token not set
+     * @covers PsrJwt\JwtAuthHandler::getToken
+     * @uses PsrJwt\JwtAuthHandler::hasJwt
+     * @expectedException ReallySimpleJWT\Exception\ValidateException
+     * @expectedExceptionCode 11
+     * @expectedExceptionMessage JSON Web Token not set.
      */
     public function testGetTokenFromBodyNull()
     {
@@ -340,11 +341,10 @@ class JwtAuthHandlerTest extends TestCase
 
     /**
      * @covers PsrJwt\JwtAuth::getToken
-     * @uses PsrJwt\JwtAuth::hasJwt
-     * @uses PsrJwt\JwtAuthException::__construct
-     * @expectedException PsrJwt\JwtAuthException
-     * @expectedMessage JWT Token not set
-     * @expectedExceptionCode 1
+     * @uses PsrJwt\JwtAuthHandler::hasJwt
+     * @expectedException ReallySimpleJWT\Exception\ValidateException
+     * @expectedExceptionCode 11
+     * @expectedExceptionMessage JSON Web Token not set.
      */
     public function testGetTokenNoJwt()
     {
@@ -404,14 +404,12 @@ class JwtAuthHandlerTest extends TestCase
         $method->setAccessible(true);
         $result = $method->invokeArgs($handler, [$token]);
 
-        $this->assertTrue($result);
+        $this->assertSame(200, $result->getStatusCode());
+        $this->assertSame('Ok', $result->getReasonPhrase());
     }
 
     /**
      * @covers PsrJwt\JwtAuth::validate
-     * @expectedException PsrJwt\JwtAuthException
-     * @expectedExceptionMessage Signature is invalid.
-     * @expectedExceptionCode 3
      */
     public function testValidateBadSecret()
     {
@@ -425,14 +423,14 @@ class JwtAuthHandlerTest extends TestCase
 
         $method = new ReflectionMethod(JwtAuthHandler::class, 'validate');
         $method->setAccessible(true);
-        $method->invokeArgs($handler, [$token]);
+        $result = $method->invokeArgs($handler, [$token]);
+
+        $this->assertSame(401, $result->getStatusCode());
+        $this->assertSame('Unauthorized: Signature is invalid.', $result->getReasonPhrase());
     }
 
     /**
      * @covers PsrJwt\JwtAuth::validate
-     * @expectedException PsrJwt\JwtAuthException
-     * @expectedExceptionMessage Expiration claim has expired.
-     * @expectedExceptionCode 4
      */
     public function testValidateBadExpiration()
     {
@@ -447,14 +445,14 @@ class JwtAuthHandlerTest extends TestCase
 
         $method = new ReflectionMethod(JwtAuthHandler::class, 'validate');
         $method->setAccessible(true);
-        $method->invokeArgs($handler, [$token]);
+        $result = $method->invokeArgs($handler, [$token]);
+
+        $this->assertSame(401, $result->getStatusCode());
+        $this->assertSame('Unauthorized: Expiration claim has expired.', $result->getReasonPhrase());
     }
 
     /**
      * @covers PsrJwt\JwtAuth::validate
-     * @expectedException PsrJwt\JwtAuthException
-     * @expectedExceptionMessage Not Before claim has not elapsed.
-     * @expectedExceptionCode 5
      */
     public function testValidateBadNotBefore()
     {
@@ -469,9 +467,12 @@ class JwtAuthHandlerTest extends TestCase
 
         $method = new ReflectionMethod(JwtAuthHandler::class, 'validate');
         $method->setAccessible(true);
-        $method->invokeArgs($handler, [$token]);
+        $result = $method->invokeArgs($handler, [$token]);
+
+        $this->assertSame(401, $result->getStatusCode());
+        $this->assertSame('Unauthorized: Not Before claim has not elapsed.', $result->getReasonPhrase());
     }
-    
+
     public function testParseRequestBody()
     {
         $handler = new JwtAuthHandler('jwt', 'secret');

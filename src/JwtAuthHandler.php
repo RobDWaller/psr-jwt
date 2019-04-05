@@ -7,6 +7,7 @@ namespace PsrJwt;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use ReallySimpleJWT\Exception\ValidateException;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Throwable;
 
@@ -28,28 +29,28 @@ class JwtAuthHandler implements RequestHandlerInterface
         return $this->secret;
     }
 
-    protected function validate(string $token): bool
+    protected function validate(string $token): ResponseInterface
     {
         $parse = Jwt::parser($token, $this->getSecret());
 
         try {
             $parse->validate()
                 ->validateExpiration();
-        } catch (Throwable $e) {
+        } catch (ValidateException $e) {
             if (in_array($e->getCode(), [1, 2, 3, 4], true)) {
-                throw new JwtAuthException($e->getMessage(), $e->getCode());
+                return Psr17Factory::createResponse(401, 'Unauthorized: ' . $e->getMessage());
             }
         }
 
         try {
             $parse->validateNotBefore();
-        } catch (Throwable $e) {
+        } catch (ValidateException $e) {
             if (in_array($e->getCode(), [5], true)) {
-                throw new JwtAuthException($e->getMessage(), $e->getCode());
+                return Psr17Factory::createResponse(401, 'Unauthorized: ' . $e->getMessage());
             }
         }
 
-        return true;
+        return Psr17Factory::createResponse(200, 'Ok');
     }
 
     protected function hasJwt(array $data): bool
@@ -71,7 +72,7 @@ class JwtAuthHandler implements RequestHandlerInterface
             return $merge[$this->tokenKey];
         }
 
-        throw new JwtAuthException('JWT Token not set', 1);
+        throw new ValidateException('JSON Web Token not set.', 11);
     }
 
     private function parseRequestBody(ServerRequestInterface $request): array
@@ -107,10 +108,13 @@ class JwtAuthHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $token = $this->getToken($request);
+        try {
+            $token = $this->getToken($request);
+        }
+        catch (ValidateException $e) {
+            return Psr17Factory::createResponse(400, 'Bad Request: ' . $e->getMessage());
+        }
 
-        $this->validate($token);
-
-        return Psr17Factory::createResponse(200);
+        return $this->validate($token);
     }
 }

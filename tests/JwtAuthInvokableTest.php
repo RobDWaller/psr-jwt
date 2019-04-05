@@ -72,9 +72,6 @@ class JwtAuthInvokableTest extends TestCase
         $this->assertInstanceOf(ResponseInterface::class, $result);
     }
 
-    /**
-     * @expectedException PsrJwt\JwtAuthException
-     */
     public function testInvokeFail()
     {
         $request = m::mock(ServerRequestInterface::class);
@@ -106,5 +103,8 @@ class JwtAuthInvokableTest extends TestCase
         $invokable = new JwtAuthInvokable($handler);
 
         $result = $invokable($request, $response, $next);
+
+        $this->assertSame(401, $result->getStatusCode());
+        $this->assertSame('Unauthorized: Signature is invalid.', $result->getReasonPhrase());
     }
 }
