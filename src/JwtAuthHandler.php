@@ -38,7 +38,8 @@ class JwtAuthHandler implements RequestHandlerInterface
                 ->validateExpiration();
         } catch (ValidateException $e) {
             if (in_array($e->getCode(), [1, 2, 3, 4], true)) {
-                return Psr17Factory::createResponse(401, 'Unauthorized: ' . $e->getMessage());
+                $factory = new Psr17Factory();
+                return $factory->createResponse(401, 'Unauthorized: ' . $e->getMessage());
             }
         }
 
@@ -46,11 +47,13 @@ class JwtAuthHandler implements RequestHandlerInterface
             $parse->validateNotBefore();
         } catch (ValidateException $e) {
             if (in_array($e->getCode(), [5], true)) {
-                return Psr17Factory::createResponse(401, 'Unauthorized: ' . $e->getMessage());
+                $factory = new Psr17Factory();
+                return $factory->createResponse(401, 'Unauthorized: ' . $e->getMessage());
             }
         }
 
-        return Psr17Factory::createResponse(200, 'Ok');
+        $factory = new Psr17Factory();
+        return $factory->createResponse(200, 'Ok');
     }
 
     protected function hasJwt(array $data): bool
@@ -112,7 +115,8 @@ class JwtAuthHandler implements RequestHandlerInterface
             $token = $this->getToken($request);
         }
         catch (ValidateException $e) {
-            return Psr17Factory::createResponse(400, 'Bad Request: ' . $e->getMessage());
+            $factory = new Psr17Factory();
+            return $factory->createResponse(400, 'Bad Request: ' . $e->getMessage());
         }
 
         return $this->validate($token);
