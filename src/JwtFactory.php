@@ -8,7 +8,7 @@ use ReallySimpleJWT\Build;
 use ReallySimpleJWT\Validate;
 use ReallySimpleJWT\Encode;
 use ReallySimpleJWT\Parse;
-use ReallySimpleJWT\Jwt as JwtValueObject;
+use ReallySimpleJWT\Jwt;
 
 class JwtFactory
 {
@@ -23,7 +23,7 @@ class JwtFactory
 
     public static function parser(string $token, string $secret): Parse
     {
-        $jwt = new JwtValueObject($token, $secret);
+        $jwt = new Jwt($token, $secret);
 
         return new Parse(
             $jwt,
