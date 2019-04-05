@@ -15,12 +15,12 @@ class JwtAuthFactory
         return new JwtAuthMiddleware();
     }
 
-    public function handler($tokenKey, $secret): JwtAuthHandler
+    public static function handler($tokenKey, $secret): JwtAuthHandler
     {
         return new JwtAuthHandler($tokenKey, $secret);
     }
 
-    public function invokable($tokenKey, $secret): JwtAuthInvokable
+    public static function invokable($tokenKey, $secret): JwtAuthInvokable
     {
         $handler = new JwtAuthHandler($tokenKey, $secret);
 
