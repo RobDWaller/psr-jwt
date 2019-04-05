@@ -16,7 +16,8 @@ use stdClass;
 class JwtAuthInvokableTest extends TestCase
 {
     /**
-     * @covers PsrJwt\JwtAuthInvokable
+     * @covers PsrJwt\JwtAuthInvokable::__construct
+     * @uses PsrJwt\JwtAuthHandler::__construct
      */
     public function testJwtAuthInokable()
     {
@@ -29,6 +30,18 @@ class JwtAuthInvokableTest extends TestCase
 
     /**
      * @covers PsrJwt\JwtAuthInvokable::__invoke
+     * @uses PsrJwt\JwtAuthHandler::__construct
+     * @uses PsrJwt\JwtAuthHandler::getBearerToken
+     * @uses PsrJwt\JwtAuthHandler::getSecret
+     * @uses PsrJwt\JwtAuthHandler::getToken
+     * @uses PsrJwt\JwtAuthHandler::handle
+     * @uses PsrJwt\JwtAuthHandler::hasJwt
+     * @uses PsrJwt\JwtAuthHandler::parseBearerToken
+     * @uses PsrJwt\JwtAuthHandler::parseRequestBody
+     * @uses PsrJwt\JwtAuthHandler::validate
+     * @uses PsrJwt\JwtAuthInvokable::__construct
+     * @uses PsrJwt\JwtFactory::builder
+     * @uses PsrJwt\JwtFactory::parser
      */
     public function testInvoke()
     {
@@ -72,6 +85,21 @@ class JwtAuthInvokableTest extends TestCase
         $this->assertInstanceOf(ResponseInterface::class, $result);
     }
 
+    /**
+     * @covers PsrJwt\JwtAuthInvokable::__invoke
+     * @uses PsrJwt\JwtAuthHandler::__construct
+     * @uses PsrJwt\JwtAuthHandler::getBearerToken
+     * @uses PsrJwt\JwtAuthHandler::getSecret
+     * @uses PsrJwt\JwtAuthHandler::getToken
+     * @uses PsrJwt\JwtAuthHandler::handle
+     * @uses PsrJwt\JwtAuthHandler::hasJwt
+     * @uses PsrJwt\JwtAuthHandler::parseBearerToken
+     * @uses PsrJwt\JwtAuthHandler::parseRequestBody
+     * @uses PsrJwt\JwtAuthHandler::validate
+     * @uses PsrJwt\JwtAuthInvokable::__construct
+     * @uses PsrJwt\JwtFactory::builder
+     * @uses PsrJwt\JwtFactory::parser
+     */
     public function testInvokeFail()
     {
         $request = m::mock(ServerRequestInterface::class);

@@ -14,7 +14,7 @@ use Mockery as m;
 class JwtAuthMiddlewareTest extends TestCase
 {
     /**
-     * @covers PsrJwt\JwtAuthProcess
+     * @covers PsrJwt\JwtAuthMiddleware
      */
     public function testJwtAuthProcess()
     {
@@ -24,6 +24,10 @@ class JwtAuthMiddlewareTest extends TestCase
         $this->assertInstanceOf(MiddlewareInterface::class, $process);
     }
 
+    /**
+     * @covers PsrJwt\JwtAuthMiddleware::process
+     * @uses PsrJwt\JwtFactory::builder
+     */
     public function testProcess()
     {
         $jwt = JwtFactory::builder();

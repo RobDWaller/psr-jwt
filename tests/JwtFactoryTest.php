@@ -10,7 +10,7 @@ use PsrJwt\JwtFactory;
 class JwtFactoryTest extends TestCase
 {
     /**
-     * @covers PsrJwt\Jwt::builder
+     * @covers PsrJwt\JwtFactory::builder
      */
     public function testJwtFactoryBuilder()
     {
@@ -18,7 +18,7 @@ class JwtFactoryTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Jwt::parser
+     * @covers PsrJwt\JwtFactory::parser
      */
     public function testJwtFactoryParser()
     {

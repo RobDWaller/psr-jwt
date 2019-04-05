@@ -14,6 +14,9 @@ use stdClass;
 
 class JwtAuthHandlerTest extends TestCase
 {
+    /**
+     * @covers PsrJwt\JwtAuthHandler::__construct
+     */
     public function testJwtAuthHandler()
     {
         $handler = new JwtAuthHandler('jwt', 'secret');
@@ -22,6 +25,19 @@ class JwtAuthHandlerTest extends TestCase
         $this->assertInstanceOf(RequestHandlerInterface::class, $handler);
     }
 
+    /**
+     * @covers PsrJwt\JwtAuthHandler::handle
+     * @uses PsrJwt\JwtAuthHandler::__construct
+     * @uses PsrJwt\JwtAuthHandler::getBearerToken
+     * @uses PsrJwt\JwtAuthHandler::getSecret
+     * @uses PsrJwt\JwtAuthHandler::getToken
+     * @uses PsrJwt\JwtAuthHandler::hasJwt
+     * @uses PsrJwt\JwtAuthHandler::parseBearerToken
+     * @uses PsrJwt\JwtAuthHandler::parseRequestBody
+     * @uses PsrJwt\JwtAuthHandler::validate
+     * @uses PsrJwt\JwtFactory::builder
+     * @uses PsrJwt\JwtFactory::parser
+     */
     public function testJwtAuthHandlerResponse()
     {
         $jwt = JwtFactory::builder();
@@ -57,6 +73,7 @@ class JwtAuthHandlerTest extends TestCase
 
     /**
      * @covers PsrJwt\JwtAuthHandler::hasJwt
+     * @uses PsrJwt\JwtAuthHandler::__construct
      */
     public function testJwtAuthHandlerHasJwt()
     {
@@ -74,6 +91,7 @@ class JwtAuthHandlerTest extends TestCase
 
     /**
      * @covers PsrJwt\JwtAuthHandler::hasJwt
+     * @uses PsrJwt\JwtAuthHandler::__construct
      */
     public function testJwtAuthHandlerHasJwtFalse()
     {
@@ -91,6 +109,7 @@ class JwtAuthHandlerTest extends TestCase
 
     /**
      * @covers PsrJwt\JwtAuthHandler::hasJwt
+     * @uses PsrJwt\JwtAuthHandler::__construct
      */
     public function testJwtAuthHandlerHasJwtEmpty()
     {
@@ -108,6 +127,10 @@ class JwtAuthHandlerTest extends TestCase
     /**
      * @covers PsrJwt\JwtAuthHandler::getToken
      * @uses PsrJwt\JwtAuthHandler::hasJwt
+     * @uses PsrJwt\JwtAuthHandler::__construct
+     * @uses PsrJwt\JwtAuthHandler::parseRequestBody
+     * @uses PsrJwt\JwtAuthHandler::parseBearerToken
+     * @uses PsrJwt\JwtAuthHandler::getBearerToken
      */
     public function testGetToken()
     {
@@ -139,8 +162,12 @@ class JwtAuthHandlerTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\JwtAuth::getToken
-     * @uses PsrJwt\JwtAuth::hasJwt
+     * @covers PsrJwt\JwtAuthHandler::getToken
+     * @uses PsrJwt\JwtAuthHandler::hasJwt
+     * @uses PsrJwt\JwtAuthHandler::__construct
+     * @uses PsrJwt\JwtAuthHandler::parseRequestBody
+     * @uses PsrJwt\JwtAuthHandler::parseBearerToken
+     * @uses PsrJwt\JwtAuthHandler::getBearerToken
      */
     public function testGetTokenFromCookie()
     {
@@ -172,8 +199,12 @@ class JwtAuthHandlerTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\JwtAuth::getToken
-     * @uses PsrJwt\JwtAuth::hasJwt
+     * @covers PsrJwt\JwtAuthHandler::getToken
+     * @uses PsrJwt\JwtAuthHandler::hasJwt
+     * @uses PsrJwt\JwtAuthHandler::__construct
+     * @uses PsrJwt\JwtAuthHandler::parseRequestBody
+     * @uses PsrJwt\JwtAuthHandler::parseBearerToken
+     * @uses PsrJwt\JwtAuthHandler::getBearerToken
      */
     public function testGetTokenFromQuery()
     {
@@ -205,8 +236,12 @@ class JwtAuthHandlerTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\JwtAuth::getToken
-     * @uses PsrJwt\JwtAuth::hasJwt
+     * @covers PsrJwt\JwtAuthHandler::getToken
+     * @uses PsrJwt\JwtAuthHandler::hasJwt
+     * @uses PsrJwt\JwtAuthHandler::__construct
+     * @uses PsrJwt\JwtAuthHandler::parseRequestBody
+     * @uses PsrJwt\JwtAuthHandler::parseBearerToken
+     * @uses PsrJwt\JwtAuthHandler::getBearerToken
      */
     public function testGetTokenFromBody()
     {
@@ -238,8 +273,12 @@ class JwtAuthHandlerTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\JwtAuth::getToken
-     * @uses PsrJwt\JwtAuth::hasJwt
+     * @covers PsrJwt\JwtAuthHandler::getToken
+     * @uses PsrJwt\JwtAuthHandler::hasJwt
+     * @uses PsrJwt\JwtAuthHandler::__construct
+     * @uses PsrJwt\JwtAuthHandler::parseRequestBody
+     * @uses PsrJwt\JwtAuthHandler::parseBearerToken
+     * @uses PsrJwt\JwtAuthHandler::getBearerToken
      */
     public function testGetTokenFromBodyObject()
     {
@@ -276,6 +315,10 @@ class JwtAuthHandlerTest extends TestCase
     /**
      * @covers PsrJwt\JwtAuthHandler::getToken
      * @uses PsrJwt\JwtAuthHandler::hasJwt
+     * @uses PsrJwt\JwtAuthHandler::__construct
+     * @uses PsrJwt\JwtAuthHandler::parseRequestBody
+     * @uses PsrJwt\JwtAuthHandler::parseBearerToken
+     * @uses PsrJwt\JwtAuthHandler::getBearerToken
      * @expectedException ReallySimpleJWT\Exception\ValidateException
      * @expectedExceptionCode 11
      * @expectedExceptionMessage JSON Web Token not set.
@@ -307,6 +350,14 @@ class JwtAuthHandlerTest extends TestCase
         $method->invokeArgs($handler, [$request]);
     }
 
+    /**
+     * @covers PsrJwt\JwtAuthHandler::getToken
+     * @uses PsrJwt\JwtAuthHandler::hasJwt
+     * @uses PsrJwt\JwtAuthHandler::__construct
+     * @uses PsrJwt\JwtAuthHandler::parseRequestBody
+     * @uses PsrJwt\JwtAuthHandler::parseBearerToken
+     * @uses PsrJwt\JwtAuthHandler::getBearerToken
+     */
     public function testGetTokenFromBearer()
     {
         $object = new stdClass();
@@ -340,8 +391,12 @@ class JwtAuthHandlerTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\JwtAuth::getToken
+     * @covers PsrJwt\JwtAuthHandler::getToken
      * @uses PsrJwt\JwtAuthHandler::hasJwt
+     * @uses PsrJwt\JwtAuthHandler::__construct
+     * @uses PsrJwt\JwtAuthHandler::parseRequestBody
+     * @uses PsrJwt\JwtAuthHandler::parseBearerToken
+     * @uses PsrJwt\JwtAuthHandler::getBearerToken
      * @expectedException ReallySimpleJWT\Exception\ValidateException
      * @expectedExceptionCode 11
      * @expectedExceptionMessage JSON Web Token not set.
@@ -375,6 +430,7 @@ class JwtAuthHandlerTest extends TestCase
 
     /**
      * @covers PsrJwt\JwtAuthHandler::getSecret
+     * @uses PsrJwt\JwtAuthHandler::__construct
      */
     public function testGetSecret()
     {
@@ -389,6 +445,10 @@ class JwtAuthHandlerTest extends TestCase
 
     /**
      * @covers PsrJwt\JwtAuthHandler::validate
+     * @uses PsrJwt\JwtAuthHandler::__construct
+     * @uses PsrJwt\JwtAuthHandler::getSecret
+     * @uses PsrJwt\JwtFactory::builder
+     * @uses PsrJwt\JwtFactory::parser
      */
     public function testValidate()
     {
@@ -409,7 +469,11 @@ class JwtAuthHandlerTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\JwtAuth::validate
+     * @covers PsrJwt\JwtAuthHandler::validate
+     * @uses PsrJwt\JwtAuthHandler::__construct
+     * @uses PsrJwt\JwtAuthHandler::getSecret
+     * @uses PsrJwt\JwtFactory::builder
+     * @uses PsrJwt\JwtFactory::parser
      */
     public function testValidateBadSecret()
     {
@@ -430,7 +494,11 @@ class JwtAuthHandlerTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\JwtAuth::validate
+     * @covers PsrJwt\JwtAuthHandler::validate
+     * @uses PsrJwt\JwtAuthHandler::__construct
+     * @uses PsrJwt\JwtAuthHandler::getSecret
+     * @uses PsrJwt\JwtFactory::builder
+     * @uses PsrJwt\JwtFactory::parser
      */
     public function testValidateBadExpiration()
     {
@@ -452,7 +520,11 @@ class JwtAuthHandlerTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\JwtAuth::validate
+     * @covers PsrJwt\JwtAuthHandler::validate
+     * @uses PsrJwt\JwtAuthHandler::__construct
+     * @uses PsrJwt\JwtAuthHandler::getSecret
+     * @uses PsrJwt\JwtFactory::builder
+     * @uses PsrJwt\JwtFactory::parser
      */
     public function testValidateBadNotBefore()
     {
@@ -473,6 +545,10 @@ class JwtAuthHandlerTest extends TestCase
         $this->assertSame('Unauthorized: Not Before claim has not elapsed.', $result->getReasonPhrase());
     }
 
+    /**
+     * @covers PsrJwt\JwtAuthHandler::parseRequestBody
+     * @uses PsrJwt\JwtAuthHandler::__construct
+     */
     public function testParseRequestBody()
     {
         $handler = new JwtAuthHandler('jwt', 'secret');
@@ -490,6 +566,10 @@ class JwtAuthHandlerTest extends TestCase
         $this->assertSame('abc.abc.abc', $result['jwt']);
     }
 
+    /**
+     * @covers PsrJwt\JwtAuthHandler::parseRequestBody
+     * @uses PsrJwt\JwtAuthHandler::__construct
+     */
     public function testParseRequestBodyNull()
     {
         $handler = new JwtAuthHandler('jwt', 'secret');
@@ -506,6 +586,10 @@ class JwtAuthHandlerTest extends TestCase
         $this->assertCount(0, $result);
     }
 
+    /**
+     * @covers PsrJwt\JwtAuthHandler::parseRequestBody
+     * @uses PsrJwt\JwtAuthHandler::__construct
+     */
     public function testParseRequestBodyObject()
     {
         $handler = new JwtAuthHandler('jwt', 'secret');
@@ -526,6 +610,10 @@ class JwtAuthHandlerTest extends TestCase
         $this->assertSame('abc.def.ghi', $result['jwt']);
     }
 
+    /**
+     * @covers PsrJwt\JwtAuthHandler::parseRequestBody
+     * @uses PsrJwt\JwtAuthHandler::__construct
+     */
     public function testParseRequestBodyObjectNoKey()
     {
         $handler = new JwtAuthHandler('jwt', 'secret');
@@ -544,6 +632,10 @@ class JwtAuthHandlerTest extends TestCase
         $this->assertCount(0, $result);
     }
 
+    /**
+     * @covers PsrJwt\JwtAuthHandler::getBearerToken
+     * @uses PsrJwt\JwtAuthHandler::__construct
+     */
     public function testGetBearerToken()
     {
         $handler = new JwtAuthHandler('jwt', 'secret');
@@ -560,6 +652,10 @@ class JwtAuthHandlerTest extends TestCase
         $this->assertSame('abc.def.ghi', $result);
     }
 
+    /**
+     * @covers PsrJwt\JwtAuthHandler::getBearerToken
+     * @uses PsrJwt\JwtAuthHandler::__construct
+     */
     public function testGetBearerTokenNoBearer()
     {
         $handler = new JwtAuthHandler('jwt', 'secret');
@@ -576,6 +672,10 @@ class JwtAuthHandlerTest extends TestCase
         $this->assertEmpty($result);
     }
 
+    /**
+     * @covers PsrJwt\JwtAuthHandler::getBearerToken
+     * @uses PsrJwt\JwtAuthHandler::__construct
+     */
     public function testGetBearerTokenNoAuthorization()
     {
         $handler = new JwtAuthHandler('jwt', 'secret');
@@ -592,6 +692,11 @@ class JwtAuthHandlerTest extends TestCase
         $this->assertEmpty($result);
     }
 
+    /**
+     * @covers PsrJwt\JwtAuthHandler::parseBearerToken
+     * @uses PsrJwt\JwtAuthHandler::__construct
+     * @uses PsrJwt\JwtAuthHandler::getBearerToken
+     */
     public function testParseBearerToken()
     {
         $handler = new JwtAuthHandler('jwt', 'secret');
@@ -608,6 +713,11 @@ class JwtAuthHandlerTest extends TestCase
         $this->assertSame('abc.def.ghi', $result['jwt']);
     }
 
+    /**
+     * @covers PsrJwt\JwtAuthHandler::parseBearerToken
+     * @uses PsrJwt\JwtAuthHandler::__construct
+     * @uses PsrJwt\JwtAuthHandler::getBearerToken
+     */
     public function testParseBearerTokenNoBearer()
     {
         $handler = new JwtAuthHandler('jwt', 'secret');

@@ -23,6 +23,8 @@ class JwtAuthFactoryTest extends TestCase
 
     /**
      * @covers PsrJwt\JwtAuthFactory::invokable
+     * @uses PsrJwt\JwtAuthHandler::__construct
+     * @uses PsrJwt\JwtAuthInvokable::__construct
      */
     public function testJwtAuthFactoryInvokable()
     {
@@ -34,6 +36,7 @@ class JwtAuthFactoryTest extends TestCase
 
     /**
      * @covers PsrJwt\JwtAuthFactory::handler
+     * @uses PsrJwt\JwtAuthHandler::__construct
      */
     public function testJwtAuthFactoryHandler()
     {
