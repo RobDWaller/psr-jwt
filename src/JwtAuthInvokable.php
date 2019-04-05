@@ -22,6 +22,12 @@ class JwtAuthInvokable
         ResponseInterface $response,
         callable $next
     ): ResponseInterface {
-        return $next($request, $this->handler->handle($request));
+        $response = $this->handler->handle($request);
+
+        if ($response->getStatusCode() !== 200) {
+            return $response;
+        }
+
+        return $next($request, $response);
     }
 }
