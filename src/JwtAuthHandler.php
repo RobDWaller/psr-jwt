@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PsrJwt;
 
+use PsrJwt\JwtFactory;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -31,7 +32,7 @@ class JwtAuthHandler implements RequestHandlerInterface
 
     protected function validate(string $token): ResponseInterface
     {
-        $parse = Jwt::parser($token, $this->getSecret());
+        $parse = JwtFactory::parser($token, $this->getSecret());
 
         try {
             $parse->validate()

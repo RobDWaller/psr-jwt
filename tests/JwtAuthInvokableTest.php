@@ -4,7 +4,7 @@ namespace Tests;
 
 use PHPUnit\Framework\TestCase;
 use PsrJwt\JwtAuthInvokable;
-use PsrJwt\Jwt;
+use PsrJwt\JwtFactory;
 use PsrJwt\JwtAuthHandler;
 use PsrJwt\JwtAuthException;
 use Psr\Http\Message\ResponseInterface;
@@ -32,7 +32,7 @@ class JwtAuthInvokableTest extends TestCase
      */
     public function testInvoke()
     {
-        $jwt = Jwt::builder();
+        $jwt = JwtFactory::builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->setPayloadClaim('nbf', time() - 60)

@@ -4,7 +4,7 @@ namespace Test;
 
 use PHPUnit\Framework\TestCase;
 use PsrJwt\JwtAuthHandler;
-use PsrJwt\Jwt;
+use PsrJwt\JwtFactory;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -24,7 +24,7 @@ class JwtAuthHandlerTest extends TestCase
 
     public function testJwtAuthHandlerResponse()
     {
-        $jwt = Jwt::builder();
+        $jwt = JwtFactory::builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->build()
@@ -392,7 +392,7 @@ class JwtAuthHandlerTest extends TestCase
      */
     public function testValidate()
     {
-        $jwt = Jwt::builder();
+        $jwt = JwtFactory::builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->build()
@@ -413,7 +413,7 @@ class JwtAuthHandlerTest extends TestCase
      */
     public function testValidateBadSecret()
     {
-        $jwt = Jwt::builder();
+        $jwt = JwtFactory::builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->build()
@@ -434,7 +434,7 @@ class JwtAuthHandlerTest extends TestCase
      */
     public function testValidateBadExpiration()
     {
-        $jwt = Jwt::builder();
+        $jwt = JwtFactory::builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->setPayloadClaim('exp', time() - 10)
@@ -456,7 +456,7 @@ class JwtAuthHandlerTest extends TestCase
      */
     public function testValidateBadNotBefore()
     {
-        $jwt = Jwt::builder();
+        $jwt = JwtFactory::builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->setPayloadClaim('nbf', time() + 60)

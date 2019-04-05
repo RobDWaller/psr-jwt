@@ -3,7 +3,7 @@
 namespace Tests;
 
 use PHPUnit\Framework\TestCase;
-use PsrJwt\Jwt;
+use PsrJwt\JwtFactory;
 use PsrJwt\JwtAuthMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -26,7 +26,7 @@ class JwtAuthMiddlewareTest extends TestCase
 
     public function testProcess()
     {
-        $jwt = Jwt::builder();
+        $jwt = JwtFactory::builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->setPayloadClaim('nbf', time() - 60)

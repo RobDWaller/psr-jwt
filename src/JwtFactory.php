@@ -10,7 +10,7 @@ use ReallySimpleJWT\Encode;
 use ReallySimpleJWT\Parse;
 use ReallySimpleJWT\Jwt as JwtValueObject;
 
-class Jwt
+class JwtFactory
 {
     public static function builder(): Build
     {
