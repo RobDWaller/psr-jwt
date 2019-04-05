@@ -107,7 +107,7 @@ class JwtAuthHandler implements RequestHandlerInterface
             return (bool) preg_match('/^bearer\s.+/', $item);
         });
 
-        return explode(' ', $authorization[0] ?? '')[1] ?? '';
+        return explode(' ', $bearer[0] ?? '')[1] ?? '';
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
