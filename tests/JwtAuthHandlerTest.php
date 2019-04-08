@@ -733,4 +733,47 @@ class JwtAuthHandlerTest extends TestCase
 
         $this->assertEmpty($result);
     }
+
+    /**
+     * @covers PsrJwt\JwtAuthHandler::validationResponse
+     */
+    public function testValidationResponse()
+    {
+        $handler = new JwtAuthHandler('jwt', 'secret');
+
+        $method = new ReflectionMethod(JwtAuthHandler::class, 'validationResponse');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($handler, [0, 'Ok']);
+
+        $this->assertInstanceOf(ResponseInterface::class, $result);
+        $this->assertSame(200, $result->getStatusCode());
+        $this->assertSame('Ok', $result->getReasonPhrase());
+    }
+
+    /**
+     * @covers PsrJwt\JwtAuthHandler::validationResponse
+     */
+    public function testValidationResponseErrors()
+    {
+        $handler = new JwtAuthHandler('jwt', 'secret');
+
+        $method = new ReflectionMethod(JwtAuthHandler::class, 'validationResponse');
+        $method->setAccessible(true);
+
+        $errors = [
+            [1, 'Error 1'],
+            [2, 'Error 1'],
+            [3, 'Error 1'],
+            [4, 'Error 1'],
+            [5, 'Error 1']
+        ];
+
+        foreach ($errors as $error) {
+            $result = $method->invokeArgs($handler, [$error[0], $error[1]]);
+
+            $this->assertInstanceOf(ResponseInterface::class, $result);
+            $this->assertSame(401, $result->getStatusCode());
+            $this->assertSame('Unauthorized: ' . $error[1], $result->getReasonPhrase());
+        }
+    }
 }

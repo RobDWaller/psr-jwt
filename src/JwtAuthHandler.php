@@ -33,27 +33,35 @@ class JwtAuthHandler implements RequestHandlerInterface
     protected function validate(string $token): ResponseInterface
     {
         $parse = JwtFactory::parser($token, $this->getSecret());
+        $code = 0;
+        $message = 'Ok';
 
         try {
             $parse->validate()
                 ->validateExpiration();
         } catch (ValidateException $e) {
-            if (in_array($e->getCode(), [1, 2, 3, 4], true)) {
-                $factory = new Psr17Factory();
-                return $factory->createResponse(401, 'Unauthorized: ' . $e->getMessage());
-            }
+            $code = $e->getCode();
+            $message = $e->getMessage();
         }
 
         try {
             $parse->validateNotBefore();
         } catch (ValidateException $e) {
-            if (in_array($e->getCode(), [5], true)) {
-                $factory = new Psr17Factory();
-                return $factory->createResponse(401, 'Unauthorized: ' . $e->getMessage());
-            }
+            $code = $e->getCode();
+            $message = $e->getMessage();
         }
 
+        return $this->validationResponse($code, $message);
+    }
+
+    private function validationResponse(int $code, string $message): ResponseInterface
+    {
         $factory = new Psr17Factory();
+
+        if (in_array($code, [1, 2, 3, 4, 5], true)) {
+            return $factory->createResponse(401, 'Unauthorized: ' . $message);
+        }
+
         return $factory->createResponse(200, 'Ok');
     }
 
