@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PsrJwt;
 
 use PsrJwt\JwtFactory;
+use PsrJwt\JwtValidate;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -33,25 +34,17 @@ class JwtAuthHandler implements RequestHandlerInterface
     protected function validate(string $token): ResponseInterface
     {
         $parse = JwtFactory::parser($token, $this->getSecret());
-        $code = 0;
-        $message = 'Ok';
 
-        try {
-            $parse->validate()
-                ->validateExpiration();
-        } catch (ValidateException $e) {
-            $code = $e->getCode();
-            $message = $e->getMessage();
-        }
+        $validate = new JwtValidate($parse);
 
-        try {
-            $parse->validateNotBefore();
-        } catch (ValidateException $e) {
-            $code = $e->getCode();
-            $message = $e->getMessage();
-        }
+        $validationState = $validate->validate();
 
-        return $this->validationResponse($code, $message);
+        $validationState = $validate->validateNotBefore($validationState);
+
+        return $this->validationResponse(
+            $validationState['code'],
+            $validationState['message']
+        );
     }
 
     private function validationResponse(int $code, string $message): ResponseInterface
