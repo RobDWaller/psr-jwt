@@ -37,6 +37,10 @@ class JwtAuthHandlerTest extends TestCase
      * @uses PsrJwt\JwtAuthHandler::validate
      * @uses PsrJwt\JwtFactory::builder
      * @uses PsrJwt\JwtFactory::parser
+     * @uses PsrJwt\JwtAuthHandler::validationResponse
+     * @uses PsrJwt\JwtValidate::__construct
+     * @uses PsrJwt\JwtValidate::validate
+     * @uses PsrJwt\JwtValidate::validateNotBefore
      */
     public function testJwtAuthHandlerResponse()
     {
@@ -449,6 +453,10 @@ class JwtAuthHandlerTest extends TestCase
      * @uses PsrJwt\JwtAuthHandler::getSecret
      * @uses PsrJwt\JwtFactory::builder
      * @uses PsrJwt\JwtFactory::parser
+     * @uses PsrJwt\JwtAuthHandler::validationResponse
+     * @uses PsrJwt\JwtValidate::__construct
+     * @uses PsrJwt\JwtValidate::validate
+     * @uses PsrJwt\JwtValidate::validateNotBefore
      */
     public function testValidate()
     {
@@ -474,6 +482,10 @@ class JwtAuthHandlerTest extends TestCase
      * @uses PsrJwt\JwtAuthHandler::getSecret
      * @uses PsrJwt\JwtFactory::builder
      * @uses PsrJwt\JwtFactory::parser
+     * @uses PsrJwt\JwtAuthHandler::validationResponse
+     * @uses PsrJwt\JwtValidate::__construct
+     * @uses PsrJwt\JwtValidate::validate
+     * @uses PsrJwt\JwtValidate::validateNotBefore
      */
     public function testValidateBadSecret()
     {
@@ -499,6 +511,10 @@ class JwtAuthHandlerTest extends TestCase
      * @uses PsrJwt\JwtAuthHandler::getSecret
      * @uses PsrJwt\JwtFactory::builder
      * @uses PsrJwt\JwtFactory::parser
+     * @uses PsrJwt\JwtAuthHandler::validationResponse
+     * @uses PsrJwt\JwtValidate::__construct
+     * @uses PsrJwt\JwtValidate::validate
+     * @uses PsrJwt\JwtValidate::validateNotBefore
      */
     public function testValidateBadExpiration()
     {
@@ -525,6 +541,10 @@ class JwtAuthHandlerTest extends TestCase
      * @uses PsrJwt\JwtAuthHandler::getSecret
      * @uses PsrJwt\JwtFactory::builder
      * @uses PsrJwt\JwtFactory::parser
+     * @uses PsrJwt\JwtValidate::__construct
+     * @uses PsrJwt\JwtValidate::validate
+     * @uses PsrJwt\JwtValidate::validateNotBefore
+     * @uses PsrJwt\JwtAuthHandler::validationResponse
      */
     public function testValidateBadNotBefore()
     {
@@ -736,6 +756,7 @@ class JwtAuthHandlerTest extends TestCase
 
     /**
      * @covers PsrJwt\JwtAuthHandler::validationResponse
+     * @uses PsrJwt\JwtAuthHandler::__construct
      */
     public function testValidationResponse()
     {
@@ -752,6 +773,7 @@ class JwtAuthHandlerTest extends TestCase
 
     /**
      * @covers PsrJwt\JwtAuthHandler::validationResponse
+     * @uses PsrJwt\JwtAuthHandler::__construct
      */
     public function testValidationResponseErrors()
     {

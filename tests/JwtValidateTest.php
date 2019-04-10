@@ -9,6 +9,11 @@ use PsrJwt\JwtValidate;
 
 class JwtValidateTest extends TestCase
 {
+    /**
+     * @covers PsrJwt\JwtValidate::__construct
+     * @uses PsrJwt\JwtFactory::builder
+     * @uses PsrJwt\JwtFactory::parser
+     */
     public function testJwtValidate()
     {
         $jwt = JwtFactory::builder();
@@ -25,6 +30,12 @@ class JwtValidateTest extends TestCase
         $this->assertInstanceOf(JwtValidate::class, $validate);
     }
 
+    /**
+     * @covers PsrJwt\JwtValidate::validate
+     * @uses PsrJwt\JwtValidate::__construct
+     * @uses PsrJwt\JwtFactory::builder
+     * @uses PsrJwt\JwtFactory::parser
+     */
     public function testValidate()
     {
         $jwt = JwtFactory::builder();
@@ -44,6 +55,12 @@ class JwtValidateTest extends TestCase
         $this->assertSame('Expiration claim has expired.', $result['message']);
     }
 
+    /**
+     * @covers PsrJwt\JwtValidate::validateNotBefore
+     * @uses PsrJwt\JwtValidate::__construct
+     * @uses PsrJwt\JwtFactory::builder
+     * @uses PsrJwt\JwtFactory::parser
+     */
     public function testValidateNotBefore()
     {
         $jwt = JwtFactory::builder();
