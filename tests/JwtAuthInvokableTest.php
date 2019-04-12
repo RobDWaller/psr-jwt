@@ -30,22 +30,10 @@ class JwtAuthInvokableTest extends TestCase
 
     /**
      * @covers PsrJwt\JwtAuthInvokable::__invoke
-     * @uses PsrJwt\JwtAuthHandler::__construct
-     * @uses PsrJwt\JwtAuthHandler::getBearerToken
-     * @uses PsrJwt\JwtAuthHandler::getSecret
-     * @uses PsrJwt\JwtAuthHandler::getToken
-     * @uses PsrJwt\JwtAuthHandler::handle
-     * @uses PsrJwt\JwtAuthHandler::hasJwt
-     * @uses PsrJwt\JwtAuthHandler::parseBearerToken
-     * @uses PsrJwt\JwtAuthHandler::parseRequestBody
-     * @uses PsrJwt\JwtAuthHandler::validate
      * @uses PsrJwt\JwtAuthInvokable::__construct
-     * @uses PsrJwt\JwtFactory::builder
-     * @uses PsrJwt\JwtFactory::parser
-     * @uses PsrJwt\JwtAuthHandler::validationResponse
-     * @uses PsrJwt\JwtValidate::__construct
-     * @uses PsrJwt\JwtValidate::validate
-     * @uses PsrJwt\JwtValidate::validateNotBefore
+     * @uses PsrJwt\JwtAuthHandler
+     * @uses PsrJwt\JwtFactory
+     * @uses PsrJwt\JwtValidate
      */
     public function testInvoke()
     {
@@ -91,22 +79,10 @@ class JwtAuthInvokableTest extends TestCase
 
     /**
      * @covers PsrJwt\JwtAuthInvokable::__invoke
-     * @uses PsrJwt\JwtAuthHandler::__construct
-     * @uses PsrJwt\JwtAuthHandler::getBearerToken
-     * @uses PsrJwt\JwtAuthHandler::getSecret
-     * @uses PsrJwt\JwtAuthHandler::getToken
-     * @uses PsrJwt\JwtAuthHandler::handle
-     * @uses PsrJwt\JwtAuthHandler::hasJwt
-     * @uses PsrJwt\JwtAuthHandler::parseBearerToken
-     * @uses PsrJwt\JwtAuthHandler::parseRequestBody
-     * @uses PsrJwt\JwtAuthHandler::validate
      * @uses PsrJwt\JwtAuthInvokable::__construct
-     * @uses PsrJwt\JwtFactory::builder
-     * @uses PsrJwt\JwtFactory::parser
-     * @uses PsrJwt\JwtAuthHandler::validationResponse
-     * @uses PsrJwt\JwtValidate::__construct
-     * @uses PsrJwt\JwtValidate::validate
-     * @uses PsrJwt\JwtValidate::validateNotBefore
+     * @uses PsrJwt\JwtAuthHandler
+     * @uses PsrJwt\JwtFactory
+     * @uses PsrJwt\JwtValidate
      */
     public function testInvokeFail()
     {
