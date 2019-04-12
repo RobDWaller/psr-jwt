@@ -86,8 +86,13 @@ class JwtAuthHandler implements RequestHandlerInterface
             return $request->getParsedBody();
         }
 
-        if (is_object($request->getParsedBody()) && isset($request->getParsedBody()->jwt)) {
-            return [$this->tokenKey => $request->getParsedBody()->jwt];
+        return $this->parseBodyObject($request);
+    }
+
+    private function parseBodyObject(ServerRequestInterface $request): array
+    {
+        if (is_object($request->getParsedBody()) && isset($request->getParsedBody()->{$this->tokenKey})) {
+            return [$this->tokenKey => $request->getParsedBody()->{$this->tokenKey}];
         }
 
         return [];

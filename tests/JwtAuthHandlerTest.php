@@ -35,12 +35,9 @@ class JwtAuthHandlerTest extends TestCase
      * @uses PsrJwt\JwtAuthHandler::parseBearerToken
      * @uses PsrJwt\JwtAuthHandler::parseRequestBody
      * @uses PsrJwt\JwtAuthHandler::validate
-     * @uses PsrJwt\JwtFactory::builder
-     * @uses PsrJwt\JwtFactory::parser
      * @uses PsrJwt\JwtAuthHandler::validationResponse
-     * @uses PsrJwt\JwtValidate::__construct
-     * @uses PsrJwt\JwtValidate::validate
-     * @uses PsrJwt\JwtValidate::validateNotBefore
+     * @uses PsrJwt\JwtFactory
+     * @uses PsrJwt\JwtValidate
      */
     public function testJwtAuthHandlerResponse()
     {
@@ -797,5 +794,46 @@ class JwtAuthHandlerTest extends TestCase
             $this->assertSame(401, $result->getStatusCode());
             $this->assertSame('Unauthorized: ' . $error[1], $result->getReasonPhrase());
         }
+    }
+
+    /**
+     * @covers PsrJwt\JwtAuthHandler::parseBodyObject
+     * @uses PsrJwt\JwtAuthHandler::__construct
+     */
+    public function testParseBodyObject()
+    {
+        $handler = new JwtAuthHandler('jwt', 'secret');
+
+        $body = new stdClass();
+        $body->jwt = 'abc.def.ghi';
+
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getParsedBody')
+            ->andReturn($body);
+
+        $method = new ReflectionMethod(JwtAuthHandler::class, 'parseBodyObject');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($handler, [$request]);
+
+        $this->assertSame(['jwt' => 'abc.def.ghi'], $result);
+    }
+
+    /**
+     * @covers PsrJwt\JwtAuthHandler::parseBodyObject
+     * @uses PsrJwt\JwtAuthHandler::__construct
+     */
+    public function testParseBodyObjectEmpty()
+    {
+        $handler = new JwtAuthHandler('jwt', 'secret');
+
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getParsedBody')
+            ->andReturn([]);
+
+        $method = new ReflectionMethod(JwtAuthHandler::class, 'parseBodyObject');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($handler, [$request]);
+
+        $this->assertEmpty($result);
     }
 }
