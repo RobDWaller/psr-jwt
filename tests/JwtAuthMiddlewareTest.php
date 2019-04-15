@@ -5,6 +5,7 @@ namespace Tests;
 use PHPUnit\Framework\TestCase;
 use PsrJwt\JwtFactory;
 use PsrJwt\JwtAuthMiddleware;
+use PsrJwt\JwtAuthHandler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -57,15 +58,16 @@ class JwtAuthMiddlewareTest extends TestCase
 
         $response = m::mock(ResponseInterface::class);
 
-        $handler = m::mock(RequestHandlerInterface::class);
-        $handler->shouldReceive('handle')
-            ->once()
-            ->andReturn($response);
+        $handler = new JwtAuthHandler('jwt', 'Secret123!456$');
 
-        $process = new JwtAuthMiddleware('jwt', 'Secret123!456$');
+        $process = new JwtAuthMiddleware();
 
         $result = $process->process($request, $handler);
 
         $this->assertInstanceOf(ResponseInterface::class, $result);
+    }
+
+    public function tearDown() {
+        m::close();
     }
 }

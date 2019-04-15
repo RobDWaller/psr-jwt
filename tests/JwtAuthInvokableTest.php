@@ -119,4 +119,8 @@ class JwtAuthInvokableTest extends TestCase
         $this->assertSame(401, $result->getStatusCode());
         $this->assertSame('Unauthorized: Signature is invalid.', $result->getReasonPhrase());
     }
+
+    public function tearDown() {
+        m::close();
+    }
 }
