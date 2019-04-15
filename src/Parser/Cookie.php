@@ -11,6 +11,6 @@ class Cookie implements ParserInterface
 {
     public function parse(ServerRequestInterface $request): array
     {
-        return [];
+        return $request->getCookieParams();
     }
 }
