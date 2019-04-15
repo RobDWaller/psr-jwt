@@ -34,6 +34,7 @@ class JwtAuthInvokableTest extends TestCase
      * @uses PsrJwt\JwtAuthHandler
      * @uses PsrJwt\JwtFactory
      * @uses PsrJwt\JwtValidate
+     * @uses PsrJwt\JwtParse
      */
     public function testInvoke()
     {
@@ -79,10 +80,11 @@ class JwtAuthInvokableTest extends TestCase
 
     /**
      * @covers PsrJwt\JwtAuthInvokable::__invoke
-     * @uses PsrJwt\JwtAuthInvokable::__construct
+     * @uses PsrJwt\JwtAuthInvokable
      * @uses PsrJwt\JwtAuthHandler
      * @uses PsrJwt\JwtFactory
      * @uses PsrJwt\JwtValidate
+     * @uses PsrJwt\JwtParse
      */
     public function testInvokeFail()
     {

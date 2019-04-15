@@ -27,17 +27,10 @@ class JwtAuthHandlerTest extends TestCase
 
     /**
      * @covers PsrJwt\JwtAuthHandler::handle
-     * @uses PsrJwt\JwtAuthHandler::__construct
-     * @uses PsrJwt\JwtAuthHandler::getBearerToken
-     * @uses PsrJwt\JwtAuthHandler::getSecret
-     * @uses PsrJwt\JwtAuthHandler::getToken
-     * @uses PsrJwt\JwtAuthHandler::hasJwt
-     * @uses PsrJwt\JwtAuthHandler::parseBearerToken
-     * @uses PsrJwt\JwtAuthHandler::parseRequestBody
-     * @uses PsrJwt\JwtAuthHandler::validate
-     * @uses PsrJwt\JwtAuthHandler::validationResponse
+     * @uses PsrJwt\JwtAuthHandler
      * @uses PsrJwt\JwtFactory
      * @uses PsrJwt\JwtValidate
+     * @uses PsrJwt\JwtParse
      */
     public function testJwtAuthHandlerResponse()
     {
@@ -142,14 +135,9 @@ class JwtAuthHandlerTest extends TestCase
 
     /**
      * @covers PsrJwt\JwtAuthHandler::validate
-     * @uses PsrJwt\JwtAuthHandler::__construct
-     * @uses PsrJwt\JwtAuthHandler::getSecret
-     * @uses PsrJwt\JwtFactory::builder
-     * @uses PsrJwt\JwtFactory::parser
-     * @uses PsrJwt\JwtAuthHandler::validationResponse
-     * @uses PsrJwt\JwtValidate::__construct
-     * @uses PsrJwt\JwtValidate::validate
-     * @uses PsrJwt\JwtValidate::validateNotBefore
+     * @uses PsrJwt\JwtAuthHandler
+     * @uses PsrJwt\JwtFactory
+     * @uses PsrJwt\JwtValidate
      */
     public function testValidate()
     {
@@ -171,14 +159,9 @@ class JwtAuthHandlerTest extends TestCase
 
     /**
      * @covers PsrJwt\JwtAuthHandler::validate
-     * @uses PsrJwt\JwtAuthHandler::__construct
-     * @uses PsrJwt\JwtAuthHandler::getSecret
-     * @uses PsrJwt\JwtFactory::builder
-     * @uses PsrJwt\JwtFactory::parser
-     * @uses PsrJwt\JwtAuthHandler::validationResponse
-     * @uses PsrJwt\JwtValidate::__construct
-     * @uses PsrJwt\JwtValidate::validate
-     * @uses PsrJwt\JwtValidate::validateNotBefore
+     * @uses PsrJwt\JwtAuthHandler
+     * @uses PsrJwt\JwtFactory
+     * @uses PsrJwt\JwtValidate
      */
     public function testValidateBadSecret()
     {
@@ -200,14 +183,9 @@ class JwtAuthHandlerTest extends TestCase
 
     /**
      * @covers PsrJwt\JwtAuthHandler::validate
-     * @uses PsrJwt\JwtAuthHandler::__construct
-     * @uses PsrJwt\JwtAuthHandler::getSecret
-     * @uses PsrJwt\JwtFactory::builder
-     * @uses PsrJwt\JwtFactory::parser
-     * @uses PsrJwt\JwtAuthHandler::validationResponse
-     * @uses PsrJwt\JwtValidate::__construct
-     * @uses PsrJwt\JwtValidate::validate
-     * @uses PsrJwt\JwtValidate::validateNotBefore
+     * @uses PsrJwt\JwtAuthHandler
+     * @uses PsrJwt\JwtFactory
+     * @uses PsrJwt\JwtValidate
      */
     public function testValidateBadExpiration()
     {
@@ -230,14 +208,9 @@ class JwtAuthHandlerTest extends TestCase
 
     /**
      * @covers PsrJwt\JwtAuthHandler::validate
-     * @uses PsrJwt\JwtAuthHandler::__construct
-     * @uses PsrJwt\JwtAuthHandler::getSecret
-     * @uses PsrJwt\JwtFactory::builder
-     * @uses PsrJwt\JwtFactory::parser
-     * @uses PsrJwt\JwtValidate::__construct
-     * @uses PsrJwt\JwtValidate::validate
-     * @uses PsrJwt\JwtValidate::validateNotBefore
-     * @uses PsrJwt\JwtAuthHandler::validationResponse
+     * @uses PsrJwt\JwtAuthHandler
+     * @uses PsrJwt\JwtFactory
+     * @uses PsrJwt\JwtValidate
      */
     public function testValidateBadNotBefore()
     {

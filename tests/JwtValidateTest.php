@@ -11,8 +11,7 @@ class JwtValidateTest extends TestCase
 {
     /**
      * @covers PsrJwt\JwtValidate::__construct
-     * @uses PsrJwt\JwtFactory::builder
-     * @uses PsrJwt\JwtFactory::parser
+     * @uses PsrJwt\JwtFactory
      */
     public function testJwtValidate()
     {
@@ -32,9 +31,8 @@ class JwtValidateTest extends TestCase
 
     /**
      * @covers PsrJwt\JwtValidate::validate
-     * @uses PsrJwt\JwtValidate::__construct
-     * @uses PsrJwt\JwtFactory::builder
-     * @uses PsrJwt\JwtFactory::parser
+     * @uses PsrJwt\JwtValidate
+     * @uses PsrJwt\JwtFactory
      */
     public function testValidate()
     {
@@ -57,9 +55,8 @@ class JwtValidateTest extends TestCase
 
     /**
      * @covers PsrJwt\JwtValidate::validateNotBefore
-     * @uses PsrJwt\JwtValidate::__construct
-     * @uses PsrJwt\JwtFactory::builder
-     * @uses PsrJwt\JwtFactory::parser
+     * @uses PsrJwt\JwtValidate
+     * @uses PsrJwt\JwtFactory
      */
     public function testValidateNotBefore()
     {

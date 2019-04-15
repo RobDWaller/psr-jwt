@@ -27,7 +27,10 @@ class JwtAuthMiddlewareTest extends TestCase
 
     /**
      * @covers PsrJwt\JwtAuthMiddleware::process
-     * @uses PsrJwt\JwtFactory::builder
+     * @uses PsrJwt\JwtFactory
+     * @uses PsrJwt\JwtAuthHandler
+     * @uses PsrJwt\JwtParse
+     * @uses PsrJwt\JwtValidate
      */
     public function testProcess()
     {
@@ -55,8 +58,6 @@ class JwtAuthMiddlewareTest extends TestCase
             ->with('authorization')
             ->once()
             ->andReturn([]);
-
-        $response = m::mock(ResponseInterface::class);
 
         $handler = new JwtAuthHandler('jwt', 'Secret123!456$');
 

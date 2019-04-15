@@ -11,12 +11,19 @@ use stdClass;
 
 class JwtParseTest extends TestCase
 {
+    /**
+     * @covers PsrJwt\JwtParse::__construct
+     */
     public function testJwtParse()
     {
         $parse = new JwtParse('jwt');
         $this->assertInstanceOf(JwtParse::class, $parse);
     }
 
+    /**
+     * @covers PsrJwt\JwtParse::findToken
+     * @uses PsrJwt\JwtParse
+     */
     public function testFindToken()
     {
         $request = m::mock(ServerRequestInterface::class);
@@ -31,6 +38,10 @@ class JwtParseTest extends TestCase
         $this->assertSame(['jwt' => 'abc.def.ghi'], $result);
     }
 
+    /**
+     * @covers PsrJwt\JwtParse::findToken
+     * @uses PsrJwt\JwtParse
+     */
     public function testFindTokenCookie()
     {
         $request = m::mock(ServerRequestInterface::class);
@@ -48,6 +59,10 @@ class JwtParseTest extends TestCase
         $this->assertSame(['jwt' => 'abc.def.ghi'], $result);
     }
 
+    /**
+     * @covers PsrJwt\JwtParse::findToken
+     * @uses PsrJwt\JwtParse
+     */
     public function testFindTokenQuery()
     {
         $request = m::mock(ServerRequestInterface::class);
@@ -68,6 +83,10 @@ class JwtParseTest extends TestCase
         $this->assertSame(['jwt' => 'abc.def.ghi'], $result);
     }
 
+    /**
+     * @covers PsrJwt\JwtParse::findToken
+     * @uses PsrJwt\JwtParse
+     */
     public function testFindTokenBody()
     {
         $request = m::mock(ServerRequestInterface::class);
@@ -91,6 +110,10 @@ class JwtParseTest extends TestCase
         $this->assertSame(['jwt' => 'abc.def.ghi'], $result);
     }
 
+    /**
+     * @covers PsrJwt\JwtParse::findToken
+     * @uses PsrJwt\JwtParse
+     */
     public function testFindTokenServer()
     {
         $request = m::mock(ServerRequestInterface::class);
@@ -118,8 +141,8 @@ class JwtParseTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\JwtAuthHandler::parseRequestBody
-     * @uses PsrJwt\JwtAuthHandler::__construct
+     * @covers PsrJwt\JwtParse::getFromBody
+     * @uses PsrJwt\JwtParse
      */
     public function testGetFromBody()
     {
@@ -139,8 +162,8 @@ class JwtParseTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\JwtAuthHandler::parseRequestBody
-     * @uses PsrJwt\JwtAuthHandler::__construct
+     * @covers PsrJwt\JwtParse::getFromBody
+     * @uses PsrJwt\JwtParse
      */
     public function testGetFromBodyNull()
     {
@@ -159,8 +182,8 @@ class JwtParseTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\JwtAuthHandler::parseRequestBody
-     * @uses PsrJwt\JwtAuthHandler::__construct
+     * @covers PsrJwt\JwtParse::getFromBody
+     * @uses PsrJwt\JwtParse
      */
     public function testGetFromBodyObject()
     {
@@ -183,8 +206,8 @@ class JwtParseTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\JwtAuthHandler::parseRequestBody
-     * @uses PsrJwt\JwtAuthHandler::__construct
+     * @covers PsrJwt\JwtParse::getFromBody
+     * @uses PsrJwt\JwtParse
      */
     public function testGetFromBodyObjectNoKey()
     {
@@ -205,8 +228,8 @@ class JwtParseTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\JwtAuthHandler::getBearerToken
-     * @uses PsrJwt\JwtAuthHandler::__construct
+     * @covers PsrJwt\JwtParse::getFromBearer
+     * @uses PsrJwt\JwtParse
      */
     public function testGetFromBearer()
     {
@@ -225,8 +248,8 @@ class JwtParseTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\JwtAuthHandler::getBearerToken
-     * @uses PsrJwt\JwtAuthHandler::__construct
+     * @covers PsrJwt\JwtParse::getFromBearer
+     * @uses PsrJwt\JwtParse
      */
     public function testGetFromBearerTokenNoBearer()
     {
@@ -245,8 +268,8 @@ class JwtParseTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\JwtAuthHandler::getBearerToken
-     * @uses PsrJwt\JwtAuthHandler::__construct
+     * @covers PsrJwt\JwtParse::getFromBearer
+     * @uses PsrJwt\JwtParse
      */
     public function testGetFromBearerNoAuthorization()
     {
