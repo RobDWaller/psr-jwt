@@ -9,8 +9,15 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class Cookie implements ParserInterface
 {
-    public function parse(ServerRequestInterface $request): array
+    private $arguments;
+
+    public function __construct(array $arguments)
     {
-        return $request->getCookieParams();
+        $this->arguments = $arguments;
+    }
+
+    public function parse(ServerRequestInterface $request): string
+    {
+        return $request->getCookieParams()[$this->arguments['token_key']] ?? '';
     }
 }

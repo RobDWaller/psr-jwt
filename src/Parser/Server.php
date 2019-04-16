@@ -4,13 +4,20 @@ declare(strict_types=1);
 
 namespace PsrJwt\Parser;
 
-use PsrJwt\Parser\ParserInterface;
+use PsrJwt\Parser\ArgumentsInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class Server implements ParserInterface
+class Server implements ArgumentsInterface
 {
-    public function parse(ServerRequestInterface $request): array
+    private $arguments;
+
+    public function __construct(array $arguments)
     {
-        return $request->getServerParams();
+        $this->arguments = $arguments;
+    }
+
+    public function parse(ServerRequestInterface $request): string
+    {
+        return $request->getServerParams()[$this->arguments['token_key']] ?? '';
     }
 }

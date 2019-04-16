@@ -9,14 +9,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class Bearer implements ParserInterface
 {
-    private $arguments;
-
-    public function __construct(array $arguments)
-    {
-        $this->arguments = $arguments;
-    }
-
-    public function parse(ServerRequestInterface $request): array
+    public function parse(ServerRequestInterface $request): string
     {
         $authorization = $request->getHeader('authorization');
 
@@ -26,6 +19,6 @@ class Bearer implements ParserInterface
 
         $token = explode(' ', $bearer[0] ?? '')[1] ?? '';
 
-        return !empty($token) ? [$this->arguments['token_key'] => $token] : [];
+        return !empty($token) ? $token : '';
     }
 }
