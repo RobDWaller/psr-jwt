@@ -28,7 +28,7 @@ class BodyTest extends TestCase
         $body = new Body(['token_key' => 'jwt']);
         $result = $body->parse($request);
 
-        $this->assertSame(['jwt' => 'abc.def.ghi'], $result);
+        $this->assertSame('abc.def.ghi', $result);
     }
 
     public function tearDown()

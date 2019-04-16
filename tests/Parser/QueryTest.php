@@ -12,7 +12,7 @@ class QueryTest extends TestCase
 {
     public function testQuery()
     {
-        $query = new Query();
+        $query = new Query(['token_key' => 'jwt']);
 
         $this->assertInstanceOf(Query::class, $query);
         $this->assertInstanceOf(ParserInterface::class, $query);
@@ -25,10 +25,10 @@ class QueryTest extends TestCase
             ->once()
             ->andReturn(['jwt' => 'abc.def.ghi']);
 
-        $query = new Query();
+        $query = new Query(['token_key' => 'jwt']);
         $result = $query->parse($request);
 
-        $this->assertSame(['jwt' => 'abc.def.ghi'], $result);
+        $this->assertSame('abc.def.ghi', $result);
     }
 
     public function tearDown()

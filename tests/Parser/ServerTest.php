@@ -12,7 +12,7 @@ class ServerTest extends TestCase
 {
     public function testserver()
     {
-        $server = new Server();
+        $server = new Server(['token_key' => 'jwt']);
 
         $this->assertInstanceOf(Server::class, $server);
         $this->assertInstanceOf(ParserInterface::class, $server);
@@ -25,10 +25,10 @@ class ServerTest extends TestCase
             ->once()
             ->andReturn(['jwt' => 'abc.def.ghi']);
 
-        $server = new Server();
+        $server = new Server(['token_key' => 'jwt']);
         $result = $server->parse($request);
 
-        $this->assertSame(['jwt' => 'abc.def.ghi'], $result);
+        $this->assertSame('abc.def.ghi', $result);
     }
 
     public function tearDown()

@@ -12,7 +12,7 @@ class CookieTest extends TestCase
 {
     public function testCookie()
     {
-        $cookie = new Cookie();
+        $cookie = new Cookie(['token_key' => 'jwt']);
 
         $this->assertInstanceOf(Cookie::class, $cookie);
         $this->assertInstanceOf(ParserInterface::class, $cookie);
@@ -25,10 +25,10 @@ class CookieTest extends TestCase
             ->once()
             ->andReturn(['jwt' => 'abc.def.ghi']);
 
-        $cookie = new Cookie();
+        $cookie = new Cookie(['token_key' => 'jwt']);
         $result = $cookie->parse($request);
 
-        $this->assertSame(['jwt' => 'abc.def.ghi'], $result);
+        $this->assertSame('abc.def.ghi', $result);
     }
 
     public function tearDown()

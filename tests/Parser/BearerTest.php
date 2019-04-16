@@ -12,7 +12,7 @@ class BearerTest extends TestCase
 {
     public function testBearer()
     {
-        $bearer = new Bearer(['token_key' => 'jwt']);
+        $bearer = new Bearer();
 
         $this->assertInstanceOf(Bearer::class, $bearer);
         $this->assertInstanceOf(ParserInterface::class, $bearer);
@@ -26,10 +26,10 @@ class BearerTest extends TestCase
             ->once()
             ->andReturn(['bearer abc.def.ghi']);
 
-        $bearer = new Bearer(['token_key' => 'jwt']);
+        $bearer = new Bearer();
         $result = $bearer->parse($request);
 
-        $this->assertSame(['jwt' => 'abc.def.ghi'], $result);
+        $this->assertSame('abc.def.ghi', $result);
     }
 
     public function tearDown()
