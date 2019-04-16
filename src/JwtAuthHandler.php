@@ -59,19 +59,24 @@ class JwtAuthHandler implements RequestHandlerInterface
         return $factory->createResponse(200, 'Ok');
     }
 
-    protected function hasJwt(array $data): bool
+    private function hasJwt(string $token): bool
     {
-        return array_key_exists($this->tokenKey, $data);
+        return !empty($token);
     }
 
     protected function getToken(ServerRequestInterface $request): string
     {
-        $parse = new JwtParse($this->tokenKey);
+        $parse = new JwtParse(['token_key' => $this->tokenKey]);
+        $parse->addParser(\PsrJwt\Parser\Bearer::class);
+        $parse->addParser(\PsrJwt\Parser\Cookie::class);
+        $parse->addParser(\PsrJwt\Parser\Query::class);
+        $parse->addParser(\PsrJwt\Parser\Body::class);
+        $parse->addParser(\PsrJwt\Parser\Server::class);
 
         $token = $parse->findToken($request);
 
         if ($this->hasJwt($token)) {
-            return $token[$this->tokenKey];
+            return $token;
         }
 
         throw new ValidateException('JSON Web Token not set.', 11);

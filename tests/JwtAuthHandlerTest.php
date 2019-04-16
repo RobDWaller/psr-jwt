@@ -73,32 +73,11 @@ class JwtAuthHandlerTest extends TestCase
     {
         $handler = new JwtAuthHandler('jwt', 'secret');
 
-        $data['jwt'] = 'abc.abc.abc';
-        $data['foo'] = 'bar';
-
         $method = new ReflectionMethod(JwtAuthHandler::class, 'hasJwt');
         $method->setAccessible(true);
-        $result = $method->invokeArgs($handler, [$data]);
+        $result = $method->invokeArgs($handler, ['abc.abc.abc']);
 
         $this->assertTrue($result);
-    }
-
-    /**
-     * @covers PsrJwt\JwtAuthHandler::hasJwt
-     * @uses PsrJwt\JwtAuthHandler::__construct
-     */
-    public function testJwtAuthHandlerHasJwtFalse()
-    {
-        $handler = new JwtAuthHandler('jwt', 'secret');
-
-        $data['token'] = 'abc.abc.abc';
-        $data['foo'] = 'bar';
-
-        $method = new ReflectionMethod(JwtAuthHandler::class, 'hasJwt');
-        $method->setAccessible(true);
-        $result = $method->invokeArgs($handler, [$data]);
-
-        $this->assertFalse($result);
     }
 
     /**
@@ -109,11 +88,9 @@ class JwtAuthHandlerTest extends TestCase
     {
         $handler = new JwtAuthHandler('jwt', 'secret');
 
-        $data = [];
-
         $method = new ReflectionMethod(JwtAuthHandler::class, 'hasJwt');
         $method->setAccessible(true);
-        $result = $method->invokeArgs($handler, [$data]);
+        $result = $method->invokeArgs($handler, ['']);
 
         $this->assertFalse($result);
     }
