@@ -8,81 +8,30 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class JwtParse
 {
-    private const LOCATIONS = [
-        'Bearer',
-        'Cookie',
-        'Query',
-        'Body',
-        'Server'
-    ];
+    private $parsers = [];
 
-    private $tokenKey;
+    private $arguments;
 
-    public function __construct(string $tokenKey)
+    public function __construct(array $arguments)
     {
-        $this->tokenKey = $tokenKey;
+        $this->arguments = $arguments;
     }
 
-    public function findToken(ServerRequestInterface $request): array
+    public function addParser(string $parser): void
     {
-        foreach (self::LOCATIONS as $location) {
-            $jwtArray = $this->{'getFrom' . $location}($request);
+        $this->parsers[] = $parser;
+    }
 
-            if (isset($jwtArray[$this->tokenKey])) {
-                return $jwtArray;
+    public function findToken(ServerRequestInterface $request): string
+    {
+        foreach ($this->parsers as $parser) {
+            $object = new $parser($this->arguments);
+            $token = $object->parse($request);
+            if (!empty($token)) {
+                return $token;
             }
         }
 
-        return [];
-    }
-
-    private function getFromBearer(ServerRequestInterface $request): array
-    {
-        $authorization = $request->getHeader('authorization');
-
-        $bearer = array_filter($authorization, function ($item) {
-            return (bool) preg_match('/^bearer\s.+/', $item);
-        });
-
-        $token = explode(' ', $bearer[0] ?? '')[1] ?? '';
-
-        return !empty($token) ? ['jwt' => $token] : [];
-    }
-
-    private function getFromCookie(ServerRequestInterface $request): array
-    {
-        return $request->getCookieParams();
-    }
-
-    private function getFromQuery(ServerRequestInterface $request): array
-    {
-        return $request->getQueryParams();
-    }
-
-    private function getFromBody(ServerRequestInterface $request): array
-    {
-        $body = $request->getParsedBody();
-
-        if (is_array($body) && isset($body[$this->tokenKey])) {
-            return $body;
-        }
-
-        return $this->parseBodyObject($request);
-    }
-
-    private function parseBodyObject(ServerRequestInterface $request): array
-    {
-        $body = $request->getParsedBody();
-
-        if (is_object($body) && isset($body->{$this->tokenKey})) {
-            return [$this->tokenKey => $body->{$this->tokenKey}];
-        }
-
-        return [];
-    }
-
-    private function getFromServer(ServerRequestInterface $request): array
-    {
-        return $request->getServerParams();
+        return '';
     }
 }
