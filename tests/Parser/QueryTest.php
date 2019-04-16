@@ -10,6 +10,9 @@ use Mockery as m;
 
 class QueryTest extends TestCase
 {
+    /**
+     * @covers PsrJwt\Parser\Query::__construct
+     */
     public function testQuery()
     {
         $query = new Query(['token_key' => 'jwt']);
@@ -18,6 +21,10 @@ class QueryTest extends TestCase
         $this->assertInstanceOf(ParserInterface::class, $query);
     }
 
+    /**
+     * @covers PsrJwt\Parser\Query::parse
+     * @uses PsrJwt\Parser\Query::__construct
+     */
     public function testParse()
     {
         $request = m::mock(ServerRequestInterface::class);

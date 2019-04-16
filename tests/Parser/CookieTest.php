@@ -10,6 +10,9 @@ use Mockery as m;
 
 class CookieTest extends TestCase
 {
+    /**
+     * @covers PsrJwt\Parser\Cookie::__construct
+     */
     public function testCookie()
     {
         $cookie = new Cookie(['token_key' => 'jwt']);
@@ -18,6 +21,10 @@ class CookieTest extends TestCase
         $this->assertInstanceOf(ParserInterface::class, $cookie);
     }
 
+    /**
+     * @covers PsrJwt\Parser\Cookie::parse
+     * @uses PsrJwt\Parser\Cookie::__construct
+     */
     public function testParse()
     {
         $request = m::mock(ServerRequestInterface::class);

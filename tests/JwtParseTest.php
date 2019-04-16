@@ -24,6 +24,7 @@ class JwtParseTest extends TestCase
     /**
      * @covers PsrJwt\JwtParse::findToken
      * @uses PsrJwt\JwtParse
+     * @uses PsrJwt\Parser\Bearer
      */
     public function testFindToken()
     {

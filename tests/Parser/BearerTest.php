@@ -10,6 +10,9 @@ use Mockery as m;
 
 class BearerTest extends TestCase
 {
+    /**
+     * @covers PsrJwt\Parser\Bearer
+     */
     public function testBearer()
     {
         $bearer = new Bearer();
@@ -18,6 +21,9 @@ class BearerTest extends TestCase
         $this->assertInstanceOf(ParserInterface::class, $bearer);
     }
 
+    /**
+     * @covers PsrJwt\Parser\Bearer::parse
+     */
     public function testParse()
     {
         $request = m::mock(ServerRequestInterface::class);

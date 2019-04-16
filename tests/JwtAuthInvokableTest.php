@@ -35,6 +35,7 @@ class JwtAuthInvokableTest extends TestCase
      * @uses PsrJwt\JwtFactory
      * @uses PsrJwt\JwtValidate
      * @uses PsrJwt\JwtParse
+     * @uses PsrJwt\Parser\Bearer
      */
     public function testInvoke()
     {
@@ -46,22 +47,10 @@ class JwtAuthInvokableTest extends TestCase
             ->getToken();
 
         $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getServerParams')
-            ->once()
-            ->andReturn(['jwt' => $token]);
-        $request->shouldReceive('getCookieParams')
-            ->once()
-            ->andReturn(['hello' => 'world']);
-        $request->shouldReceive('getQueryParams')
-            ->once()
-            ->andReturn(['car' => 'park']);
-        $request->shouldReceive('getParsedBody')
-            ->twice()
-            ->andReturn(['gary' => 'barlow']);
         $request->shouldReceive('getHeader')
             ->with('authorization')
             ->once()
-            ->andReturn([]);
+            ->andReturn(['bearer ' . $token]);
 
         $response = m::mock(ResponseInterface::class);
 
@@ -85,6 +74,11 @@ class JwtAuthInvokableTest extends TestCase
      * @uses PsrJwt\JwtFactory
      * @uses PsrJwt\JwtValidate
      * @uses PsrJwt\JwtParse
+     * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Parser\Server
+     * @uses PsrJwt\Parser\Query
+     * @uses PsrJwt\Parser\Cookie
      */
     public function testInvokeFail()
     {

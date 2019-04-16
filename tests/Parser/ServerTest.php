@@ -10,6 +10,9 @@ use Mockery as m;
 
 class ServerTest extends TestCase
 {
+    /**
+     * @covers PsrJwt\Parser\Server::__construct
+     */
     public function testserver()
     {
         $server = new Server(['token_key' => 'jwt']);
@@ -18,6 +21,10 @@ class ServerTest extends TestCase
         $this->assertInstanceOf(ParserInterface::class, $server);
     }
 
+    /**
+     * @covers PsrJwt\Parser\Server::parse
+     * @uses PsrJwt\Parser\Server::__construct
+     */
     public function testParse()
     {
         $request = m::mock(ServerRequestInterface::class);

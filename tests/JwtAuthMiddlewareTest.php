@@ -31,6 +31,7 @@ class JwtAuthMiddlewareTest extends TestCase
      * @uses PsrJwt\JwtAuthHandler
      * @uses PsrJwt\JwtParse
      * @uses PsrJwt\JwtValidate
+     * @uses PsrJwt\Parser\Bearer
      */
     public function testProcess()
     {
@@ -42,22 +43,10 @@ class JwtAuthMiddlewareTest extends TestCase
             ->getToken();
 
         $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getServerParams')
-            ->once()
-            ->andReturn(['jwt' => $token]);
-        $request->shouldReceive('getCookieParams')
-            ->once()
-            ->andReturn(['hello' => 'world']);
-        $request->shouldReceive('getQueryParams')
-            ->once()
-            ->andReturn(['car' => 'park']);
-        $request->shouldReceive('getParsedBody')
-            ->twice()
-            ->andReturn(['gary' => 'barlow']);
         $request->shouldReceive('getHeader')
             ->with('authorization')
             ->once()
-            ->andReturn([]);
+            ->andReturn(['bearer ' . $token]);
 
         $handler = new JwtAuthHandler('jwt', 'Secret123!456$');
 

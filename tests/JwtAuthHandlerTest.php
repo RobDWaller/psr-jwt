@@ -31,6 +31,11 @@ class JwtAuthHandlerTest extends TestCase
      * @uses PsrJwt\JwtFactory
      * @uses PsrJwt\JwtValidate
      * @uses PsrJwt\JwtParse
+     * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Parser\Server
+     * @uses PsrJwt\Parser\Query
+     * @uses PsrJwt\Parser\Cookie
      */
     public function testJwtAuthHandlerResponse()
     {
