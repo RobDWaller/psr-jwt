@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PsrJwt;
 
-use PsrJwt\JwtFactory;
-use PsrJwt\JwtValidate;
-use PsrJwt\JwtParse;
+use PsrJwt\Factory\Jwt;
+use PsrJwt\Helper\Validate;
+use PsrJwt\Helper\Parse;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -34,9 +34,9 @@ class JwtAuthHandler implements RequestHandlerInterface
 
     protected function validate(string $token): ResponseInterface
     {
-        $parse = JwtFactory::parser($token, $this->getSecret());
+        $parse = Jwt::parser($token, $this->getSecret());
 
-        $validate = new JwtValidate($parse);
+        $validate = new Validate($parse);
 
         $validationState = $validate->validate();
 
@@ -66,7 +66,7 @@ class JwtAuthHandler implements RequestHandlerInterface
 
     protected function getToken(ServerRequestInterface $request): string
     {
-        $parse = new JwtParse(['token_key' => $this->tokenKey]);
+        $parse = new Parse(['token_key' => $this->tokenKey]);
         $parse->addParser(\PsrJwt\Parser\Bearer::class);
         $parse->addParser(\PsrJwt\Parser\Cookie::class);
         $parse->addParser(\PsrJwt\Parser\Body::class);

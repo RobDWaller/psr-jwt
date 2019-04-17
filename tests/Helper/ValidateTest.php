@@ -11,7 +11,7 @@ class ValidateTest extends TestCase
 {
     /**
      * @covers PsrJwt\Helper\Validate::__construct
-     * @uses PsrJwt\JwtFactory
+     * @uses PsrJwt\Factory\Jwt
      */
     public function testValidate()
     {
@@ -32,7 +32,7 @@ class ValidateTest extends TestCase
     /**
      * @covers PsrJwt\Helper\Validate::validate
      * @uses PsrJwt\Helper\Validate
-     * @uses PsrJwt\JwtFactory
+     * @uses PsrJwt\Factory\Jwt
      */
     public function testValidateTrue()
     {
@@ -56,7 +56,7 @@ class ValidateTest extends TestCase
     /**
      * @covers PsrJwt\Helper\Validate::validateNotBefore
      * @uses PsrJwt\Helper\Validate
-     * @uses PsrJwt\JwtFactory
+     * @uses PsrJwt\Factory\Jwt
      */
     public function testValidateNotBefore()
     {

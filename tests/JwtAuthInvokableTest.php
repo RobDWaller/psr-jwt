@@ -4,7 +4,7 @@ namespace Tests;
 
 use PHPUnit\Framework\TestCase;
 use PsrJwt\JwtAuthInvokable;
-use PsrJwt\JwtFactory;
+use PsrJwt\Factory\Jwt;
 use PsrJwt\JwtAuthHandler;
 use PsrJwt\JwtAuthException;
 use Psr\Http\Message\ResponseInterface;
@@ -32,14 +32,14 @@ class JwtAuthInvokableTest extends TestCase
      * @covers PsrJwt\JwtAuthInvokable::__invoke
      * @uses PsrJwt\JwtAuthInvokable::__construct
      * @uses PsrJwt\JwtAuthHandler
-     * @uses PsrJwt\JwtFactory
-     * @uses PsrJwt\JwtValidate
-     * @uses PsrJwt\JwtParse
+     * @uses PsrJwt\Factory\Jwt
+     * @uses PsrJwt\Helper\Validate
+     * @uses PsrJwt\Helper\Parse
      * @uses PsrJwt\Parser\Bearer
      */
     public function testInvoke()
     {
-        $jwt = JwtFactory::builder();
+        $jwt = Jwt::builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->setPayloadClaim('nbf', time() - 60)
@@ -71,9 +71,9 @@ class JwtAuthInvokableTest extends TestCase
      * @covers PsrJwt\JwtAuthInvokable::__invoke
      * @uses PsrJwt\JwtAuthInvokable
      * @uses PsrJwt\JwtAuthHandler
-     * @uses PsrJwt\JwtFactory
-     * @uses PsrJwt\JwtValidate
-     * @uses PsrJwt\JwtParse
+     * @uses PsrJwt\Factory\Jwt
+     * @uses PsrJwt\Helper\Validate
+     * @uses PsrJwt\Helper\Parse
      * @uses PsrJwt\Parser\Body
      * @uses PsrJwt\Parser\Bearer
      * @uses PsrJwt\Parser\Server
