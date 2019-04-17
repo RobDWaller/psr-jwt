@@ -2,12 +2,12 @@
 
 declare(strict_types = 1);
 
-namespace PsrJwt;
+namespace PsrJwt\Helper;
 
 use ReallySimpleJWT\Parse;
 use ReallySimpleJWT\Exception\ValidateException;
 
-class JwtValidate
+class Validate
 {
     private $parse;
 

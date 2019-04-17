@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PsrJwt;
+namespace PsrJwt\Factory;
 
 use PsrJwt\JwtAuthMiddleware;
 use PsrJwt\JwtAuthHandler;
 use PsrJwt\JwtAuthInvokable;
 
-class JwtAuthFactory
+class JwtAuth
 {
     public static function middleware(): JwtAuthMiddleware
     {

@@ -1,50 +1,50 @@
 <?php
 
-namespace Test;
+namespace Test\Helper;
 
 use PHPUnit\Framework\TestCase;
 use ReallySimpleJWT\Parse;
-use PsrJwt\JwtFactory;
-use PsrJwt\JwtValidate;
+use PsrJwt\Factory\Jwt;
+use PsrJwt\Helper\Validate;
 
-class JwtValidateTest extends TestCase
+class ValidateTest extends TestCase
 {
     /**
-     * @covers PsrJwt\JwtValidate::__construct
-     * @uses PsrJwt\JwtFactory
-     */
-    public function testJwtValidate()
-    {
-        $jwt = JwtFactory::builder();
-        $token = $jwt->setSecret('Secret123!456$')
-            ->setIssuer('localhost')
-            ->setPayloadClaim('exp', time() - 10)
-            ->build()
-            ->getToken();
-
-        $validate = new JwtValidate(
-            JwtFactory::parser($token, 'Secret123!456$')
-        );
-
-        $this->assertInstanceOf(JwtValidate::class, $validate);
-    }
-
-    /**
-     * @covers PsrJwt\JwtValidate::validate
-     * @uses PsrJwt\JwtValidate
+     * @covers PsrJwt\Helper\Validate::__construct
      * @uses PsrJwt\JwtFactory
      */
     public function testValidate()
     {
-        $jwt = JwtFactory::builder();
+        $jwt = Jwt::builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->setPayloadClaim('exp', time() - 10)
             ->build()
             ->getToken();
 
-        $validate = new JwtValidate(
-            JwtFactory::parser($token, 'Secret123!456$')
+        $validate = new Validate(
+            Jwt::parser($token, 'Secret123!456$')
+        );
+
+        $this->assertInstanceOf(Validate::class, $validate);
+    }
+
+    /**
+     * @covers PsrJwt\Helper\Validate::validate
+     * @uses PsrJwt\Helper\Validate
+     * @uses PsrJwt\JwtFactory
+     */
+    public function testValidateTrue()
+    {
+        $jwt = Jwt::builder();
+        $token = $jwt->setSecret('Secret123!456$')
+            ->setIssuer('localhost')
+            ->setPayloadClaim('exp', time() - 10)
+            ->build()
+            ->getToken();
+
+        $validate = new Validate(
+            Jwt::parser($token, 'Secret123!456$')
         );
 
         $result = $validate->validate();
@@ -54,21 +54,21 @@ class JwtValidateTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\JwtValidate::validateNotBefore
-     * @uses PsrJwt\JwtValidate
+     * @covers PsrJwt\Helper\Validate::validateNotBefore
+     * @uses PsrJwt\Helper\Validate
      * @uses PsrJwt\JwtFactory
      */
     public function testValidateNotBefore()
     {
-        $jwt = JwtFactory::builder();
+        $jwt = Jwt::builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->setPayloadClaim('nbf', time() + 10)
             ->build()
             ->getToken();
 
-        $validate = new JwtValidate(
-            JwtFactory::parser($token, 'Secret123!456$')
+        $validate = new Validate(
+            Jwt::parser($token, 'Secret123!456$')
         );
 
         $result = $validate->validateNotBefore(

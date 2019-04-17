@@ -3,27 +3,27 @@
 namespace Tests;
 
 use PHPUnit\Framework\TestCase;
-use PsrJwt\JwtParse;
+use PsrJwt\Helper\Parse;
 use Psr\Http\Message\ServerRequestInterface;
 use PsrJwt\Parser\Bearer;
 use ReflectionMethod;
 use Mockery as m;
 use stdClass;
 
-class JwtParseTest extends TestCase
+class ParseTest extends TestCase
 {
     /**
-     * @covers PsrJwt\JwtParse::__construct
+     * @covers PsrJwt\Helper\Parse::__construct
      */
-    public function testJwtParse()
+    public function testParse()
     {
-        $parse = new JwtParse(['token_key' => 'jwt']);
-        $this->assertInstanceOf(JwtParse::class, $parse);
+        $parse = new Parse(['token_key' => 'jwt']);
+        $this->assertInstanceOf(Parse::class, $parse);
     }
 
     /**
-     * @covers PsrJwt\JwtParse::findToken
-     * @uses PsrJwt\JwtParse
+     * @covers PsrJwt\Helper\Parse::findToken
+     * @uses PsrJwt\Helper\Parse
      * @uses PsrJwt\Parser\Bearer
      */
     public function testFindToken()
@@ -34,7 +34,7 @@ class JwtParseTest extends TestCase
             ->once()
             ->andReturn(['Bearer abc.def.ghi']);
 
-        $parse = new JwtParse(['token_key' => 'jwt']);
+        $parse = new Parse(['token_key' => 'jwt']);
         $parse->addParser(Bearer::class);
 
         $result = $parse->findToken($request);

@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace PsrJwt;
+namespace PsrJwt\Helper;
 
 use Psr\Http\Message\ServerRequestInterface;
 
-class JwtParse
+class Parse
 {
     private $parsers = [];
 
