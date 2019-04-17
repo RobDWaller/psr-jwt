@@ -30,7 +30,7 @@ class BearerTest extends TestCase
         $request->shouldReceive('getHeader')
             ->with('authorization')
             ->once()
-            ->andReturn(['bearer abc.def.ghi']);
+            ->andReturn(['Bearer abc.def.ghi']);
 
         $bearer = new Bearer();
         $result = $bearer->parse($request);

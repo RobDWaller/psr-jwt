@@ -50,7 +50,7 @@ class JwtAuthInvokableTest extends TestCase
         $request->shouldReceive('getHeader')
             ->with('authorization')
             ->once()
-            ->andReturn(['bearer ' . $token]);
+            ->andReturn(['Bearer ' . $token]);
 
         $response = m::mock(ResponseInterface::class);
 

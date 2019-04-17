@@ -46,7 +46,7 @@ class JwtAuthMiddlewareTest extends TestCase
         $request->shouldReceive('getHeader')
             ->with('authorization')
             ->once()
-            ->andReturn(['bearer ' . $token]);
+            ->andReturn(['Bearer ' . $token]);
 
         $handler = new JwtAuthHandler('jwt', 'Secret123!456$');
 

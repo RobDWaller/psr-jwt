@@ -32,7 +32,7 @@ class JwtParseTest extends TestCase
         $request->shouldReceive('getHeader')
             ->with('authorization')
             ->once()
-            ->andReturn(['bearer abc.def.ghi']);
+            ->andReturn(['Bearer abc.def.ghi']);
 
         $parse = new JwtParse(['token_key' => 'jwt']);
         $parse->addParser(Bearer::class);

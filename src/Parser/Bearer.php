@@ -14,7 +14,7 @@ class Bearer implements ParserInterface
         $authorization = $request->getHeader('authorization');
 
         $bearer = array_filter($authorization, function ($item) {
-            return (bool) preg_match('/^bearer\s.+/', $item);
+            return (bool) preg_match('/^Bearer\s.+/', $item);
         });
 
         $token = explode(' ', $bearer[0] ?? '')[1] ?? '';
