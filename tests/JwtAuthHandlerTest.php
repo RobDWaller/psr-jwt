@@ -29,8 +29,8 @@ class JwtAuthHandlerTest extends TestCase
      * @covers PsrJwt\JwtAuthHandler::handle
      * @uses PsrJwt\JwtAuthHandler
      * @uses PsrJwt\Factory\Jwt
-     * @uses PsrJwt\Helper\Validate
-     * @uses PsrJwt\Helper\Parse
+     * @uses PsrJwt\Validation\Validate
+     * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Body
      * @uses PsrJwt\Parser\Bearer
      * @uses PsrJwt\Parser\Server
@@ -76,8 +76,8 @@ class JwtAuthHandlerTest extends TestCase
      * @covers PsrJwt\JwtAuthHandler::handle
      * @uses PsrJwt\JwtAuthHandler
      * @uses PsrJwt\Factory\Jwt
-     * @uses PsrJwt\Helper\Validate
-     * @uses PsrJwt\Helper\Parse
+     * @uses PsrJwt\Validation\Validate
+     * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Body
      * @uses PsrJwt\Parser\Bearer
      * @uses PsrJwt\Parser\Server
@@ -163,7 +163,7 @@ class JwtAuthHandlerTest extends TestCase
      * @covers PsrJwt\JwtAuthHandler::validate
      * @uses PsrJwt\JwtAuthHandler
      * @uses PsrJwt\Factory\Jwt
-     * @uses PsrJwt\Helper\Validate
+     * @uses PsrJwt\Validation\Validate
      */
     public function testValidate()
     {
@@ -187,7 +187,7 @@ class JwtAuthHandlerTest extends TestCase
      * @covers PsrJwt\JwtAuthHandler::validate
      * @uses PsrJwt\JwtAuthHandler
      * @uses PsrJwt\Factory\Jwt
-     * @uses PsrJwt\Helper\Validate
+     * @uses PsrJwt\Validation\Validate
      */
     public function testValidateBadSecret()
     {
@@ -211,7 +211,7 @@ class JwtAuthHandlerTest extends TestCase
      * @covers PsrJwt\JwtAuthHandler::validate
      * @uses PsrJwt\JwtAuthHandler
      * @uses PsrJwt\Factory\Jwt
-     * @uses PsrJwt\Helper\Validate
+     * @uses PsrJwt\Validation\Validate
      */
     public function testValidateBadExpiration()
     {
@@ -236,7 +236,7 @@ class JwtAuthHandlerTest extends TestCase
      * @covers PsrJwt\JwtAuthHandler::validate
      * @uses PsrJwt\JwtAuthHandler
      * @uses PsrJwt\Factory\Jwt
-     * @uses PsrJwt\Helper\Validate
+     * @uses PsrJwt\Validation\Validate
      */
     public function testValidateBadNotBefore()
     {
@@ -305,7 +305,7 @@ class JwtAuthHandlerTest extends TestCase
     /**
      * @covers PsrJwt\JwtAuthHandler::getToken
      * @uses PsrJwt\JwtAuthHandler
-     * @uses PsrJwt\Helper\Parse
+     * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Bearer
      */
     public function testGetToken()
@@ -331,7 +331,7 @@ class JwtAuthHandlerTest extends TestCase
      * @expectedExceptionCode 11
      * @covers PsrJwt\JwtAuthHandler::getToken
      * @uses PsrJwt\JwtAuthHandler
-     * @uses PsrJwt\Helper\Parse
+     * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Bearer
      * @uses PsrJwt\Parser\Server
      * @uses PsrJwt\Parser\Body

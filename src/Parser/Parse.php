@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace PsrJwt\Helper;
+namespace PsrJwt\Parser;
 
 use Psr\Http\Message\ServerRequestInterface;
 

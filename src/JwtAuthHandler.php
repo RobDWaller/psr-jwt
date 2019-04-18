@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace PsrJwt;
 
 use PsrJwt\Factory\Jwt;
-use PsrJwt\Helper\Validate;
-use PsrJwt\Helper\Parse;
+use PsrJwt\Validation\Validate;
+use PsrJwt\Parser\Parse;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace PsrJwt\Helper;
+namespace PsrJwt\Validation;
 
 use ReallySimpleJWT\Parse;
 use ReallySimpleJWT\Exception\ValidateException;

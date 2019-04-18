@@ -1,16 +1,16 @@
 <?php
 
-namespace Test\Helper;
+namespace Test\Validation;
 
 use PHPUnit\Framework\TestCase;
 use ReallySimpleJWT\Parse;
 use PsrJwt\Factory\Jwt;
-use PsrJwt\Helper\Validate;
+use PsrJwt\Validation\Validate;
 
 class ValidateTest extends TestCase
 {
     /**
-     * @covers PsrJwt\Helper\Validate::__construct
+     * @covers PsrJwt\Validation\Validate::__construct
      * @uses PsrJwt\Factory\Jwt
      */
     public function testValidate()
@@ -30,8 +30,8 @@ class ValidateTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Helper\Validate::validate
-     * @uses PsrJwt\Helper\Validate
+     * @covers PsrJwt\Validation\Validate::validate
+     * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Factory\Jwt
      */
     public function testValidateOk()
@@ -54,8 +54,8 @@ class ValidateTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Helper\Validate::validate
-     * @uses PsrJwt\Helper\Validate
+     * @covers PsrJwt\Validation\Validate::validate
+     * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Factory\Jwt
      */
     public function testValidateExpiration()
@@ -78,8 +78,8 @@ class ValidateTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Helper\Validate::validateNotBefore
-     * @uses PsrJwt\Helper\Validate
+     * @covers PsrJwt\Validation\Validate::validateNotBefore
+     * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Factory\Jwt
      */
     public function testValidateNotBefore()
@@ -104,8 +104,8 @@ class ValidateTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Helper\Validate::validateNotBefore
-     * @uses PsrJwt\Helper\Validate
+     * @covers PsrJwt\Validation\Validate::validateNotBefore
+     * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Factory\Jwt
      */
     public function testValidateNotBeforeOk()

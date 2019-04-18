@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests;
+namespace Tests\Parser;
 
 use PHPUnit\Framework\TestCase;
-use PsrJwt\Helper\Parse;
+use PsrJwt\Parser\Parse;
 use Psr\Http\Message\ServerRequestInterface;
 use PsrJwt\Parser\Bearer;
 use PsrJwt\Parser\Cookie;
@@ -14,7 +14,7 @@ use stdClass;
 class ParseTest extends TestCase
 {
     /**
-     * @covers PsrJwt\Helper\Parse::__construct
+     * @covers PsrJwt\Parser\Parse::__construct
      */
     public function testParse()
     {
@@ -23,8 +23,8 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Helper\Parse::findToken
-     * @uses PsrJwt\Helper\Parse
+     * @covers PsrJwt\Parser\Parse::findToken
+     * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Bearer
      */
     public function testFindToken()
@@ -44,9 +44,9 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Helper\Parse::addParser
-     * @covers PsrJwt\Helper\Parse::getParsers
-     * @uses PsrJwt\Helper\Parse
+     * @covers PsrJwt\Parser\Parse::addParser
+     * @covers PsrJwt\Parser\Parse::getParsers
+     * @uses PsrJwt\Parser\Parse
      */
     public function testAddParser()
     {
@@ -62,9 +62,9 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Helper\Parse::addParser
-     * @covers PsrJwt\Helper\Parse::getParsers
-     * @uses PsrJwt\Helper\Parse
+     * @covers PsrJwt\Parser\Parse::addParser
+     * @covers PsrJwt\Parser\Parse::getParsers
+     * @uses PsrJwt\Parser\Parse
      */
     public function testFindTokenFail()
     {

@@ -29,8 +29,8 @@ class JwtAuthMiddlewareTest extends TestCase
      * @covers PsrJwt\JwtAuthMiddleware::process
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\JwtAuthHandler
-     * @uses PsrJwt\Helper\Parse
-     * @uses PsrJwt\Helper\Validate
+     * @uses PsrJwt\Parser\Parse
+     * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Parser\Bearer
      */
     public function testProcess()
