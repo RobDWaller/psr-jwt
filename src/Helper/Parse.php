@@ -22,9 +22,14 @@ class Parse
         $this->parsers[] = $parser;
     }
 
+    public function getParsers(): array
+    {
+        return $this->parsers;
+    }
+
     public function findToken(ServerRequestInterface $request): string
     {
-        foreach ($this->parsers as $parser) {
+        foreach ($this->getParsers() as $parser) {
             $object = new $parser($this->arguments);
             $token = $object->parse($request);
             if (!empty($token)) {
