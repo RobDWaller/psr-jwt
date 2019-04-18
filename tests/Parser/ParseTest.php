@@ -62,8 +62,7 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Parser\Parse::addParser
-     * @covers PsrJwt\Parser\Parse::getParsers
+     * @covers PsrJwt\Parser\Parse::findToken
      * @uses PsrJwt\Parser\Parse
      */
     public function testFindTokenFail()
