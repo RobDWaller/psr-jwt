@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Validation;
+namespace Tests\Validation;
 
 use PHPUnit\Framework\TestCase;
 use ReallySimpleJWT\Parse;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Parser;
+namespace Tests\Parser;
 
 use PHPUnit\Framework\TestCase;
 use PsrJwt\Parser\Body;

@@ -19,7 +19,7 @@ class JwtAuthMiddlewareTest extends TestCase
      */
     public function testJwtAuthProcess()
     {
-        $process = new JwtAuthMiddleware('jwt', 'secret');
+        $process = new JwtAuthMiddleware();
 
         $this->assertInstanceOf(JwtAuthMiddleware::class, $process);
         $this->assertInstanceOf(MiddlewareInterface::class, $process);
