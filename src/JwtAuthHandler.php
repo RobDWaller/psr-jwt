@@ -27,12 +27,12 @@ class JwtAuthHandler implements RequestHandlerInterface
         $this->secret = $secret;
     }
 
-    protected function getSecret(): string
+    public function getSecret(): string
     {
         return $this->secret;
     }
 
-    protected function validate(string $token): ResponseInterface
+    private function validate(string $token): ResponseInterface
     {
         $parse = Jwt::parser($token, $this->getSecret());
 
@@ -64,7 +64,7 @@ class JwtAuthHandler implements RequestHandlerInterface
         return !empty($token);
     }
 
-    protected function getToken(ServerRequestInterface $request): string
+    private function getToken(ServerRequestInterface $request): string
     {
         $parse = new Parse(['token_key' => $this->tokenKey]);
         $parse->addParser(\PsrJwt\Parser\Bearer::class);

@@ -258,6 +258,69 @@ class JwtAuthHandlerTest extends TestCase
         }
     }
 
+    /**
+     * @covers PsrJwt\JwtAuthHandler::getToken
+     * @uses PsrJwt\JwtAuthHandler
+     * @uses PsrJwt\Helper\Parse
+     * @uses PsrJwt\Parser\Bearer
+     */
+    public function testGetToken()
+    {
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->once()
+            ->andReturn(['Bearer abc.def.ghi']);
+
+        $handler = new JwtAuthHandler('jwt', 'secret');
+
+        $method = new ReflectionMethod(JwtAuthHandler::class, 'getToken');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($handler, [$request]);
+
+        $this->assertSame('abc.def.ghi', $result);
+    }
+
+    /**
+     * @expectedException ReallySimpleJWT\Exception\ValidateException
+     * @expectedExceptionMessage JSON Web Token not set.
+     * @expectedExceptionCode 11
+     * @covers PsrJwt\JwtAuthHandler::getToken
+     * @uses PsrJwt\JwtAuthHandler
+     * @uses PsrJwt\Helper\Parse
+     * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Parser\Server
+     * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Query
+     */
+    public function testGetTokenNoToken()
+    {
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->once()
+            ->andReturn([]);
+        $request->shouldReceive('getServerParams')
+            ->once()
+            ->andReturn([]);
+        $request->shouldReceive('getCookieParams')
+            ->once()
+            ->andReturn([]);
+        $request->shouldReceive('getQueryParams')
+            ->once()
+            ->andReturn([]);
+        $request->shouldReceive('getParsedBody')
+            ->twice()
+            ->andReturn([]);
+
+        $handler = new JwtAuthHandler('jwt', 'secret');
+
+        $method = new ReflectionMethod(JwtAuthHandler::class, 'getToken');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($handler, [$request]);
+    }
+
     public function tearDown() {
         m::close();
     }
