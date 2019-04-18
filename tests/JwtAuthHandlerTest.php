@@ -68,6 +68,50 @@ class JwtAuthHandlerTest extends TestCase
         $result = $handler->handle($request);
 
         $this->assertInstanceOf(ResponseInterface::class, $result);
+        $this->assertSame(200, $result->getStatusCode());
+        $this->assertSame('Ok', $result->getReasonPhrase());
+    }
+
+    /**
+     * @covers PsrJwt\JwtAuthHandler::handle
+     * @uses PsrJwt\JwtAuthHandler
+     * @uses PsrJwt\Factory\Jwt
+     * @uses PsrJwt\Helper\Validate
+     * @uses PsrJwt\Helper\Parse
+     * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Parser\Server
+     * @uses PsrJwt\Parser\Query
+     * @uses PsrJwt\Parser\Cookie
+     */
+    public function testJwtAuthHandlerResponseBadRequest()
+    {
+        $jwt = Jwt::builder();
+
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getServerParams')
+            ->once()
+            ->andReturn([]);
+        $request->shouldReceive('getCookieParams')
+            ->once()
+            ->andReturn(['foo' => 'bar']);
+        $request->shouldReceive('getQueryParams')
+            ->once()
+            ->andReturn(['hello' => 'world']);
+        $request->shouldReceive('getParsedBody')
+            ->twice()
+            ->andReturn([]);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->once()
+            ->andReturn([]);
+
+        $handler = new JwtAuthHandler('jwt', 'Secret123!456$');
+
+        $result = $handler->handle($request);
+
+        $this->assertSame(400, $result->getStatusCode());
+        $this->assertSame('Bad Request: JSON Web Token not set.', $result->getReasonPhrase());
     }
 
     /**
