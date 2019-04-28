@@ -16,4 +16,14 @@ class Auth
 
         $this->message = $message;
     }
+
+    public function getCode(): int
+    {
+        return $this->code;
+    }
+
+    public function getMessage(): string
+    {
+        return $this->message;
+    }
 }
