@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PsrJwt\Auth;
 
 use Psr\Http\Message\ServerRequestInterface;
+use ReallySimpleJWT\Exception\ValidateException;
 use PsrJwt\Factory\Jwt;
 use PsrJwt\Auth\Auth;
 use PsrJwt\Parser\Parse;

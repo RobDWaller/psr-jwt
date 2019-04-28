@@ -7,6 +7,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use PsrJwt\Auth\Authenticate;
 use PsrJwt\Auth\Auth;
 use PsrJwt\Factory\Jwt;
+use ReflectionMethod;
 use Mockery as m;
 
 class AuthenticateTest extends TestCase
@@ -18,8 +19,8 @@ class AuthenticateTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\JwtAuthHandler::handle
-     * @uses PsrJwt\JwtAuthHandler
+     * @covers PsrJwt\Auth\Authenticate::handle
+     * @uses PsrJwt\Auth\Authenticate
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Parser\Parse
@@ -62,6 +63,299 @@ class AuthenticateTest extends TestCase
         $this->assertInstanceOf(Auth::class, $result);
         $this->assertSame(200, $result->getCode());
         $this->assertSame('Ok', $result->getMessage());
+    }
+
+    /**
+     * @covers PsrJwt\Auth\Authenticate::handle
+     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Factory\Jwt
+     * @uses PsrJwt\Validation\Validate
+     * @uses PsrJwt\Parser\Parse
+     * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Parser\Server
+     * @uses PsrJwt\Parser\Query
+     * @uses PsrJwt\Parser\Cookie
+     */
+    public function testAuthenticateBadRequest()
+    {
+        $jwt = Jwt::builder();
+
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getServerParams')
+            ->once()
+            ->andReturn([]);
+        $request->shouldReceive('getCookieParams')
+            ->once()
+            ->andReturn(['foo' => 'bar']);
+        $request->shouldReceive('getQueryParams')
+            ->once()
+            ->andReturn(['hello' => 'world']);
+        $request->shouldReceive('getParsedBody')
+            ->twice()
+            ->andReturn([]);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->once()
+            ->andReturn([]);
+
+        $auth = new Authenticate('jwt', 'Secret123!456$');
+
+        $result = $auth->authenticate($request);
+
+        $this->assertSame(400, $result->getCode());
+        $this->assertSame('Bad Request: JSON Web Token not set.', $result->getMessage());
+    }
+
+    /**
+     * @covers PsrJwt\Auth\Authenticate::hasJwt
+     * @uses PsrJwt\Auth\Authenticate::__construct
+     */
+    public function testAuthenticateHasJwt()
+    {
+        $auth = new Authenticate('jwt', 'secret');
+
+        $method = new ReflectionMethod(Authenticate::class, 'hasJwt');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($auth, ['abc.abc.abc']);
+
+        $this->assertTrue($result);
+    }
+
+    /**
+     * @covers PsrJwt\Auth\Authenticate::hasJwt
+     * @uses PsrJwt\Auth\Authenticate::__construct
+     */
+    public function testAuthenticateHasJwtEmpty()
+    {
+        $auth = new Authenticate('jwt', 'secret');
+
+        $method = new ReflectionMethod(Authenticate::class, 'hasJwt');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($auth, ['']);
+
+        $this->assertFalse($result);
+    }
+
+    /**
+     * @covers PsrJwt\Auth\Authenticate::getSecret
+     * @uses PsrJwt\Auth\Authenticate::__construct
+     */
+    public function testGetSecret()
+    {
+        $auth = new Authenticate('jwt', 'secret');
+
+        $method = new ReflectionMethod(Authenticate::class, 'getSecret');
+        $method->setAccessible(true);
+        $result = $method->invoke($auth);
+
+        $this->assertSame('secret', $result);
+    }
+
+    /**
+     * @covers PsrJwt\Auth\Authenticate::validate
+     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Factory\Jwt
+     * @uses PsrJwt\Validation\Validate
+     */
+    public function testValidate()
+    {
+        $jwt = Jwt::builder();
+        $token = $jwt->setSecret('Secret123!456$')
+            ->setIssuer('localhost')
+            ->build()
+            ->getToken();
+
+        $auth = new Authenticate('jwt', 'Secret123!456$');
+
+        $method = new ReflectionMethod(Authenticate::class, 'validate');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($auth, [$token]);
+
+        $this->assertSame(200, $result->getCode());
+        $this->assertSame('Ok', $result->getMessage());
+    }
+
+    /**
+     * @covers PsrJwt\Auth\Authenticate::validate
+     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Factory\Jwt
+     * @uses PsrJwt\Validation\Validate
+     */
+    public function testValidateBadSecret()
+    {
+        $jwt = Jwt::builder();
+        $token = $jwt->setSecret('Secret123!456$')
+            ->setIssuer('localhost')
+            ->build()
+            ->getToken();
+
+        $auth = new Authenticate('jwt', 'Secret');
+
+        $method = new ReflectionMethod(Authenticate::class, 'validate');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($auth, [$token]);
+
+        $this->assertSame(401, $result->getCode());
+        $this->assertSame('Unauthorized: Signature is invalid.', $result->getMessage());
+    }
+
+    /**
+     * @covers PsrJwt\Auth\Authenticate::validate
+     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Factory\Jwt
+     * @uses PsrJwt\Validation\Validate
+     */
+    public function testValidateBadExpiration()
+    {
+        $jwt = Jwt::builder();
+        $token = $jwt->setSecret('Secret123!456$')
+            ->setIssuer('localhost')
+            ->setPayloadClaim('exp', time() - 10)
+            ->build()
+            ->getToken();
+
+        $auth = new Authenticate('jwt', 'Secret123!456$');
+
+        $method = new ReflectionMethod(Authenticate::class, 'validate');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($auth, [$token]);
+
+        $this->assertSame(401, $result->getCode());
+        $this->assertSame('Unauthorized: Expiration claim has expired.', $result->getMessage());
+    }
+
+    /**
+     * @covers PsrJwt\Auth\Authenticate::validate
+     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Factory\Jwt
+     * @uses PsrJwt\Validation\Validate
+     */
+    public function testValidateBadNotBefore()
+    {
+        $jwt = Jwt::builder();
+        $token = $jwt->setSecret('Secret123!456$')
+            ->setIssuer('localhost')
+            ->setPayloadClaim('nbf', time() + 60)
+            ->build()
+            ->getToken();
+
+        $auth = new Authenticate('jwt', 'Secret123!456$');
+
+        $method = new ReflectionMethod(Authenticate::class, 'validate');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($auth, [$token]);
+
+        $this->assertSame(401, $result->getCode());
+        $this->assertSame('Unauthorized: Not Before claim has not elapsed.', $result->getMessage());
+    }
+
+    /**
+     * @covers PsrJwt\Auth\Authenticate::validationResponse
+     * @uses PsrJwt\Auth\Authenticate::__construct
+     */
+    public function testValidationResponse()
+    {
+        $auth = new Authenticate('jwt', 'secret');
+
+        $method = new ReflectionMethod(Authenticate::class, 'validationResponse');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($auth, [0, 'Ok']);
+
+        $this->assertInstanceOf(Auth::class, $result);
+        $this->assertSame(200, $result->getCode());
+        $this->assertSame('Ok', $result->getMessage());
+    }
+
+    /**
+     * @covers PsrJwt\Auth\Authenticate::validationResponse
+     * @uses PsrJwt\Auth\Authenticate::__construct
+     */
+    public function testValidationResponseErrors()
+    {
+        $auth = new Authenticate('jwt', 'secret');
+
+        $method = new ReflectionMethod(Authenticate::class, 'validationResponse');
+        $method->setAccessible(true);
+
+        $errors = [
+            [1, 'Error 1'],
+            [2, 'Error 1'],
+            [3, 'Error 1'],
+            [4, 'Error 1'],
+            [5, 'Error 1']
+        ];
+
+        foreach ($errors as $error) {
+            $result = $method->invokeArgs($auth, [$error[0], $error[1]]);
+
+            $this->assertInstanceOf(Auth::class, $result);
+            $this->assertSame(401, $result->getCode());
+            $this->assertSame('Unauthorized: ' . $error[1], $result->getMessage());
+        }
+    }
+
+    /**
+     * @covers PsrJwt\Auth\Authenticate::getToken
+     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Parser\Parse
+     * @uses PsrJwt\Parser\Bearer
+     */
+    public function testGetToken()
+    {
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->once()
+            ->andReturn(['Bearer abc.def.ghi']);
+
+        $auth = new Authenticate('jwt', 'secret');
+
+        $method = new ReflectionMethod(Authenticate::class, 'getToken');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($auth, [$request]);
+
+        $this->assertSame('abc.def.ghi', $result);
+    }
+
+    /**
+     * @expectedException ReallySimpleJWT\Exception\ValidateException
+     * @expectedExceptionMessage JSON Web Token not set.
+     * @expectedExceptionCode 11
+     * @covers PsrJwt\Auth\Authenticate::getToken
+     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Parser\Parse
+     * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Parser\Server
+     * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Query
+     */
+    public function testGetTokenNoToken()
+    {
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->once()
+            ->andReturn([]);
+        $request->shouldReceive('getServerParams')
+            ->once()
+            ->andReturn([]);
+        $request->shouldReceive('getCookieParams')
+            ->once()
+            ->andReturn([]);
+        $request->shouldReceive('getQueryParams')
+            ->once()
+            ->andReturn([]);
+        $request->shouldReceive('getParsedBody')
+            ->twice()
+            ->andReturn([]);
+
+        $auth = new Authenticate('jwt', 'secret');
+
+        $method = new ReflectionMethod(Authenticate::class, 'getToken');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($auth, [$request]);
     }
 
     public function tearDown()
