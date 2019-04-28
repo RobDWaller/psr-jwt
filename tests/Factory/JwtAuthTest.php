@@ -12,6 +12,8 @@ class JwtAuthTest extends TestCase
 {
     /**
      * @covers PsrJwt\Factory\JwtAuth::middleware
+     * @uses PsrJwt\JwtAuthMiddleware::__construct
+     * @uses PsrJwt\Auth\Authenticate
      */
     public function testJwtAuthMiddleware()
     {
@@ -23,8 +25,8 @@ class JwtAuthTest extends TestCase
 
     /**
      * @covers PsrJwt\Factory\JwtAuth::invokable
-     * @uses PsrJwt\JwtAuthHandler::__construct
      * @uses PsrJwt\JwtAuthInvokable::__construct
+     * @uses PsrJwt\Auth\Authenticate
      */
     public function testJwtAuthInvokable()
     {

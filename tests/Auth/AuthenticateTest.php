@@ -12,6 +12,9 @@ use Mockery as m;
 
 class AuthenticateTest extends TestCase
 {
+    /**
+     * @covers PsrJwt\Auth\Authenticate::__construct
+     */
     public function testAuthenticate()
     {
         $auth = new Authenticate('jwt', 'secret');
@@ -19,8 +22,9 @@ class AuthenticateTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Auth\Authenticate::handle
+     * @covers PsrJwt\Auth\Authenticate::authenticate
      * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Parser\Parse
@@ -66,8 +70,9 @@ class AuthenticateTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Auth\Authenticate::handle
+     * @covers PsrJwt\Auth\Authenticate::authenticate
      * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Parser\Parse
@@ -155,6 +160,7 @@ class AuthenticateTest extends TestCase
     /**
      * @covers PsrJwt\Auth\Authenticate::validate
      * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Validation\Validate
      */
@@ -179,6 +185,7 @@ class AuthenticateTest extends TestCase
     /**
      * @covers PsrJwt\Auth\Authenticate::validate
      * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Validation\Validate
      */
@@ -203,6 +210,7 @@ class AuthenticateTest extends TestCase
     /**
      * @covers PsrJwt\Auth\Authenticate::validate
      * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Validation\Validate
      */
@@ -228,6 +236,7 @@ class AuthenticateTest extends TestCase
     /**
      * @covers PsrJwt\Auth\Authenticate::validate
      * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Validation\Validate
      */
@@ -253,6 +262,7 @@ class AuthenticateTest extends TestCase
     /**
      * @covers PsrJwt\Auth\Authenticate::validationResponse
      * @uses PsrJwt\Auth\Authenticate::__construct
+     * @uses PsrJwt\Auth\Auth
      */
     public function testValidationResponse()
     {
@@ -270,6 +280,7 @@ class AuthenticateTest extends TestCase
     /**
      * @covers PsrJwt\Auth\Authenticate::validationResponse
      * @uses PsrJwt\Auth\Authenticate::__construct
+     * @uses PsrJwt\Auth\Auth
      */
     public function testValidationResponseErrors()
     {
