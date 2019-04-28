@@ -5,25 +5,22 @@ declare(strict_types=1);
 namespace PsrJwt\Factory;
 
 use PsrJwt\JwtAuthMiddleware;
-use PsrJwt\JwtAuthHandler;
+use PsrJwt\Auth\Authenticate;
 use PsrJwt\JwtAuthInvokable;
 
 class JwtAuth
 {
-    public static function middleware(): JwtAuthMiddleware
+    public static function middleware(string $tokenKey, string $secret): JwtAuthMiddleware
     {
-        return new JwtAuthMiddleware();
+        $auth = new Authenticate($tokenKey, $secret);
+
+        return new JwtAuthMiddleware($auth);
     }
 
-    public static function handler($tokenKey, $secret): JwtAuthHandler
+    public static function invokable(string $tokenKey, string $secret): JwtAuthInvokable
     {
-        return new JwtAuthHandler($tokenKey, $secret);
-    }
+        $auth = new Authenticate($tokenKey, $secret);
 
-    public static function invokable($tokenKey, $secret): JwtAuthInvokable
-    {
-        $handler = new JwtAuthHandler($tokenKey, $secret);
-
-        return new JwtAuthInvokable($handler);
+        return new JwtAuthInvokable($auth);
     }
 }

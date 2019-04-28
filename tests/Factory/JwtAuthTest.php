@@ -5,7 +5,7 @@ namespace Tests\Factory;
 use PHPUnit\Framework\TestCase;
 use PsrJwt\Factory\JwtAuth;
 use PsrJwt\JwtAuthMiddleware;
-use PsrJwt\JwtAuthHandler;
+use PsrJwt\Auth\Authenticate;
 use PsrJwt\JwtAuthInvokable;
 
 class JwtAuthTest extends TestCase
@@ -17,7 +17,7 @@ class JwtAuthTest extends TestCase
     {
         $this->assertInstanceOf(
             JwtAuthMiddleware::class,
-            JwtAuth::middleware()
+            JwtAuth::middleware('jwt', '$Secret123!')
         );
     }
 
@@ -31,18 +31,6 @@ class JwtAuthTest extends TestCase
         $this->assertInstanceOf(
             JwtAuthInvokable::class,
             JwtAuth::invokable('jwt', '$Secret123!')
-        );
-    }
-
-    /**
-     * @covers PsrJwt\Factory\JwtAuth::handler
-     * @uses PsrJwt\JwtAuthHandler::__construct
-     */
-    public function testJwtAuthHandler()
-    {
-        $this->assertInstanceOf(
-            JwtAuthHandler::class,
-            JwtAuth::handler('jwt', '$Secret123!')
         );
     }
 }

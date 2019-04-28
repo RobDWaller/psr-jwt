@@ -3,9 +3,10 @@
 namespace Tests;
 
 use PHPUnit\Framework\TestCase;
+use Nyholm\Psr7\Factory\Psr17Factory;
 use PsrJwt\Factory\Jwt;
 use PsrJwt\JwtAuthMiddleware;
-use PsrJwt\JwtAuthHandler;
+use PsrJwt\Auth\Authenticate;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -19,7 +20,9 @@ class JwtAuthMiddlewareTest extends TestCase
      */
     public function testJwtAuthProcess()
     {
-        $process = new JwtAuthMiddleware();
+        $authenticate = new Authenticate('jwt', 'secret');
+
+        $process = new JwtAuthMiddleware($authenticate);
 
         $this->assertInstanceOf(JwtAuthMiddleware::class, $process);
         $this->assertInstanceOf(MiddlewareInterface::class, $process);
@@ -48,13 +51,23 @@ class JwtAuthMiddlewareTest extends TestCase
             ->once()
             ->andReturn(['Bearer ' . $token]);
 
-        $handler = new JwtAuthHandler('jwt', 'Secret123!456$');
+        $response = new Psr17Factory();
+        $response = $response->createResponse(200, 'Ok');
 
-        $process = new JwtAuthMiddleware();
+        $handler = m::mock(RequestHandlerInterface::class);
+        $handler->shouldReceive('handle')
+            ->once()
+            ->andReturn($response);
+
+        $authenticate = new Authenticate('jwt', 'Secret123!456$');
+
+        $process = new JwtAuthMiddleware($authenticate);
 
         $result = $process->process($request, $handler);
 
         $this->assertInstanceOf(ResponseInterface::class, $result);
+        $this->assertSame(200, $result->getStatusCode());
+        $this->assertSame('Ok', $result->getReasonPhrase());
     }
 
     public function tearDown() {

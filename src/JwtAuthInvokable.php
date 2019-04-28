@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace PsrJwt;
 
+use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use PsrJwt\JwtAuthHandler;
+use PsrJwt\Auth\Authenticate;
 
 class JwtAuthInvokable
 {
-    private $handler;
+    private $authenticate;
 
-    public function __construct(JwtAuthHandler $handler)
+    public function __construct(Authenticate $authenticate)
     {
-        $this->handler = $handler;
+        $this->authenticate = $authenticate;
     }
 
     public function __invoke(
@@ -22,12 +23,13 @@ class JwtAuthInvokable
         ResponseInterface $response,
         callable $next
     ): ResponseInterface {
-        $response = $this->handler->handle($request);
+        $auth = $this->authenticate->authenticate($request);
 
-        if ($response->getStatusCode() !== 200) {
-            return $response;
+        if ($auth->getCode() === 200) {
+            return $next($request, $response);
         }
 
-        return $next($request, $response);
+        $factory = new Psr17Factory();
+        return $factory->createResponse($auth->getCode(), $auth->getMessage());
     }
 }

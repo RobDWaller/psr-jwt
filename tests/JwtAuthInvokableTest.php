@@ -5,7 +5,7 @@ namespace Tests;
 use PHPUnit\Framework\TestCase;
 use PsrJwt\JwtAuthInvokable;
 use PsrJwt\Factory\Jwt;
-use PsrJwt\JwtAuthHandler;
+use PsrJwt\Auth\Authenticate;
 use PsrJwt\JwtAuthException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -21,9 +21,9 @@ class JwtAuthInvokableTest extends TestCase
      */
     public function testJwtAuthInokable()
     {
-        $handler = new JwtAuthHandler('jwt', 'secret');
+        $auth = new Authenticate('jwt', 'secret');
 
-        $invokable = new JwtAuthInvokable($handler);
+        $invokable = new JwtAuthInvokable($auth);
 
         $this->assertInstanceOf(JwtAuthInvokable::class, $invokable);
     }
@@ -58,9 +58,9 @@ class JwtAuthInvokableTest extends TestCase
             return $response;
         };
 
-        $handler = new JwtAuthHandler('jwt', 'Secret123!456$');
+        $auth = new Authenticate('jwt', 'Secret123!456$');
 
-        $invokable = new JwtAuthInvokable($handler);
+        $invokable = new JwtAuthInvokable($auth);
 
         $result = $invokable($request, $response, $next);
 
@@ -106,9 +106,9 @@ class JwtAuthInvokableTest extends TestCase
             return $response;
         };
 
-        $handler = new JwtAuthHandler('jwt', 'secret');
+        $auth = new Authenticate('jwt', 'secret');
 
-        $invokable = new JwtAuthInvokable($handler);
+        $invokable = new JwtAuthInvokable($auth);
 
         $result = $invokable($request, $response, $next);
 
