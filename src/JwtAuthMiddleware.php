@@ -10,6 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use PsrJwt\Auth\Authenticate;
+use PsrJwt\Auth\Auth;
 
 class JwtAuthMiddleware implements MiddlewareInterface
 {
@@ -20,6 +21,20 @@ class JwtAuthMiddleware implements MiddlewareInterface
         $this->authenticate = $authenticate;
     }
 
+    public function __invoke(
+        ServerRequestInterface $request,
+        ResponseInterface $response,
+        callable $next
+    ): ResponseInterface {
+        $auth = $this->authenticate->authenticate($request);
+
+        if ($auth->getCode() === 200) {
+            return $next($request, $response);
+        }
+
+        return $this->failResponse($auth);
+    }
+
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $auth = $this->authenticate->authenticate($request);
@@ -28,6 +43,11 @@ class JwtAuthMiddleware implements MiddlewareInterface
             return $handler->handle($request);
         }
 
+        return $this->failResponse($auth);
+    }
+
+    private function failResponse(Auth $auth): ResponseInterface
+    {
         $factory = new Psr17Factory();
         return $factory->createResponse($auth->getCode(), $auth->getMessage());
     }

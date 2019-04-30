@@ -22,17 +22,4 @@ class JwtAuthTest extends TestCase
             JwtAuth::middleware('jwt', '$Secret123!')
         );
     }
-
-    /**
-     * @covers PsrJwt\Factory\JwtAuth::invokable
-     * @uses PsrJwt\JwtAuthInvokable::__construct
-     * @uses PsrJwt\Auth\Authenticate
-     */
-    public function testJwtAuthInvokable()
-    {
-        $this->assertInstanceOf(
-            JwtAuthInvokable::class,
-            JwtAuth::invokable('jwt', '$Secret123!')
-        );
-    }
 }

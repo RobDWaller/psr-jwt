@@ -16,11 +16,4 @@ class JwtAuth
 
         return new JwtAuthMiddleware($auth);
     }
-
-    public static function invokable(string $tokenKey, string $secret): JwtAuthInvokable
-    {
-        $auth = new Authenticate($tokenKey, $secret);
-
-        return new JwtAuthInvokable($auth);
-    }
 }
