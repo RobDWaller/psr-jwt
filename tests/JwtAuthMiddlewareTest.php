@@ -123,22 +123,18 @@ class JwtAuthMiddlewareTest extends TestCase
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Body
      * @uses PsrJwt\Parser\Bearer
-     * @uses PsrJwt\Parser\Server
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Cookie
      */
     public function testInvokeFail()
     {
         $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getServerParams')
-            ->once()
-            ->andReturn(['jwt' => 'abc.abc.abc']);
         $request->shouldReceive('getCookieParams')
             ->once()
-            ->andReturn(['hello' => 'world']);
+            ->andReturn(['car' => 'park']);
         $request->shouldReceive('getQueryParams')
             ->once()
-            ->andReturn(['car' => 'park']);
+            ->andReturn(['jwt' => 'abc.abc.abc']);
         $request->shouldReceive('getParsedBody')
             ->twice()
             ->andReturn(['gary' => 'barlow']);

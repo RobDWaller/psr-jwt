@@ -30,7 +30,6 @@ class AuthenticateTest extends TestCase
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Body
      * @uses PsrJwt\Parser\Bearer
-     * @uses PsrJwt\Parser\Server
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Cookie
      */
@@ -43,15 +42,12 @@ class AuthenticateTest extends TestCase
             ->getToken();
 
         $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getServerParams')
-            ->once()
-            ->andReturn(['jwt' => $token]);
         $request->shouldReceive('getCookieParams')
             ->once()
             ->andReturn(['foo' => 'bar']);
         $request->shouldReceive('getQueryParams')
             ->once()
-            ->andReturn(['hello' => 'world']);
+            ->andReturn(['jwt' => $token]);
         $request->shouldReceive('getParsedBody')
             ->twice()
             ->andReturn([]);
@@ -78,7 +74,6 @@ class AuthenticateTest extends TestCase
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Body
      * @uses PsrJwt\Parser\Bearer
-     * @uses PsrJwt\Parser\Server
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Cookie
      */
@@ -87,9 +82,6 @@ class AuthenticateTest extends TestCase
         $jwt = Jwt::builder();
 
         $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getServerParams')
-            ->once()
-            ->andReturn([]);
         $request->shouldReceive('getCookieParams')
             ->once()
             ->andReturn(['foo' => 'bar']);
@@ -337,7 +329,6 @@ class AuthenticateTest extends TestCase
      * @uses PsrJwt\Auth\Authenticate
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Bearer
-     * @uses PsrJwt\Parser\Server
      * @uses PsrJwt\Parser\Body
      * @uses PsrJwt\Parser\Cookie
      * @uses PsrJwt\Parser\Query
@@ -347,9 +338,6 @@ class AuthenticateTest extends TestCase
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getHeader')
             ->with('authorization')
-            ->once()
-            ->andReturn([]);
-        $request->shouldReceive('getServerParams')
             ->once()
             ->andReturn([]);
         $request->shouldReceive('getCookieParams')

@@ -77,7 +77,6 @@ class Authenticate
         $parse->addParser(\PsrJwt\Parser\Cookie::class);
         $parse->addParser(\PsrJwt\Parser\Body::class);
         $parse->addParser(\PsrJwt\Parser\Query::class);
-        $parse->addParser(\PsrJwt\Parser\Server::class);
 
         $token = $parse->findToken($request);
 
