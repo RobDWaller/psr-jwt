@@ -100,7 +100,7 @@ class JwtAuthMiddlewareTest extends TestCase
 
         $response = m::mock(ResponseInterface::class);
 
-        $next = function($request, $response) {
+        $next = function ($request, $response) {
             return $response;
         };
 
@@ -145,7 +145,7 @@ class JwtAuthMiddlewareTest extends TestCase
 
         $response = m::mock(ResponseInterface::class);
 
-        $next = function($request, $response) {
+        $next = function ($request, $response) {
             return $response;
         };
 
@@ -159,7 +159,8 @@ class JwtAuthMiddlewareTest extends TestCase
         $this->assertSame('Unauthorized: Signature is invalid.', $result->getReasonPhrase());
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         m::close();
     }
 }
