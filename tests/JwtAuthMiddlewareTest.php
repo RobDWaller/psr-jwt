@@ -7,11 +7,13 @@ use Nyholm\Psr7\Factory\Psr17Factory;
 use PsrJwt\Factory\Jwt;
 use PsrJwt\JwtAuthMiddleware;
 use PsrJwt\Auth\Authenticate;
+use PsrJwt\Auth\Auth;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Mockery as m;
+use ReflectionMethod;
 
 class JwtAuthMiddlewareTest extends TestCase
 {
@@ -71,6 +73,49 @@ class JwtAuthMiddlewareTest extends TestCase
         $this->assertInstanceOf(ResponseInterface::class, $result);
         $this->assertSame(200, $result->getStatusCode());
         $this->assertSame('Ok', $result->getReasonPhrase());
+    }
+
+    /**
+     * @covers PsrJwt\JwtAuthMiddleware::process
+     * @uses PsrJwt\JwtAuthMiddleware
+     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Auth
+     * @uses PsrJwt\Factory\Jwt
+     * @uses PsrJwt\Parser\Parse
+     * @uses PsrJwt\Validation\Validate
+     * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Query
+     */
+    public function testProcessFail()
+    {
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getCookieParams')
+            ->once()
+            ->andReturn(['car' => 'park']);
+        $request->shouldReceive('getQueryParams')
+            ->once()
+            ->andReturn(['farm' => 'yard']);
+        $request->shouldReceive('getParsedBody')
+            ->twice()
+            ->andReturn(['gary' => 'barlow']);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->once()
+            ->andReturn([]);
+
+        $handler = m::mock(RequestHandlerInterface::class);
+
+        $authenticate = new Authenticate('jwt', 'Secret123!456$');
+
+        $process = new JwtAuthMiddleware($authenticate);
+
+        $result = $process->process($request, $handler);
+
+        $this->assertInstanceOf(ResponseInterface::class, $result);
+        $this->assertSame(400, $result->getStatusCode());
+        $this->assertSame('Bad Request: JSON Web Token not set.', $result->getReasonPhrase());
     }
 
     /**
@@ -157,6 +202,28 @@ class JwtAuthMiddlewareTest extends TestCase
 
         $this->assertSame(401, $result->getStatusCode());
         $this->assertSame('Unauthorized: Signature is invalid.', $result->getReasonPhrase());
+    }
+
+    /**
+     * @covers PsrJwt\JwtAuthMiddleware::failResponse
+     * @uses PsrJwt\JwtAuthMiddleware
+     * @uses PsrJwt\Auth\Auth
+     * @uses PsrJwt\Auth\Authenticate
+     */
+    public function testFailResponse()
+    {
+        $authenticate = new Authenticate('jwt', 'secret');
+        $auth = new Auth(400, 'Bad Request');
+
+        $middleware = new JwtAuthMiddleware($authenticate);
+
+        $method = new ReflectionMethod(JwtAuthMiddleware::class, 'failResponse');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($middleware, [$auth]);
+
+        $this->assertInstanceOf(ResponseInterface::class, $result);
+        $this->assertSame(400, $result->getStatusCode());
+        $this->assertSame('Bad Request', $result->getReasonPhrase());
     }
 
     public function tearDown()
