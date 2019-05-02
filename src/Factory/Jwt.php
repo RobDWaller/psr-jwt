@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PsrJwt;
+namespace PsrJwt\Factory;
 
 use ReallySimpleJWT\Build;
 use ReallySimpleJWT\Validate;
 use ReallySimpleJWT\Encode;
 use ReallySimpleJWT\Parse;
-use ReallySimpleJWT\Jwt;
+use ReallySimpleJWT\Jwt as RSJwt;
 
-class JwtFactory
+class Jwt
 {
     public static function builder(): Build
     {
@@ -23,7 +23,7 @@ class JwtFactory
 
     public static function parser(string $token, string $secret): Parse
     {
-        $jwt = new Jwt($token, $secret);
+        $jwt = new RSJwt($token, $secret);
 
         return new Parse(
             $jwt,

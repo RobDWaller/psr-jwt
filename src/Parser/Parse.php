@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace PsrJwt;
+namespace PsrJwt\Parser;
 
 use Psr\Http\Message\ServerRequestInterface;
 
-class JwtParse
+class Parse
 {
     private $parsers = [];
 
@@ -22,9 +22,14 @@ class JwtParse
         $this->parsers[] = $parser;
     }
 
+    public function getParsers(): array
+    {
+        return $this->parsers;
+    }
+
     public function findToken(ServerRequestInterface $request): string
     {
-        foreach ($this->parsers as $parser) {
+        foreach ($this->getParsers() as $parser) {
             $object = new $parser($this->arguments);
             $token = $object->parse($request);
             if (!empty($token)) {
