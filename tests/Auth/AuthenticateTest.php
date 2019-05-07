@@ -283,10 +283,10 @@ class AuthenticateTest extends TestCase
 
         $errors = [
             [1, 'Error 1'],
-            [2, 'Error 1'],
-            [3, 'Error 1'],
-            [4, 'Error 1'],
-            [5, 'Error 1']
+            [2, 'Error 2'],
+            [3, 'Error 3'],
+            [4, 'Error 4'],
+            [5, 'Error 5']
         ];
 
         foreach ($errors as $error) {
@@ -319,6 +319,133 @@ class AuthenticateTest extends TestCase
         $result = $method->invokeArgs($auth, [$request]);
 
         $this->assertSame('abc.def.ghi', $result);
+    }
+
+    /**
+     * @covers PsrJwt\Auth\Authenticate::getToken
+     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Parser\Parse
+     * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Parser\Cookie
+     */
+    public function testGetTokenCookie()
+    {
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->once()
+            ->andReturn([]);
+        $request->shouldReceive('getCookieParams')
+            ->once()
+            ->andReturn(['token' => 'abc.123.def']);
+
+        $auth = new Authenticate('token', 'secret');
+
+        $method = new ReflectionMethod(Authenticate::class, 'getToken');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($auth, [$request]);
+
+        $this->assertSame('abc.123.def', $result);
+    }
+
+    /**
+     * @covers PsrJwt\Auth\Authenticate::getToken
+     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Parser\Parse
+     * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Body
+     */
+    public function testGetTokenBody()
+    {
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->once()
+            ->andReturn([]);
+        $request->shouldReceive('getCookieParams')
+            ->once()
+            ->andReturn([]);
+        $request->shouldReceive('getParsedBody')
+            ->once()
+            ->andReturn(['json_token_1' => '123.abc.def']);
+
+        $auth = new Authenticate('json_token_1', 'secret');
+
+        $method = new ReflectionMethod(Authenticate::class, 'getToken');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($auth, [$request]);
+
+        $this->assertSame('123.abc.def', $result);
+    }
+
+    /**
+     * @covers PsrJwt\Auth\Authenticate::getToken
+     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Parser\Parse
+     * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Body
+     */
+    public function testGetTokenBodyObject()
+    {
+        $token = new \stdClass();
+        $token->my_token = 'ghi.123.xyz';
+
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->once()
+            ->andReturn([]);
+        $request->shouldReceive('getCookieParams')
+            ->once()
+            ->andReturn([]);
+        $request->shouldReceive('getParsedBody')
+            ->twice()
+            ->andReturn($token);
+
+        $auth = new Authenticate('my_token', 'secret');
+
+        $method = new ReflectionMethod(Authenticate::class, 'getToken');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($auth, [$request]);
+
+        $this->assertSame('ghi.123.xyz', $result);
+    }
+
+    /**
+     * @covers PsrJwt\Auth\Authenticate::getToken
+     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Parser\Parse
+     * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Query
+     */
+    public function testGetTokenQuery()
+    {
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->once()
+            ->andReturn([]);
+        $request->shouldReceive('getCookieParams')
+            ->once()
+            ->andReturn([]);
+        $request->shouldReceive('getParsedBody')
+            ->twice()
+            ->andReturn([]);
+        $request->shouldReceive('getQueryParams')
+            ->once()
+            ->andReturn(['auth_token' => '456.gfv.3-1']);
+
+        $auth = new Authenticate('auth_token', 'secret');
+
+        $method = new ReflectionMethod(Authenticate::class, 'getToken');
+        $method->setAccessible(true);
+        $result = $method->invokeArgs($auth, [$request]);
+
+        $this->assertSame('456.gfv.3-1', $result);
     }
 
     /**
