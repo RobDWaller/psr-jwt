@@ -142,11 +142,7 @@ class AuthenticateTest extends TestCase
     {
         $auth = new Authenticate('jwt', 'secret');
 
-        $method = new ReflectionMethod(Authenticate::class, 'getSecret');
-        $method->setAccessible(true);
-        $result = $method->invoke($auth);
-
-        $this->assertSame('secret', $result);
+        $this->assertSame('secret', $auth->getSecret());
     }
 
     /**
