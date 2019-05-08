@@ -80,6 +80,7 @@ class ValidateTest extends TestCase
     /**
      * @covers PsrJwt\Validation\Validate::validate
      * @uses PsrJwt\Validation\Validate
+     * @uses PsrJwt\Factory\Jwt::parser
      */
     public function testValidateTokenStructure()
     {
@@ -96,6 +97,7 @@ class ValidateTest extends TestCase
     /**
      * @covers PsrJwt\Validation\Validate::validate
      * @uses PsrJwt\Validation\Validate
+     * @uses PsrJwt\Factory\Jwt::parser
      */
     public function testValidateBadSignature()
     {
