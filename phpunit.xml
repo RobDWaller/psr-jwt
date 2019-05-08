@@ -9,7 +9,8 @@
          verbose="true"
          colors="true"
          executionOrder="random"
-         resolveDependencies="true">
+         resolveDependencies="true"
+         failOnRisky="true">
     <testsuites>
         <testsuite name="default">
             <directory suffix="Test.php">tests</directory>
