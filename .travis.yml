@@ -14,6 +14,7 @@ script:
     - vendor/bin/phpstan analyse -l 7 src tests
     - vendor/bin/phpmd src text ruleset.xml
     - vendor/bin/phpunit --coverage-clover=coverage.xml
+    - vendor/bin/infection -s --min-msi=90
 
 after_success:
     - bash <(curl -s https://codecov.io/bash)
