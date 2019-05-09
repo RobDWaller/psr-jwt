@@ -7,15 +7,30 @@ namespace PsrJwt\Validation;
 use ReallySimpleJWT\Parse;
 use ReallySimpleJWT\Exception\ValidateException;
 
+/**
+ * Validate the JSON Web Token will parse, has a valid signature, is ready to
+ * use and has not expired.
+ */
 class Validate
 {
+    /**
+     * @param Parse $parse
+     */
     private $parse;
 
+    /**
+     * @param Parse $parse
+     */
     public function __construct(Parse $parse)
     {
         $this->parse = $parse;
     }
 
+    /**
+     * The JSON Web Token must be valid and not have expired.
+     *
+     * @return array
+     */
     public function validate(): array
     {
         try {
@@ -30,6 +45,11 @@ class Validate
         return ['code' => 0, 'message' => 'Ok'];
     }
 
+    /**
+     * The token may not be ready to use yet, check this.
+     *
+     * @return array
+     */
     public function validateNotBefore(array $validationState): array
     {
         try {
