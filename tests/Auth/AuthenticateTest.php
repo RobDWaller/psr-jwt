@@ -135,17 +135,6 @@ class AuthenticateTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Auth\Authenticate::getSecret
-     * @uses PsrJwt\Auth\Authenticate::__construct
-     */
-    public function testGetSecret()
-    {
-        $auth = new Authenticate('jwt', 'secret');
-
-        $this->assertSame('secret', $auth->getSecret());
-    }
-
-    /**
      * @covers PsrJwt\Auth\Authenticate::validate
      * @uses PsrJwt\Auth\Authenticate
      * @uses PsrJwt\Auth\Auth
