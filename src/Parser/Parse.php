@@ -33,7 +33,7 @@ class Parse
      * The JSON web token can be found in various parts of the request, a new
      * parser is required to search each part.
      *
-     * @param string
+     * @param string $parser
      */
     public function addParser(string $parser): void
     {

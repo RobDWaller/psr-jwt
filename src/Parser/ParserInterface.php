@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 interface ParserInterface
 {
     /**
-     * @param ServerRequestInterface
+     * @param ServerRequestInterface $request
      * @return string
      */
     public function parse(ServerRequestInterface $request): string;
