@@ -78,6 +78,40 @@ class ValidateTest extends TestCase
     }
 
     /**
+     * @covers PsrJwt\Validation\Validate::validate
+     * @uses PsrJwt\Validation\Validate
+     * @uses PsrJwt\Factory\Jwt::parser
+     */
+    public function testValidateTokenStructure()
+    {
+        $validate = new Validate(
+            Jwt::parser('123.abc', 'Secret123!456$')
+        );
+
+        $result = $validate->validate();
+
+        $this->assertSame(1, $result['code']);
+        $this->assertSame('Token is invalid.', $result['message']);
+    }
+
+    /**
+     * @covers PsrJwt\Validation\Validate::validate
+     * @uses PsrJwt\Validation\Validate
+     * @uses PsrJwt\Factory\Jwt::parser
+     */
+    public function testValidateBadSignature()
+    {
+        $validate = new Validate(
+            Jwt::parser('123.abc.456', 'Secret123!456$')
+        );
+
+        $result = $validate->validate();
+
+        $this->assertSame(3, $result['code']);
+        $this->assertSame('Signature is invalid.', $result['message']);
+    }
+
+    /**
      * @covers PsrJwt\Validation\Validate::validateNotBefore
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Factory\Jwt

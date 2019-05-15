@@ -38,6 +38,23 @@ class BearerTest extends TestCase
         $this->assertSame('abc.def.ghi', $result);
     }
 
+    /**
+     * @covers PsrJwt\Parser\Bearer::parse
+     */
+    public function testParseInvalid()
+    {
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->once()
+            ->andReturn(['Bear']);
+
+        $bearer = new Bearer();
+        $result = $bearer->parse($request);
+
+        $this->assertEmpty($result);
+    }
+
     public function tearDown()
     {
         m::close();

@@ -144,6 +144,12 @@ class JwtAuthMiddlewareTest extends TestCase
             ->andReturn(['Bearer ' . $token]);
 
         $response = m::mock(ResponseInterface::class);
+        $response->shouldReceive('getStatusCode')
+            ->once()
+            ->andReturn(200);
+        $response->shouldReceive('getReasonPhrase')
+            ->once()
+            ->andReturn('Ok');
 
         $next = function ($request, $response) {
             return $response;
@@ -156,6 +162,8 @@ class JwtAuthMiddlewareTest extends TestCase
         $result = $invokable($request, $response, $next);
 
         $this->assertInstanceOf(ResponseInterface::class, $result);
+        $this->assertSame(200, $result->getStatusCode());
+        $this->assertSame('Ok', $result->getReasonPhrase());
     }
 
     /**

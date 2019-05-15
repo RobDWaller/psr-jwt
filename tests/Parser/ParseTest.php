@@ -24,6 +24,7 @@ class ParseTest extends TestCase
 
     /**
      * @covers PsrJwt\Parser\Parse::findToken
+     * @covers PsrJwt\Parser\Parse::addParser
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Bearer
      */
@@ -41,24 +42,6 @@ class ParseTest extends TestCase
         $result = $parse->findToken($request);
 
         $this->assertSame('abc.def.ghi', $result);
-    }
-
-    /**
-     * @covers PsrJwt\Parser\Parse::addParser
-     * @covers PsrJwt\Parser\Parse::getParsers
-     * @uses PsrJwt\Parser\Parse
-     */
-    public function testAddParser()
-    {
-        $parse = new Parse(['token_key' => 'jwt']);
-        $parse->addParser(Bearer::class);
-        $parse->addParser(Cookie::class);
-
-        $result = $parse->getParsers();
-
-        $this->assertCount(2, $result);
-        $this->assertSame(Bearer::class, $result[0]);
-        $this->assertSame(Cookie::class, $result[1]);
     }
 
     /**

@@ -1,19 +1,19 @@
 language: php
-
 php:
-    - 7.1
-    - 7.2
-    - 7.3
-
+- 7.1
+- 7.2
+- 7.3
 before_script:
-    - travis_retry composer self-update
-    - travis_retry composer install --no-interaction --prefer-source --dev
-
+- travis_retry composer self-update
+- travis_retry composer install --no-interaction --prefer-source --dev
 script:
-    - vendor/bin/phpcs --standard=psr12 src tests
-    - vendor/bin/phpstan analyse -l 7 src tests
-    - vendor/bin/phpmd src text ruleset.xml
-    - vendor/bin/phpunit --coverage-clover=coverage.xml
-
+- vendor/bin/phpcs --standard=psr12 src tests
+- vendor/bin/phpstan analyse -l 7 src tests
+- vendor/bin/phpmd src text ruleset.xml
+- vendor/bin/phpunit --coverage-clover=coverage.xml
+- vendor/bin/infection -s --min-msi=90
 after_success:
-    - bash <(curl -s https://codecov.io/bash)
+- bash <(curl -s https://codecov.io/bash)
+env:
+  global:
+    secure: oaOExVMXXbPswvGD2IfSM1t9iVybKhui5C4LyoVwvSoyWmkZU2YmS5Yf7Z2oCjbjzTq6b20iswVjlfakrgd2IzlvpvELu7N/jgPylfKLmG4/mvOxK53FujILsOYd8Np90zlvJb4fRcxYp/iHAmJpJEVz6J7keoRFLR8JVyF7TmbNah40Bog2pG6KaNgQ1xabGTRNDf8Vo6SJtMNrgDxv2LBLBY566QTXH8fuTmijkqsVM/r/N49Pa+2EnE26O4t25HJsBDmEbRWWHAxw7SMxrneLG98dg/GqjroqOJ5h2S2ud3I6l2kI8wtKp0bcosMiijcTZ+z7J9STrrzPIVRLVHYrLQ38+N4FaaS94k87Hk0Ywin4gPqLWU9cTtb/R4/3bE25rGTnxn/Gdm6RtniexcMDcqyjqfv65Iq5RX/mTyIDpFRNUn7M22KitTp/7jULZIVtOgHOxd27TseKgOUcPt8OavPsaakb5voL+aCWZMov1kE6H3p5ZsoDyaMusb4sJHFt63aGegtTrm4cjHKU0qO9L7y/ivI9tK/lVenUbzy+Drt5Jdp40jD5AQ8kxvB96QkxZa6DeFkidl0chwC/GgMSWx9lEMHhO5G0RJAWqWgp+wDBl+u0Wki6NlmPdlk72EbjzSWarK5ddhwElO2QTWGumw+AzfmYUNZiwQr/fJo=
