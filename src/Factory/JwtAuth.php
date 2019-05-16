@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PsrJwt\Factory;
 
 use PsrJwt\JwtAuthMiddleware;
-use PsrJwt\Auth\Authenticate;
+use PsrJwt\Handler\Auth;
 use PsrJwt\JwtAuthInvokable;
 
 /**
@@ -22,9 +22,9 @@ class JwtAuth
      * @return JwtAuthMiddleware
      * @todo TokenKey and Secret are the wrong way around.
      */
-    public static function middleware(string $tokenKey, string $secret): JwtAuthMiddleware
+    public static function middleware(string $secret, string $tokenKey = '', string $body = ''): JwtAuthMiddleware
     {
-        $auth = new Authenticate($tokenKey, $secret);
+        $auth = new Auth($tokenKey, $secret, $body);
 
         return new JwtAuthMiddleware($auth);
     }

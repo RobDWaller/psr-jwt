@@ -30,7 +30,7 @@ class JwtAuthMiddleware implements MiddlewareInterface
     /**
      * @param Authenticate $authenticate
      */
-    public function __construct(Authenticate $authenticate)
+    public function __construct(RequestHandlerInterface $authenticate)
     {
         $this->authenticate = $authenticate;
     }
@@ -48,13 +48,13 @@ class JwtAuthMiddleware implements MiddlewareInterface
         ResponseInterface $response,
         callable $next
     ): ResponseInterface {
-        $auth = $this->authenticate->authenticate($request);
+        $auth = $this->authenticate->handle($request);
 
-        if ($auth->getCode() === 200) {
+        if ($auth->getStatusCode() === 200) {
             return $next($request, $response);
         }
 
-        return $this->failResponse($auth);
+        return $auth;
     }
 
     /**
@@ -67,24 +67,12 @@ class JwtAuthMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $auth = $this->authenticate->authenticate($request);
+        $auth = $this->authenticate->handle($request);
 
-        if ($auth->getCode() === 200) {
+        if ($auth->getStatusCode() === 200) {
             return $handler->handle($request);
         }
 
-        return $this->failResponse($auth);
-    }
-
-    /**
-     * Return a failure response if JSON Web Token authentication fails.
-     *
-     * @param Auth $auth
-     * @return ResponseInterface
-     */
-    private function failResponse(Auth $auth): ResponseInterface
-    {
-        $factory = new Psr17Factory();
-        return $factory->createResponse($auth->getCode(), $auth->getMessage());
+        return $auth;
     }
 }
