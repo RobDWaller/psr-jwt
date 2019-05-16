@@ -19,6 +19,7 @@ class JwtAuthMiddlewareTest extends TestCase
     /**
      * @covers PsrJwt\JwtAuthMiddleware
      * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Handler\Auth
      */
     public function testJwtAuthProcess()
     {
@@ -39,6 +40,7 @@ class JwtAuthMiddlewareTest extends TestCase
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Handler\Auth
      */
     public function testProcess()
     {
@@ -86,6 +88,7 @@ class JwtAuthMiddlewareTest extends TestCase
      * @uses PsrJwt\Parser\Body
      * @uses PsrJwt\Parser\Cookie
      * @uses PsrJwt\Parser\Query
+     * @uses PsrJwt\Handler\Auth
      */
     public function testProcessFail()
     {
@@ -126,6 +129,7 @@ class JwtAuthMiddlewareTest extends TestCase
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Handler\Auth
      */
     public function testInvoke()
     {
@@ -177,6 +181,7 @@ class JwtAuthMiddlewareTest extends TestCase
      * @uses PsrJwt\Parser\Bearer
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Handler\Auth
      */
     public function testInvokeFail()
     {

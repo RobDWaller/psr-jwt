@@ -13,6 +13,10 @@ use Mockery as m;
 
 class AuthTest extends TestCase
 {
+    /**
+     * @covers PsrJwt\Handler\Auth::__construct
+     * @uses PsrJwt\Auth\Authenticate
+     */
     public function testAuthHandler()
     {
         $auth = new Auth('secret', 'tokenKey', 'body');
@@ -22,6 +26,19 @@ class AuthTest extends TestCase
         $this->assertInstanceOf(RequestHandlerInterface::class, $auth);
     }
 
+    /**
+     * @covers PsrJwt\Handler\Auth::handle
+     * @uses PsrJwt\Handler\Auth::__construct
+     * @uses PsrJwt\Factory\Jwt
+     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Auth
+     * @uses PsrJwt\Validation\Validate
+     * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Query
+     * @uses PsrJwt\Parser\Parse
+     */
     public function testAuthenticateOk()
     {
         $jwt = Jwt::builder();

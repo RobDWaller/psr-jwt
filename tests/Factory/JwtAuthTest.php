@@ -14,6 +14,7 @@ class JwtAuthTest extends TestCase
      * @covers PsrJwt\Factory\JwtAuth::middleware
      * @uses PsrJwt\JwtAuthMiddleware::__construct
      * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Handler\Auth
      */
     public function testJwtAuthMiddleware()
     {
