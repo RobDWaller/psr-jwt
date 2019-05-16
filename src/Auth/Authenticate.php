@@ -18,13 +18,6 @@ use PsrJwt\Validation\Validate;
 class Authenticate
 {
     /**
-     * Define under what key the JWT can be found in the request.
-     *
-     * @var string $tokenKey
-     */
-    private $tokenKey;
-
-    /**
      * The secret required to parse and validate the JWT.
      *
      * @var string $secret
@@ -32,16 +25,23 @@ class Authenticate
     private $secret;
 
     /**
+     * Define under what key the JWT can be found in the request.
+     *
+     * @var string $tokenKey
+     */
+    private $tokenKey;
+
+    /**
      * @param string $tokenKey
      * @param string $secret
      * @todo the tokenKey and secret are the wrong way around, secret is
      * required token key is not.
      */
-    public function __construct(string $tokenKey, string $secret)
+    public function __construct(string $secret, string $tokenKey)
     {
-        $this->tokenKey = $tokenKey;
-
         $this->secret = $secret;
+
+        $this->tokenKey = $tokenKey;
     }
 
     /**

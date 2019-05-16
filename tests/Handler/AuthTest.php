@@ -45,7 +45,7 @@ class AuthTest extends TestCase
             ->once()
             ->andReturn([]);
 
-        $auth = new Auth('jwt', 'Secret123!456$', '<h1>Ok</h1>');
+        $auth = new Auth('Secret123!456$', 'jwt', '<h1>Ok</h1>');
 
         $result = $auth->handle($request);
 

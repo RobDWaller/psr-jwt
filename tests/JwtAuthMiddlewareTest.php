@@ -23,7 +23,7 @@ class JwtAuthMiddlewareTest extends TestCase
      */
     public function testJwtAuthProcess()
     {
-        $authenticate = new Authenticate('jwt', 'secret');
+        $authenticate = new Authenticate('secret', 'jwt');
 
         $process = new JwtAuthMiddleware($authenticate);
 
@@ -64,7 +64,7 @@ class JwtAuthMiddlewareTest extends TestCase
             ->once()
             ->andReturn($response);
 
-        $authenticate = new Authenticate('jwt', 'Secret123!456$');
+        $authenticate = new Authenticate('Secret123!456$', '');
 
         $process = new JwtAuthMiddleware($authenticate);
 
@@ -107,7 +107,7 @@ class JwtAuthMiddlewareTest extends TestCase
 
         $handler = m::mock(RequestHandlerInterface::class);
 
-        $authenticate = new Authenticate('jwt', 'Secret123!456$');
+        $authenticate = new Authenticate('Secret123!456$', 'jwt');
 
         $process = new JwtAuthMiddleware($authenticate);
 
@@ -155,7 +155,7 @@ class JwtAuthMiddlewareTest extends TestCase
             return $response;
         };
 
-        $auth = new Authenticate('jwt', 'Secret123!456$');
+        $auth = new Authenticate('Secret123!456$', 'jwt');
 
         $invokable = new JwtAuthMiddleware($auth);
 
@@ -202,7 +202,7 @@ class JwtAuthMiddlewareTest extends TestCase
             return $response;
         };
 
-        $auth = new Authenticate('jwt', 'secret');
+        $auth = new Authenticate('secret', 'jwt');
 
         $invokable = new JwtAuthMiddleware($auth);
 
@@ -220,7 +220,7 @@ class JwtAuthMiddlewareTest extends TestCase
      */
     public function testFailResponse()
     {
-        $authenticate = new Authenticate('jwt', 'secret');
+        $authenticate = new Authenticate('secret', 'jwt');
         $auth = new Auth(400, 'Bad Request');
 
         $middleware = new JwtAuthMiddleware($authenticate);

@@ -17,7 +17,7 @@ class AuthenticateTest extends TestCase
      */
     public function testAuthenticate()
     {
-        $auth = new Authenticate('jwt', 'secret');
+        $auth = new Authenticate('secret', 'jwt');
         $this->assertInstanceOf(Authenticate::class, $auth);
     }
 
@@ -56,7 +56,7 @@ class AuthenticateTest extends TestCase
             ->once()
             ->andReturn([]);
 
-        $authenticate = new Authenticate('jwt', 'Secret123!456$');
+        $authenticate = new Authenticate('Secret123!456$', 'jwt');
 
         $result = $authenticate->authenticate($request);
 
@@ -96,7 +96,7 @@ class AuthenticateTest extends TestCase
             ->once()
             ->andReturn([]);
 
-        $auth = new Authenticate('jwt', 'Secret123!456$');
+        $auth = new Authenticate('Secret123!456$', 'jwt');
 
         $result = $auth->authenticate($request);
 
@@ -110,7 +110,7 @@ class AuthenticateTest extends TestCase
      */
     public function testAuthenticateHasJwt()
     {
-        $auth = new Authenticate('jwt', 'secret');
+        $auth = new Authenticate('secret', 'jwt');
 
         $method = new ReflectionMethod(Authenticate::class, 'hasJwt');
         $method->setAccessible(true);
@@ -125,7 +125,7 @@ class AuthenticateTest extends TestCase
      */
     public function testAuthenticateHasJwtEmpty()
     {
-        $auth = new Authenticate('jwt', 'secret');
+        $auth = new Authenticate('secret', 'jwt');
 
         $method = new ReflectionMethod(Authenticate::class, 'hasJwt');
         $method->setAccessible(true);
@@ -149,7 +149,7 @@ class AuthenticateTest extends TestCase
             ->build()
             ->getToken();
 
-        $auth = new Authenticate('jwt', 'Secret123!456$');
+        $auth = new Authenticate('Secret123!456$', 'jwt');
 
         $method = new ReflectionMethod(Authenticate::class, 'validate');
         $method->setAccessible(true);
@@ -174,7 +174,7 @@ class AuthenticateTest extends TestCase
             ->build()
             ->getToken();
 
-        $auth = new Authenticate('jwt', 'Secret');
+        $auth = new Authenticate('Secret', 'jwt');
 
         $method = new ReflectionMethod(Authenticate::class, 'validate');
         $method->setAccessible(true);
@@ -200,7 +200,7 @@ class AuthenticateTest extends TestCase
             ->build()
             ->getToken();
 
-        $auth = new Authenticate('jwt', 'Secret123!456$');
+        $auth = new Authenticate('Secret123!456$', 'jwt');
 
         $method = new ReflectionMethod(Authenticate::class, 'validate');
         $method->setAccessible(true);
@@ -226,7 +226,7 @@ class AuthenticateTest extends TestCase
             ->build()
             ->getToken();
 
-        $auth = new Authenticate('jwt', 'Secret123!456$');
+        $auth = new Authenticate('Secret123!456$', 'jwt');
 
         $method = new ReflectionMethod(Authenticate::class, 'validate');
         $method->setAccessible(true);
@@ -243,7 +243,7 @@ class AuthenticateTest extends TestCase
      */
     public function testValidationResponse()
     {
-        $auth = new Authenticate('jwt', 'secret');
+        $auth = new Authenticate('secret', 'jwt');
 
         $method = new ReflectionMethod(Authenticate::class, 'validationResponse');
         $method->setAccessible(true);
@@ -261,7 +261,7 @@ class AuthenticateTest extends TestCase
      */
     public function testValidationResponseErrors()
     {
-        $auth = new Authenticate('jwt', 'secret');
+        $auth = new Authenticate('secret', 'jwt');
 
         $method = new ReflectionMethod(Authenticate::class, 'validationResponse');
         $method->setAccessible(true);
@@ -297,7 +297,7 @@ class AuthenticateTest extends TestCase
             ->once()
             ->andReturn(['Bearer abc.def.ghi']);
 
-        $auth = new Authenticate('jwt', 'secret');
+        $auth = new Authenticate('secret', 'jwt');
 
         $method = new ReflectionMethod(Authenticate::class, 'getToken');
         $method->setAccessible(true);
@@ -324,7 +324,7 @@ class AuthenticateTest extends TestCase
             ->once()
             ->andReturn(['token' => 'abc.123.def']);
 
-        $auth = new Authenticate('token', 'secret');
+        $auth = new Authenticate('secret', 'token');
 
         $method = new ReflectionMethod(Authenticate::class, 'getToken');
         $method->setAccessible(true);
@@ -355,7 +355,7 @@ class AuthenticateTest extends TestCase
             ->once()
             ->andReturn(['json_token_1' => '123.abc.def']);
 
-        $auth = new Authenticate('json_token_1', 'secret');
+        $auth = new Authenticate('secret', 'json_token_1');
 
         $method = new ReflectionMethod(Authenticate::class, 'getToken');
         $method->setAccessible(true);
@@ -389,7 +389,7 @@ class AuthenticateTest extends TestCase
             ->twice()
             ->andReturn($token);
 
-        $auth = new Authenticate('my_token', 'secret');
+        $auth = new Authenticate('secret', 'my_token');
 
         $method = new ReflectionMethod(Authenticate::class, 'getToken');
         $method->setAccessible(true);
@@ -424,7 +424,7 @@ class AuthenticateTest extends TestCase
             ->once()
             ->andReturn(['auth_token' => '456.gfv.3-1']);
 
-        $auth = new Authenticate('auth_token', 'secret');
+        $auth = new Authenticate('secret', 'auth_token');
 
         $method = new ReflectionMethod(Authenticate::class, 'getToken');
         $method->setAccessible(true);
@@ -462,7 +462,7 @@ class AuthenticateTest extends TestCase
             ->twice()
             ->andReturn([]);
 
-        $auth = new Authenticate('jwt', 'secret');
+        $auth = new Authenticate('secret', 'jwt');
 
         $method = new ReflectionMethod(Authenticate::class, 'getToken');
         $method->setAccessible(true);
