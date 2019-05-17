@@ -14,7 +14,7 @@ use Nyholm\Psr7\Response;
  * Default JWT authentication handler. Allows you to customise body response
  * with a simple message. If you require a more detailed response create your
  * own handler which extends the Authenticate class and calls the authenticate
- * method as below. 
+ * method as below.
  */
 class Auth extends Authenticate implements RequestHandlerInterface
 {
