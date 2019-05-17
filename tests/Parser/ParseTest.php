@@ -7,6 +7,8 @@ use PsrJwt\Parser\Parse;
 use Psr\Http\Message\ServerRequestInterface;
 use PsrJwt\Parser\Bearer;
 use PsrJwt\Parser\Cookie;
+use PsrJwt\Parser\Body;
+use PsrJwt\Parser\Query;
 use ReflectionMethod;
 use Mockery as m;
 use stdClass;
@@ -42,6 +44,33 @@ class ParseTest extends TestCase
         $result = $parse->findToken($request);
 
         $this->assertSame('abc.def.ghi', $result);
+    }
+
+    /**
+     * @covers PsrJwt\Parser\Parse::findToken
+     * @covers PsrJwt\Parser\Parse::addParser
+     * @uses PsrJwt\Parser\Parse
+     * @uses PsrJwt\Parser\Bearer
+     */
+    public function testFindTokenMultiParser()
+    {
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->once()
+            ->andReturn([]);
+        $request->shouldReceive('getParsedBody')
+            ->once()
+            ->andReturn(['jwt' => 'abc.123.ghi']);
+
+        $parse = new Parse(['token_key' => 'jwt']);
+        $parse->addParser(Bearer::class);
+        $parse->addParser(Body::class);
+        $parse->addParser(Query::class);
+
+        $result = $parse->findToken($request);
+
+        $this->assertSame('abc.123.ghi', $result);
     }
 
     /**
