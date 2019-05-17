@@ -4,7 +4,6 @@
     "keywords": ["jwt", "json", "tokens", "authentication", "json web tokens", "php", "psr-7"],
     "type": "library",
     "license": "MIT",
-    "minimum-stability": "RC",
     "authors": [
         {
             "name": "Rob Waller",
@@ -32,5 +31,14 @@
             "PsrJwt\\": "src",
             "Tests\\": "tests"
         }
+    },
+    "scripts" : {
+        "pipeline": [
+            "vendor/bin/phpcs --standard=psr12 src tests",
+            "vendor/bin/phpstan analyse -l 7 src tests",
+            "vendor/bin/phpmd src text ruleset.xml",
+            "vendor/bin/phpunit --coverage-clover=coverage.xml",
+            "vendor/bin/infection -s --min-msi=90"
+        ]
     }
 }
