@@ -23,12 +23,12 @@ use PsrJwt\Auth\Auth;
 class JwtAuthMiddleware implements MiddlewareInterface
 {
     /**
-     * @var Authenticate $authenticate
+     * @var RequestHandlerInterface
      */
     private $authenticate;
 
     /**
-     * @param Authenticate $authenticate
+     * @param RequestHandlerInterface $authenticate
      */
     public function __construct(RequestHandlerInterface $authenticate)
     {
@@ -65,8 +65,11 @@ class JwtAuthMiddleware implements MiddlewareInterface
      * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
-    {
+    public function process(
+        ServerRequestInterface $request,
+        RequestHandlerInterface $handler
+    ): ResponseInterface {
+        
         $auth = $this->authenticate->handle($request);
 
         if ($auth->getStatusCode() === 200) {
