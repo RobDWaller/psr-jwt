@@ -51,6 +51,8 @@ class ParseTest extends TestCase
      * @covers PsrJwt\Parser\Parse::addParser
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Query
      */
     public function testFindTokenMultiParser()
     {
