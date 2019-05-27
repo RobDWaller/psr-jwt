@@ -33,9 +33,9 @@ PSR-JWT can be used with any PSR-7 / PSR-15 compliant framework. Just call the m
 
 The `secret` is the string required to hash the JSON Web Token signature.
 
-The `tokenKey` is the key required to retrieve the JSON Web Token from a cookie, query parameter or the request body. By default though the library looks for tokens in bearer field of the authorization header.
+The `tokenKey` is the key required to retrieve the JSON Web Token from a cookie, query parameter or the request body. By default though the library looks for tokens in the bearer field of the authorization header.
 
-The `body` is the body content you would like to be returned in the response if authentication fails.
+The `body` is the body content you would like to return in the response if authentication fails.
 
 ### Slim PHP 3.0 Example Implementation
 
