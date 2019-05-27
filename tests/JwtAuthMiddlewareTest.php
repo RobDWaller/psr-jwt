@@ -6,8 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use PsrJwt\Factory\Jwt;
 use PsrJwt\JwtAuthMiddleware;
-use PsrJwt\Auth\Authenticate;
-use PsrJwt\Auth\Auth;
+use PsrJwt\Handler\Auth;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -20,10 +19,11 @@ class JwtAuthMiddlewareTest extends TestCase
     /**
      * @covers PsrJwt\JwtAuthMiddleware
      * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Handler\Auth
      */
     public function testJwtAuthProcess()
     {
-        $authenticate = new Authenticate('jwt', 'secret');
+        $authenticate = new Auth('secret', 'jwt', '');
 
         $process = new JwtAuthMiddleware($authenticate);
 
@@ -40,6 +40,7 @@ class JwtAuthMiddlewareTest extends TestCase
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Handler\Auth
      */
     public function testProcess()
     {
@@ -64,7 +65,7 @@ class JwtAuthMiddlewareTest extends TestCase
             ->once()
             ->andReturn($response);
 
-        $authenticate = new Authenticate('jwt', 'Secret123!456$');
+        $authenticate = new Auth('Secret123!456$', '', '');
 
         $process = new JwtAuthMiddleware($authenticate);
 
@@ -87,6 +88,7 @@ class JwtAuthMiddlewareTest extends TestCase
      * @uses PsrJwt\Parser\Body
      * @uses PsrJwt\Parser\Cookie
      * @uses PsrJwt\Parser\Query
+     * @uses PsrJwt\Handler\Auth
      */
     public function testProcessFail()
     {
@@ -107,7 +109,7 @@ class JwtAuthMiddlewareTest extends TestCase
 
         $handler = m::mock(RequestHandlerInterface::class);
 
-        $authenticate = new Authenticate('jwt', 'Secret123!456$');
+        $authenticate = new Auth('Secret123!456$', 'jwt', '');
 
         $process = new JwtAuthMiddleware($authenticate);
 
@@ -127,6 +129,7 @@ class JwtAuthMiddlewareTest extends TestCase
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Handler\Auth
      */
     public function testInvoke()
     {
@@ -155,7 +158,7 @@ class JwtAuthMiddlewareTest extends TestCase
             return $response;
         };
 
-        $auth = new Authenticate('jwt', 'Secret123!456$');
+        $auth = new Auth('Secret123!456$', 'jwt', '');
 
         $invokable = new JwtAuthMiddleware($auth);
 
@@ -178,6 +181,7 @@ class JwtAuthMiddlewareTest extends TestCase
      * @uses PsrJwt\Parser\Bearer
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Handler\Auth
      */
     public function testInvokeFail()
     {
@@ -202,7 +206,7 @@ class JwtAuthMiddlewareTest extends TestCase
             return $response;
         };
 
-        $auth = new Authenticate('jwt', 'secret');
+        $auth = new Auth('secret', 'jwt', '');
 
         $invokable = new JwtAuthMiddleware($auth);
 
@@ -210,28 +214,6 @@ class JwtAuthMiddlewareTest extends TestCase
 
         $this->assertSame(401, $result->getStatusCode());
         $this->assertSame('Unauthorized: Signature is invalid.', $result->getReasonPhrase());
-    }
-
-    /**
-     * @covers PsrJwt\JwtAuthMiddleware::failResponse
-     * @uses PsrJwt\JwtAuthMiddleware
-     * @uses PsrJwt\Auth\Auth
-     * @uses PsrJwt\Auth\Authenticate
-     */
-    public function testFailResponse()
-    {
-        $authenticate = new Authenticate('jwt', 'secret');
-        $auth = new Auth(400, 'Bad Request');
-
-        $middleware = new JwtAuthMiddleware($authenticate);
-
-        $method = new ReflectionMethod(JwtAuthMiddleware::class, 'failResponse');
-        $method->setAccessible(true);
-        $result = $method->invokeArgs($middleware, [$auth]);
-
-        $this->assertInstanceOf(ResponseInterface::class, $result);
-        $this->assertSame(400, $result->getStatusCode());
-        $this->assertSame('Bad Request', $result->getReasonPhrase());
     }
 
     public function tearDown()
