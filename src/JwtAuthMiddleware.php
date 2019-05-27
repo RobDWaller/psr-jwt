@@ -69,7 +69,6 @@ class JwtAuthMiddleware implements MiddlewareInterface
         ServerRequestInterface $request,
         RequestHandlerInterface $handler
     ): ResponseInterface {
-        
         $auth = $this->authenticate->handle($request);
 
         if ($auth->getStatusCode() === 200) {
