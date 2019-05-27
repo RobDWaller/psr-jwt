@@ -24,7 +24,7 @@ class JwtAuth
      */
     public static function middleware(string $secret, string $tokenKey = '', string $body = ''): JwtAuthMiddleware
     {
-        $auth = new Auth($tokenKey, $secret, $body);
+        $auth = new Auth($secret, $tokenKey, $body);
 
         return new JwtAuthMiddleware($auth);
     }

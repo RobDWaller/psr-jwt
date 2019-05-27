@@ -6,7 +6,11 @@ use PHPUnit\Framework\TestCase;
 use PsrJwt\Factory\JwtAuth;
 use PsrJwt\JwtAuthMiddleware;
 use PsrJwt\Auth\Authenticate;
-use PsrJwt\JwtAuthInvokable;
+use PsrJwt\Factory\Jwt;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Mockery as m;
 
 class JwtAuthTest extends TestCase
 {
@@ -20,7 +24,49 @@ class JwtAuthTest extends TestCase
     {
         $this->assertInstanceOf(
             JwtAuthMiddleware::class,
-            JwtAuth::middleware('jwt', '$Secret123!')
+            JwtAuth::middleware('$Secret123!', 'jwt')
         );
+    }
+
+    /**
+     * @covers PsrJwt\JwtAuthMiddleware::process
+     * @uses PsrJwt\Factory\JwtAuth
+     * @uses PsrJwt\Auth\Auth
+     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Handler\Auth
+     * @uses PsrJwt\Factory\Jwt
+     * @uses PsrJwt\JwtAuthMiddleware
+     * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Parser\Parse
+     * @uses PsrJwt\Validation\Validate
+     */
+    public function testFactoryValidation()
+    {
+        $jwt = Jwt::builder();
+        $token = $jwt->setSecret('Secret123!456$')
+            ->setIssuer('localhost')
+            ->setPayloadClaim('nbf', time() - 60)
+            ->build()
+            ->getToken();
+
+        $request = m::mock(ServerRequestInterface::class);
+        $request->shouldReceive('getHeader')
+            ->with('authorization')
+            ->once()
+            ->andReturn(['Bearer ' . $token]);
+
+        $response = new Psr17Factory();
+        $response = $response->createResponse(200, 'Ok');
+
+        $handler = m::mock(RequestHandlerInterface::class);
+        $handler->shouldReceive('handle')
+            ->once()
+            ->andReturn($response);
+
+        $middleware = JwtAuth::middleware('Secret123!456$', 'jwt');
+
+        $result = $middleware->process($request, $handler);
+
+        $this->assertSame(200, $result->getStatusCode());
     }
 }
