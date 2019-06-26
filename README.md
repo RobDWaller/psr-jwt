@@ -9,13 +9,17 @@ For more information on JSON Web Tokens please read [RFC 7519](https://tools.iet
 
 ## Setup
 
-Via Composer on the command line:
+To install this package you will need to install [Composer](https://getcomposer.org/) and then run `composer init`. Once this is done you can install the package via the command line or by editing the composer.json file created by the `composer init` command.
+
+Finally you will need to reference the composer autoloader in your PHP code, `require 'vendor/autoload.php';`. The location of the autoload file will differ dependent on where your code is run. Also you will not need to reference the autoload file if you are using a framework like Laravel or Symfony.
+
+**Install via Composer on the command line:**
 
 ```bash
 composer require rbdwllr/psr-jwt
 ```
 
-Via composer.json:
+**Install via the composer.json file:**
 
 ```javascript
 "require": {
@@ -41,6 +45,8 @@ The `body` is the body content you would like to return in the response if authe
 
 ```php
 // Can be added to any routes file in Slim, often index.php.
+require '../../vendor/autoload.php';
+
 $app->get('/jwt', function (Request $request, Response $response) {
     $response->getBody()->write("JSON Web Token is Valid!");
 
@@ -60,6 +66,8 @@ $app->pipe('/api', \PsrJwt\Factory\JwtAuth::middleware('!Secret#1XYZ$', 'jwt', '
 To generate JSON Web Tokens PsrJwt offers a wrapper for the library [ReallySimpleJWT](https://github.com/RobDWaller/ReallySimpleJWT). You can create an instance of the ReallySimpleJWT builder by calling the built in factory method.
 
 ```php
+require 'vendor/autoload.php';
+
 \PsrJwt\Factory\Jwt::builder();
 ```
 
