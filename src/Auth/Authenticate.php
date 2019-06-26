@@ -32,10 +32,8 @@ class Authenticate
     private $tokenKey;
 
     /**
-     * @param string $tokenKey
      * @param string $secret
-     * @todo the tokenKey and secret are the wrong way around, secret is
-     * required token key is not.
+     * @param string $tokenKey
      */
     public function __construct(string $secret, string $tokenKey)
     {
@@ -62,7 +60,7 @@ class Authenticate
     }
 
     /**
-     * Check the token will parse, the signature is valid, it is ready to use
+     * Check the token will parse, the signature is valid, it is ready to use,
      * and it has not expired.
      *
      * @param string $token
