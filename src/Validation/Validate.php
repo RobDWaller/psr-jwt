@@ -46,7 +46,7 @@ class Validate
     }
 
     /**
-     * The token may not be ready to use yet, check this.
+     * The token must be ready to use.
      *
      * @return array
      */
