@@ -11,8 +11,9 @@ use ReallySimpleJWT\Parse;
 use ReallySimpleJWT\Jwt as RSJwt;
 
 /**
- * This middleware wraps around the ReallySimpleJWT library. Easy access to the
- * token builder and parser are required.
+ * This library wraps around the ReallySimpleJWT library to provide token
+ * creation and validation functionality. This factory class provides a builder
+ * and parser method to provide quick access to this functionality.
  */
 class Jwt
 {

@@ -1,7 +1,7 @@
 # PSR-JWT
 [![Build Status](https://travis-ci.org/RobDWaller/psr-jwt.svg?branch=master)](https://travis-ci.org/RobDWaller/psr-jwt) [![codecov](https://codecov.io/gh/RobDWaller/psr-jwt/branch/master/graph/badge.svg)](https://codecov.io/gh/RobDWaller/psr-jwt) [![Infection MSI](https://badge.stryker-mutator.io/github.com/RobDWaller/psr-jwt/master)](https://infection.github.io) [![StyleCI](https://github.styleci.io/repos/167511682/shield?branch=master)](https://github.styleci.io/repos/167511682)
 
-A PSR-7 and PSR-15 compliant JSON Web Token middleware library built on top of [ReallySimpleJWT](https://github.com/RobDWaller/ReallySimpleJWT).
+A [PSR-7](https://www.php-fig.org/psr/psr-7/) and [PSR-15](https://www.php-fig.org/psr/psr-15/) compliant JSON Web Token middleware library built on top of [ReallySimpleJWT](https://github.com/RobDWaller/ReallySimpleJWT).
 
 The library allows you to create JSON Web Tokens and then validate them using PSR-15 compliant middleware which can be added to compatible frameworks such as [Slim PHP](http://www.slimframework.com/) and [Zend Expressive](https://docs.zendframework.com/zend-expressive/).
 
@@ -9,13 +9,17 @@ For more information on JSON Web Tokens please read [RFC 7519](https://tools.iet
 
 ## Setup
 
-Via Composer on the command line:
+To install this package you will need to install [Composer](https://getcomposer.org/) and then run `composer init`. Once this is done you can install the package via the command line or by editing the composer.json file created by the `composer init` command.
+
+Finally you will need to reference the composer autoloader in your PHP code, `require 'vendor/autoload.php';`. The location of the autoload file will differ dependent on where your code is run. Also you will not need to reference the autoload file if you are using a framework like Zend Expressive.
+
+**Install via Composer on the command line:**
 
 ```bash
 composer require rbdwllr/psr-jwt
 ```
 
-Via composer.json:
+**Install via the composer.json file:**
 
 ```javascript
 "require": {
@@ -41,6 +45,8 @@ The `body` is the body content you would like to return in the response if authe
 
 ```php
 // Can be added to any routes file in Slim, often index.php.
+require '../../vendor/autoload.php';
+
 $app->get('/jwt', function (Request $request, Response $response) {
     $response->getBody()->write("JSON Web Token is Valid!");
 
@@ -60,6 +66,8 @@ $app->pipe('/api', \PsrJwt\Factory\JwtAuth::middleware('!Secret#1XYZ$', 'jwt', '
 To generate JSON Web Tokens PsrJwt offers a wrapper for the library [ReallySimpleJWT](https://github.com/RobDWaller/ReallySimpleJWT). You can create an instance of the ReallySimpleJWT builder by calling the built in factory method.
 
 ```php
+require 'vendor/autoload.php';
+
 \PsrJwt\Factory\Jwt::builder();
 ```
 
