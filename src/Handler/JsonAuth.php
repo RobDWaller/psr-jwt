@@ -22,7 +22,7 @@ class JsonAuth extends Authenticate implements RequestHandlerInterface
      * @param string $tokenKey
      * @param string $body
      */
-    public function __construct(string $secret, string $tokenKey, string $body)
+    public function __construct(string $secret, string $tokenKey, array $body)
     {
         parent::__construct($secret, $tokenKey);
 
@@ -39,8 +39,8 @@ class JsonAuth extends Authenticate implements RequestHandlerInterface
 
         return new Response(
             $auth->getCode(),
-            [],
-            $this->body,
+            ['Content-Type' => 'application/json'],
+            json_encode(array_merge(['message' => $auth->getMessage()], $this->body)),
             '1.1',
             $auth->getMessage()
         );
