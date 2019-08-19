@@ -13,14 +13,14 @@ use Nyholm\Psr7\Response;
 class JsonAuth extends Authenticate implements RequestHandlerInterface
 {
     /**
-     * @var string The content to add to the response body.
+     * @var array The content to add to the response body.
      */
     private $body;
 
     /**
      * @param string $secret
      * @param string $tokenKey
-     * @param string $body
+     * @param array $body
      */
     public function __construct(string $secret, string $tokenKey, array $body)
     {
@@ -40,7 +40,7 @@ class JsonAuth extends Authenticate implements RequestHandlerInterface
         return new Response(
             $auth->getCode(),
             ['Content-Type' => 'application/json'],
-            json_encode(array_merge(['message' => $auth->getMessage()], $this->body)),
+            (string) json_encode(array_merge(['message' => $auth->getMessage()], $this->body)),
             '1.1',
             $auth->getMessage()
         );
