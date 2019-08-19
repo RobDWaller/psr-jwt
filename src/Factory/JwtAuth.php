@@ -6,6 +6,7 @@ namespace PsrJwt\Factory;
 
 use PsrJwt\JwtAuthMiddleware;
 use PsrJwt\Handler\Auth;
+use PsrJwt\Handler\JsonAuth;
 use PsrJwt\JwtAuthInvokable;
 
 /**
@@ -15,16 +16,33 @@ use PsrJwt\JwtAuthInvokable;
 class JwtAuth
 {
     /**
-     * Add the middleware to the relevant framework.
+     * Add the middleware to the relevant framework and return a text / html
+     * response on validation failure.
      *
      * @param string $tokenKey
      * @param string $secret
+     * @param string $body
      * @return JwtAuthMiddleware
-     * @todo TokenKey and Secret are the wrong way around.
      */
     public static function middleware(string $secret, string $tokenKey = '', string $body = ''): JwtAuthMiddleware
     {
         $auth = new Auth($secret, $tokenKey, $body);
+
+        return new JwtAuthMiddleware($auth);
+    }
+
+    /**
+     * Add the middleware to the relevant framework and return a JSON response
+     * on validation failure.
+     *
+     * @param string $tokenKey
+     * @param string $secret
+     * @param array $body
+     * @return JwtAuthMiddleware
+     */
+    public static function jsonMiddleware(string $secret, string $tokenKey = '', array $body = []): JwtAuthMiddleware
+    {
+        $auth = new JsonAuth($secret, $tokenKey, $body);
 
         return new JwtAuthMiddleware($auth);
     }
