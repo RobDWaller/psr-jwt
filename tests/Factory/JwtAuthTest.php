@@ -15,16 +15,16 @@ use Mockery as m;
 class JwtAuthTest extends TestCase
 {
     /**
-     * @covers PsrJwt\Factory\JwtAuth::middleware
+     * @covers PsrJwt\Factory\JwtAuth::html
      * @uses PsrJwt\JwtAuthMiddleware::__construct
      * @uses PsrJwt\Auth\Authenticate
      * @uses PsrJwt\Handler\Html
      */
-    public function testJwtAuthMiddleware()
+    public function testJwtAuthHtml()
     {
         $this->assertInstanceOf(
             JwtAuthMiddleware::class,
-            JwtAuth::middleware('$Secret123!', 'jwt')
+            JwtAuth::html('$Secret123!', 'jwt')
         );
     }
 
@@ -63,7 +63,7 @@ class JwtAuthTest extends TestCase
             ->once()
             ->andReturn($response);
 
-        $middleware = JwtAuth::middleware('Secret123!456$', 'jwt');
+        $middleware = JwtAuth::html('Secret123!456$', 'jwt');
 
         $result = $middleware->process($request, $handler);
 
@@ -71,8 +71,7 @@ class JwtAuthTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\JwtAuthMiddleware::process
-     * @uses PsrJwt\Factory\JwtAuth
+     * @covers PsrJwt\Factory\JwtAuth::json
      * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Auth\Authenticate
      * @uses PsrJwt\Handler\Json
