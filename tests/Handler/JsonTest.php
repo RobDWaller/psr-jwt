@@ -3,7 +3,7 @@
 namespace Tests\Handler;
 
 use PHPUnit\Framework\TestCase;
-use PsrJwt\Handler\JsonAuth;
+use PsrJwt\Handler\Json;
 use PsrJwt\Auth\Authenticate;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -11,7 +11,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use PsrJwt\Factory\Jwt;
 use Mockery as m;
 
-class JsonAuthTest extends TestCase
+class JsonTest extends TestCase
 {
     /**
      * @covers PsrJwt\Handler\JsonAuth::__construct
@@ -19,9 +19,9 @@ class JsonAuthTest extends TestCase
      */
     public function testJsonAuthHandler()
     {
-        $auth = new JsonAuth('secret', 'tokenKey', ['body']);
+        $auth = new Json('secret', 'tokenKey', ['body']);
 
-        $this->assertInstanceOf(JsonAuth::class, $auth);
+        $this->assertInstanceOf(Json::class, $auth);
         $this->assertInstanceOf(Authenticate::class, $auth);
         $this->assertInstanceOf(RequestHandlerInterface::class, $auth);
     }
@@ -62,7 +62,7 @@ class JsonAuthTest extends TestCase
             ->once()
             ->andReturn(['jwt' => $token]);
 
-        $auth = new JsonAuth('Secret123!456$', 'jwt', ['Ok']);
+        $auth = new Json('Secret123!456$', 'jwt', ['Ok']);
 
         $result = $auth->handle($request);
 
@@ -70,7 +70,7 @@ class JsonAuthTest extends TestCase
         $this->assertSame(200, $result->getStatusCode());
         $this->assertSame('Ok', $result->getReasonPhrase());
         $this->assertSame('application/json', $result->getHeader('Content-Type')[0]);
-        $this->assertSame(json_encode(['message' => 'Ok', 'Ok']), $result->getBody()->__toString());
+        $this->assertSame(json_encode(['Ok']), $result->getBody()->__toString());
     }
 
     /**
@@ -97,7 +97,7 @@ class JsonAuthTest extends TestCase
             ->once()
             ->andReturn(['Bearer ' . $token]);
 
-        $auth = new JsonAuth('Secret123!456', 'jwt', []);
+        $auth = new Json('Secret123!456', 'jwt', ['message' => 'Bad']);
 
         $result = $auth->handle($request);
 
@@ -106,7 +106,7 @@ class JsonAuthTest extends TestCase
         $this->assertSame('Unauthorized: Signature is invalid.', $result->getReasonPhrase());
         $this->assertSame('application/json', $result->getHeader('Content-Type')[0]);
         $this->assertSame(
-            json_encode(['message' => 'Unauthorized: Signature is invalid.']),
+            json_encode(['message' => 'Bad']),
             $result->getBody()->__toString()
         );
     }

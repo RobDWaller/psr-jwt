@@ -105,7 +105,7 @@ class JwtAuthTest extends TestCase
             ->once()
             ->andReturn($response);
 
-        $middleware = JwtAuth::jsonMiddleware('Secret123!456$', 'jwt');
+        $middleware = JwtAuth::json('Secret123!456$', 'jwt');
 
         $result = $middleware->process($request, $handler);
 

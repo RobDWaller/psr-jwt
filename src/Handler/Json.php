@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Nyholm\Psr7\Response;
 
-class JsonAuth extends Authenticate implements RequestHandlerInterface
+class Json extends Authenticate implements RequestHandlerInterface
 {
     /**
      * @var array The content to add to the response body.
@@ -40,7 +40,7 @@ class JsonAuth extends Authenticate implements RequestHandlerInterface
         return new Response(
             $auth->getCode(),
             ['Content-Type' => 'application/json'],
-            (string) json_encode(array_merge(['message' => $auth->getMessage()], $this->body)),
+            (string) json_encode($this->body),
             '1.1',
             $auth->getMessage()
         );

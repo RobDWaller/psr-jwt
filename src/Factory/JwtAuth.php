@@ -6,7 +6,7 @@ namespace PsrJwt\Factory;
 
 use PsrJwt\JwtAuthMiddleware;
 use PsrJwt\Handler\Auth;
-use PsrJwt\Handler\JsonAuth;
+use PsrJwt\Handler\Json;
 use PsrJwt\JwtAuthInvokable;
 
 /**
@@ -40,9 +40,9 @@ class JwtAuth
      * @param array $body
      * @return JwtAuthMiddleware
      */
-    public static function jsonMiddleware(string $secret, string $tokenKey = '', array $body = []): JwtAuthMiddleware
+    public static function json(string $secret, string $tokenKey = '', array $body = []): JwtAuthMiddleware
     {
-        $auth = new JsonAuth($secret, $tokenKey, $body);
+        $auth = new Json($secret, $tokenKey, $body);
 
         return new JwtAuthMiddleware($auth);
     }
