@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PsrJwt\Factory;
 
 use PsrJwt\JwtAuthMiddleware;
-use PsrJwt\Handler\Auth;
+use PsrJwt\Handler\Html;
 use PsrJwt\Handler\Json;
 use PsrJwt\JwtAuthInvokable;
 
@@ -26,7 +26,7 @@ class JwtAuth
      */
     public static function middleware(string $secret, string $tokenKey = '', string $body = ''): JwtAuthMiddleware
     {
-        $auth = new Auth($secret, $tokenKey, $body);
+        $auth = new Html($secret, $tokenKey, $body);
 
         return new JwtAuthMiddleware($auth);
     }

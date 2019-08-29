@@ -16,7 +16,7 @@ use Nyholm\Psr7\Response;
  * own handler which extends the Authenticate class and calls the authenticate
  * method as below.
  */
-class Auth extends Authenticate implements RequestHandlerInterface
+class Html extends Authenticate implements RequestHandlerInterface
 {
     /**
      * @var string The content to add to the response body.
@@ -45,7 +45,7 @@ class Auth extends Authenticate implements RequestHandlerInterface
 
         return new Response(
             $auth->getCode(),
-            [],
+            ['Content-Type' => 'text/html'],
             $this->body,
             '1.1',
             $auth->getMessage()
