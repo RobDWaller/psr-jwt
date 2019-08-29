@@ -18,7 +18,7 @@ class JwtAuthTest extends TestCase
      * @covers PsrJwt\Factory\JwtAuth::middleware
      * @uses PsrJwt\JwtAuthMiddleware::__construct
      * @uses PsrJwt\Auth\Authenticate
-     * @uses PsrJwt\Handler\Auth
+     * @uses PsrJwt\Handler\Html
      */
     public function testJwtAuthMiddleware()
     {
@@ -33,7 +33,7 @@ class JwtAuthTest extends TestCase
      * @uses PsrJwt\Factory\JwtAuth
      * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Auth\Authenticate
-     * @uses PsrJwt\Handler\Auth
+     * @uses PsrJwt\Handler\Html
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\JwtAuthMiddleware
      * @uses PsrJwt\Parser\Bearer
@@ -75,7 +75,7 @@ class JwtAuthTest extends TestCase
      * @uses PsrJwt\Factory\JwtAuth
      * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Auth\Authenticate
-     * @uses PsrJwt\Handler\JsonAuth
+     * @uses PsrJwt\Handler\Json
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\JwtAuthMiddleware
      * @uses PsrJwt\Parser\Bearer

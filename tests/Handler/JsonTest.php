@@ -14,7 +14,7 @@ use Mockery as m;
 class JsonTest extends TestCase
 {
     /**
-     * @covers PsrJwt\Handler\JsonAuth::__construct
+     * @covers PsrJwt\Handler\Json::__construct
      * @uses PsrJwt\Auth\Authenticate
      */
     public function testJsonAuthHandler()
@@ -27,8 +27,8 @@ class JsonTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Handler\JsonAuth::handle
-     * @uses PsrJwt\Handler\JsonAuth::__construct
+     * @covers PsrJwt\Handler\Json::handle
+     * @uses PsrJwt\Handler\Json::__construct
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Auth\Authenticate
      * @uses PsrJwt\Auth\Auth
@@ -74,8 +74,8 @@ class JsonTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Handler\JsonAuth::handle
-     * @uses PsrJwt\Handler\JsonAuth::__construct
+     * @covers PsrJwt\Handler\Json::handle
+     * @uses PsrJwt\Handler\Json::__construct
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Auth\Authenticate
      * @uses PsrJwt\Auth\Auth

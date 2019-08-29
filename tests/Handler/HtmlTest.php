@@ -14,7 +14,7 @@ use Mockery as m;
 class HtmlTest extends TestCase
 {
     /**
-     * @covers PsrJwt\Handler\Auth::__construct
+     * @covers PsrJwt\Handler\Html::__construct
      * @uses PsrJwt\Auth\Authenticate
      */
     public function testAuthHandler()
@@ -27,8 +27,8 @@ class HtmlTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Handler\Auth::handle
-     * @uses PsrJwt\Handler\Auth::__construct
+     * @covers PsrJwt\Handler\Html::handle
+     * @uses PsrJwt\Handler\Html::__construct
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Auth\Authenticate
      * @uses PsrJwt\Auth\Auth
@@ -74,8 +74,8 @@ class HtmlTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Handler\Auth::handle
-     * @uses PsrJwt\Handler\Auth::__construct
+     * @covers PsrJwt\Handler\Html::handle
+     * @uses PsrJwt\Handler\Html::__construct
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Auth\Authenticate
      * @uses PsrJwt\Auth\Auth
@@ -120,8 +120,8 @@ class HtmlTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Handler\Auth::handle
-     * @uses PsrJwt\Handler\Auth::__construct
+     * @covers PsrJwt\Handler\Html::handle
+     * @uses PsrJwt\Handler\Html::__construct
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Auth\Authenticate
      * @uses PsrJwt\Auth\Auth
@@ -166,8 +166,8 @@ class HtmlTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Handler\Auth::handle
-     * @uses PsrJwt\Handler\Auth::__construct
+     * @covers PsrJwt\Handler\Html::handle
+     * @uses PsrJwt\Handler\Html::__construct
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Auth\Authenticate
      * @uses PsrJwt\Auth\Auth
