@@ -3,7 +3,7 @@
 namespace Tests\Factory;
 
 use PHPUnit\Framework\TestCase;
-use PsrJwt\Factory\JwtAuth;
+use PsrJwt\Factory\JwtMiddleware;
 use PsrJwt\JwtAuthMiddleware;
 use PsrJwt\Auth\Authenticate;
 use PsrJwt\Factory\Jwt;
@@ -12,7 +12,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Mockery as m;
 
-class JwtAuthTest extends TestCase
+class JwtMiddlewareTest extends TestCase
 {
     /**
      * @covers PsrJwt\Factory\JwtAuth::html
@@ -20,11 +20,11 @@ class JwtAuthTest extends TestCase
      * @uses PsrJwt\Auth\Authenticate
      * @uses PsrJwt\Handler\Html
      */
-    public function testJwtAuthHtml()
+    public function testJwtMiddlewareHtml()
     {
         $this->assertInstanceOf(
             JwtAuthMiddleware::class,
-            JwtAuth::html('$Secret123!', 'jwt')
+            JwtMiddleware::html('$Secret123!', 'jwt')
         );
     }
 
@@ -63,7 +63,7 @@ class JwtAuthTest extends TestCase
             ->once()
             ->andReturn($response);
 
-        $middleware = JwtAuth::html('Secret123!456$', 'jwt');
+        $middleware = JwtMiddleware::html('Secret123!456$', 'jwt');
 
         $result = $middleware->process($request, $handler);
 
@@ -104,7 +104,7 @@ class JwtAuthTest extends TestCase
             ->once()
             ->andReturn($response);
 
-        $middleware = JwtAuth::json('Secret123!456$', 'jwt');
+        $middleware = JwtMiddleware::json('Secret123!456$', 'jwt');
 
         $result = $middleware->process($request, $handler);
 

@@ -13,7 +13,7 @@ use PsrJwt\JwtAuthInvokable;
  * Easily add the PSR-JWT middleware to PSR compliant frameworks such as
  * Zend Expressive and Slim PHP.
  */
-class JwtAuth
+class JwtMiddleware
 {
     /**
      * Add the middleware to the relevant framework and return a text / html
