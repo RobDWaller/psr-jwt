@@ -15,7 +15,7 @@ use Mockery as m;
 class JwtMiddlewareTest extends TestCase
 {
     /**
-     * @covers PsrJwt\Factory\JwtAuth::html
+     * @covers PsrJwt\Factory\JwtMiddleware::html
      * @uses PsrJwt\JwtAuthMiddleware::__construct
      * @uses PsrJwt\Auth\Authenticate
      * @uses PsrJwt\Handler\Html
@@ -30,7 +30,7 @@ class JwtMiddlewareTest extends TestCase
 
     /**
      * @covers PsrJwt\JwtAuthMiddleware::process
-     * @uses PsrJwt\Factory\JwtAuth
+     * @uses PsrJwt\Factory\JwtMiddleware
      * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Auth\Authenticate
      * @uses PsrJwt\Handler\Html
@@ -71,7 +71,7 @@ class JwtMiddlewareTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Factory\JwtAuth::json
+     * @covers PsrJwt\Factory\JwtMiddleware::json
      * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Auth\Authenticate
      * @uses PsrJwt\Handler\Json
