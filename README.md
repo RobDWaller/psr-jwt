@@ -41,7 +41,7 @@ composer require rbdwllr/psr-jwt
 
 ## Basic Usage
 
-PsrJwt can be used with any PSR-7 / PSR-15 compliant framework. Just call one of the middleware factory methods and they will return a middleware instance that exposes two methods, `__invoke()` and `process()`. The later will work with PSR-15 compliant frameworks like Zend Expressive and the former will work with older PSR-7 compliant frameworks like Slim PHP v3.
+PsrJwt can be used with any PSR-7 / PSR-15 compliant framework. Just call one of the middleware factory methods and they will return a middleware instance that exposes two methods, `__invoke()` and `process()`. The latter will work with PSR-15 compliant frameworks like Zend Expressive and the former will work with older PSR-7 compliant frameworks like Slim PHP v3.
 
 ```php
 // Will generate a text/html response if JWT authentication fails.
@@ -114,7 +114,7 @@ $middleware = new JwtAuthMiddleware($auth);
 
 ### Create Custom Handler
 
-To create your own handler you need to do two things. First create a class which implements the `Psr\Http\Server\RequestHandlerInterface` [interface](https://www.php-fig.org/psr/psr-15/). This requires that you create a `handle()` method which consumes a `Psr\Http\Message\ServerRequestInterface` object and returns a `Psr\Http\Message\ResponseInterface` object.
+To create your own handler you need to do two things. First create a class which implements the `Psr\Http\Server\RequestHandlerInterface` [interface](https://www.php-fig.org/psr/psr-15/). This requires you create a `handle()` method which consumes a `Psr\Http\Message\ServerRequestInterface` object and returns a `Psr\Http\Message\ResponseInterface` object.
 
 Next you will need to extend the `PsrJwt\Auth\Authenticate` class as this will give you access to the JSON Web Token authentication functionality. Once this is done you will be able to pass your handler to the `PsrJwt\JwtAuthMiddleware` class and then integrate it with your desired framework.
 
