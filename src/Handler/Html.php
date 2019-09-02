@@ -11,10 +11,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use Nyholm\Psr7\Response;
 
 /**
- * Default JWT authentication handler. Allows you to customise body response
- * with a simple message. If you require a more detailed response create your
- * own handler which extends the Authenticate class and calls the authenticate
- * method as below.
+ * JWT authentication handler which returns a text/html response on
+ * authentication failure. Allows you to customise the body response with a
+ * simple message.
  */
 class Html extends Authenticate implements RequestHandlerInterface
 {
@@ -36,6 +35,8 @@ class Html extends Authenticate implements RequestHandlerInterface
     }
 
     /**
+     * Required by the RequestHandlerInterface and called by the JwtAuthMiddleware.
+     *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */

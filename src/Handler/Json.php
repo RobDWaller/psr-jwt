@@ -10,6 +10,11 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Nyholm\Psr7\Response;
 
+/**
+ * JWT authentication handler which returns a application/json response on
+ * authentication failure. Allows you to customise the body response with a
+ * simple message.
+ */
 class Json extends Authenticate implements RequestHandlerInterface
 {
     /**
@@ -30,6 +35,8 @@ class Json extends Authenticate implements RequestHandlerInterface
     }
 
     /**
+     * Required by the RequestHandlerInterface and called by the JwtAuthMiddleware.
+     *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
