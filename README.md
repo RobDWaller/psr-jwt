@@ -69,14 +69,14 @@ $app->get('/jwt', function (Request $request, Response $response) {
     $response->getBody()->write("JSON Web Token is Valid!");
 
     return $response;
-})->add(\PsrJwt\Factory\JwtAuth::html('Secret123!456$', 'jwt', 'Authentication Failed'));
+})->add(\PsrJwt\Factory\JwtMiddleware::html('Secret123!456$', 'jwt', 'Authentication Failed'));
 ```
 
 ### Zend Expressive Example Implementation
 
 ```php
 // Add to the config/pipeline.php file.
-$app->pipe('/api', \PsrJwt\Factory\JwtAuth::html('!Secret#1XYZ$', 'jwt', 'Authentication Failed'));
+$app->pipe('/api', \PsrJwt\Factory\JwtMiddleware::html('!Secret#1XYZ$', 'jwt', 'Authentication Failed'));
 ```
 
 ### Generate JSON Web Token
