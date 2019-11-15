@@ -18,4 +18,73 @@ class RequestTest extends TestCase
 
         $this->assertInstanceOf(Request::class, $request);
     }
+
+    public function testHasToken()
+    {
+        $parse = m::mock(Parse::class);
+        $parse->shouldReceive('addParser')
+            ->times(4)
+            ->shouldReceive('findToken')
+            ->once()
+            ->andReturn('abcdef.123.abcdef');
+
+        $httpRequest = m::mock(ServerRequestInterface::class);
+
+        $request = new Request($parse);
+
+        $this->assertTrue($request->hasToken($httpRequest));
+    }
+
+    public function testHasNoToken()
+    {
+        $parse = m::mock(Parse::class);
+        $parse->shouldReceive('addParser')
+            ->times(4)
+            ->shouldReceive('findToken')
+            ->once()
+            ->andReturn('');
+
+        $httpRequest = m::mock(ServerRequestInterface::class);
+
+        $request = new Request($parse);
+
+        $this->assertFalse($request->hasToken($httpRequest));
+    }
+
+    public function testFindToken()
+    {
+        $parse = m::mock(Parse::class);
+        $parse->shouldReceive('addParser')
+            ->times(4)
+            ->shouldReceive('findToken')
+            ->once()
+            ->andReturn('abcdef.123.abcdef');
+
+        $httpRequest = m::mock(ServerRequestInterface::class);
+
+        $request = new Request($parse);
+
+        $this->assertSame('abcdef.123.abcdef', $request->findToken($httpRequest));
+    }
+
+    public function testFindNoToken()
+    {
+        $parse = m::mock(Parse::class);
+        $parse->shouldReceive('addParser')
+            ->times(4)
+            ->shouldReceive('findToken')
+            ->once()
+            ->andReturn('');
+
+        $httpRequest = m::mock(ServerRequestInterface::class);
+
+        $request = new Request($parse);
+
+        $this->assertSame('', $request->findToken($httpRequest));
+    }
+
+    public function tearDown(): void
+    {
+        m::close();
+    }
 }
