@@ -6,7 +6,7 @@ namespace PsrJwt\Parser;
 
 use PsrJwt\Parser\Parse;
 
-class Find
+class Request
 {
     private $parse;
 
