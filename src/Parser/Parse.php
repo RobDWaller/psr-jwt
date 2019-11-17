@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PsrJwt\Parser;
 
+use PsrJwt\Parser\ParserInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -17,25 +18,12 @@ class Parse
     private $parsers = [];
 
     /**
-     * @var array $arguments
-     */
-    private $arguments;
-
-    /**
-     * @param array $arguments
-     */
-    public function __construct(array $arguments)
-    {
-        $this->arguments = $arguments;
-    }
-
-    /**
      * The JSON web token can be found in various parts of the request, a new
      * parser is required to search each part.
      *
-     * @param string $parser
+     * @param ParserInterface $parser
      */
-    public function addParser(string $parser): void
+    public function addParser(ParserInterface $parser): void
     {
         $this->parsers[] = $parser;
     }
@@ -49,8 +37,7 @@ class Parse
     public function findToken(ServerRequestInterface $request): string
     {
         foreach ($this->parsers as $parser) {
-            $object = new $parser($this->arguments);
-            $token = $object->parse($request);
+            $token = $parser->parse($request);
             if (!empty($token)) {
                 return $token;
             }
