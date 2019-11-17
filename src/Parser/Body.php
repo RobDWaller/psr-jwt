@@ -4,26 +4,26 @@ declare(strict_types=1);
 
 namespace PsrJwt\Parser;
 
-use PsrJwt\Parser\ArgumentsInterface;
+use PsrJwt\Parser\ParserInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Find the JSON Web Token in the Body of the request. Not an ideal way to pass
  * around JWTs but if it's a low security situation probably fine.
  */
-class Body implements ArgumentsInterface
+class Body implements ParserInterface
 {
     /**
-     * @var array $arguments
+     * @var string $tokenKey
      */
-    private $arguments;
+    private $tokenKey;
 
     /**
-     * @param array $arguments
+     * @param string $tokenKey
      */
-    public function __construct(array $arguments)
+    public function __construct(string $tokenKey)
     {
-        $this->arguments = $arguments;
+        $this->tokenKey = $tokenKey;
     }
 
     /**
@@ -36,8 +36,8 @@ class Body implements ArgumentsInterface
     {
         $body = $request->getParsedBody();
 
-        if (is_array($body) && isset($body[$this->arguments['token_key']])) {
-            return $body[$this->arguments['token_key']];
+        if (is_array($body) && isset($body[$this->tokenKey])) {
+            return $body[$this->tokenKey];
         }
 
         return $this->parseBodyObject($request);
@@ -54,8 +54,8 @@ class Body implements ArgumentsInterface
     {
         $body = $request->getParsedBody();
 
-        if (is_object($body) && isset($body->{$this->arguments['token_key']})) {
-            return $body->{$this->arguments['token_key']};
+        if (is_object($body) && isset($body->{$this->tokenKey})) {
+            return $body->{$this->tokenKey};
         }
 
         return '';

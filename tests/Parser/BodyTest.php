@@ -16,7 +16,7 @@ class BodyTest extends TestCase
      */
     public function testBody()
     {
-        $body = new Body(['token_key' => 'jwt']);
+        $body = new Body('jwt');
 
         $this->assertInstanceOf(Body::class, $body);
         $this->assertInstanceOf(ParserInterface::class, $body);
@@ -33,7 +33,7 @@ class BodyTest extends TestCase
             ->once()
             ->andReturn(['jwt' => 'abc.def.ghi']);
 
-        $body = new Body(['token_key' => 'jwt']);
+        $body = new Body('jwt');
         $result = $body->parse($request);
 
         $this->assertSame('abc.def.ghi', $result);
@@ -53,7 +53,7 @@ class BodyTest extends TestCase
             ->twice()
             ->andReturn($object);
 
-        $body = new Body(['token_key' => 'jwt']);
+        $body = new Body('jwt');
         $result = $body->parse($request);
 
         $this->assertSame('abc.def.ghi', $result);
@@ -70,7 +70,7 @@ class BodyTest extends TestCase
             ->twice()
             ->andReturn('hello');
 
-        $body = new Body(['token_key' => 'jwt']);
+        $body = new Body('jwt');
         $result = $body->parse($request);
 
         $this->assertSame('', $result);
@@ -90,7 +90,7 @@ class BodyTest extends TestCase
             ->once()
             ->andReturn($object);
 
-        $body = new Body(['token_key' => 'jwt']);
+        $body = new Body('jwt');
 
         $method = new ReflectionMethod(Body::class, 'parseBodyObject');
         $method->setAccessible(true);
@@ -112,7 +112,7 @@ class BodyTest extends TestCase
             ->once()
             ->andReturn($object);
 
-        $body = new Body(['token_key' => 'jwt']);
+        $body = new Body('jwt');
 
         $method = new ReflectionMethod(Body::class, 'parseBodyObject');
         $method->setAccessible(true);
@@ -132,7 +132,7 @@ class BodyTest extends TestCase
             ->once()
             ->andReturn([]);
 
-        $body = new Body(['token_key' => 'jwt']);
+        $body = new Body('jwt');
 
         $method = new ReflectionMethod(Body::class, 'parseBodyObject');
         $method->setAccessible(true);
