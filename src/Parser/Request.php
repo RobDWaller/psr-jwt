@@ -10,6 +10,7 @@ use PsrJwt\Parser\Bearer;
 use PsrJwt\Parser\Cookie;
 use PsrJwt\Parser\Body;
 use PsrJwt\Parser\Query;
+use PsrJwt\Parser\ParseException;
 
 class Request
 {
@@ -20,11 +21,6 @@ class Request
         $this->parse = $parse;
     }
 
-    public function hasToken(ServerRequestInterface $request, string $tokenKey): bool
-    {
-        return !empty($this->parse($request, $tokenKey));
-    }
-
     public function parse(ServerRequestInterface $request, string $tokenKey): string
     {
         $this->parse->addParser(new Bearer());
@@ -32,6 +28,12 @@ class Request
         $this->parse->addParser(new Body($tokenKey));
         $this->parse->addParser(new Query($tokenKey));
 
-        return $this->parse->findToken($request);
+        $token = $this->parse->findToken($request);
+
+        if (!empty($token)) {
+            return $token;
+        }
+
+        throw new ParseException('JSON Web Token not set in request.');
     }
 }

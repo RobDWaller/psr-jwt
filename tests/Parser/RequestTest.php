@@ -19,38 +19,6 @@ class RequestTest extends TestCase
         $this->assertInstanceOf(Request::class, $request);
     }
 
-    public function testHasToken()
-    {
-        $parse = m::mock(Parse::class);
-        $parse->shouldReceive('addParser')
-            ->times(4)
-            ->shouldReceive('findToken')
-            ->once()
-            ->andReturn('abcdef.123.abcdef');
-
-        $httpRequest = m::mock(ServerRequestInterface::class);
-
-        $request = new Request($parse);
-
-        $this->assertTrue($request->hasToken($httpRequest, 'jwt'));
-    }
-
-    public function testHasNoToken()
-    {
-        $parse = m::mock(Parse::class);
-        $parse->shouldReceive('addParser')
-            ->times(4)
-            ->shouldReceive('findToken')
-            ->once()
-            ->andReturn('');
-
-        $httpRequest = m::mock(ServerRequestInterface::class);
-
-        $request = new Request($parse);
-
-        $this->assertFalse($request->hasToken($httpRequest, 'jwt'));
-    }
-
     public function testParse()
     {
         $parse = m::mock(Parse::class);
@@ -80,7 +48,9 @@ class RequestTest extends TestCase
 
         $request = new Request($parse);
 
-        $this->assertSame('', $request->parse($httpRequest, 'jwt'));
+        $this->expectException(\PsrJwt\Parser\ParseException::class);
+        $this->expectExceptionMessage('JSON Web Token not set in request.');
+        $request->parse($httpRequest, 'jwt');
     }
 
     public function tearDown(): void
