@@ -43,17 +43,17 @@ class AuthenticateTest extends TestCase
 
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getCookieParams')
-            ->once()
+            ->twice()
             ->andReturn(['foo' => 'bar']);
         $request->shouldReceive('getQueryParams')
-            ->once()
+            ->twice()
             ->andReturn(['jwt' => $token]);
         $request->shouldReceive('getParsedBody')
-            ->twice()
+            ->times(4)
             ->andReturn([]);
         $request->shouldReceive('getHeader')
             ->with('authorization')
-            ->once()
+            ->twice()
             ->andReturn([]);
 
         $authenticate = new Authenticate('Secret123!456$', 'jwt');
@@ -102,36 +102,6 @@ class AuthenticateTest extends TestCase
 
         $this->assertSame(400, $result->getCode());
         $this->assertSame('Bad Request: JSON Web Token not set.', $result->getMessage());
-    }
-
-    /**
-     * @covers PsrJwt\Auth\Authenticate::hasJwt
-     * @uses PsrJwt\Auth\Authenticate::__construct
-     */
-    public function testAuthenticateHasJwt()
-    {
-        $auth = new Authenticate('secret', 'jwt');
-
-        $method = new ReflectionMethod(Authenticate::class, 'hasJwt');
-        $method->setAccessible(true);
-        $result = $method->invokeArgs($auth, ['abc.abc.abc']);
-
-        $this->assertTrue($result);
-    }
-
-    /**
-     * @covers PsrJwt\Auth\Authenticate::hasJwt
-     * @uses PsrJwt\Auth\Authenticate::__construct
-     */
-    public function testAuthenticateHasJwtEmpty()
-    {
-        $auth = new Authenticate('secret', 'jwt');
-
-        $method = new ReflectionMethod(Authenticate::class, 'hasJwt');
-        $method->setAccessible(true);
-        $result = $method->invokeArgs($auth, ['']);
-
-        $this->assertFalse($result);
     }
 
     /**
@@ -294,7 +264,7 @@ class AuthenticateTest extends TestCase
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getHeader')
             ->with('authorization')
-            ->once()
+            ->twice()
             ->andReturn(['Bearer abc.def.ghi']);
 
         $auth = new Authenticate('secret', 'jwt');
@@ -318,10 +288,10 @@ class AuthenticateTest extends TestCase
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getHeader')
             ->with('authorization')
-            ->once()
+            ->twice()
             ->andReturn([]);
         $request->shouldReceive('getCookieParams')
-            ->once()
+            ->twice()
             ->andReturn(['token' => 'abc.123.def']);
 
         $auth = new Authenticate('secret', 'token');
@@ -346,13 +316,13 @@ class AuthenticateTest extends TestCase
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getHeader')
             ->with('authorization')
-            ->once()
+            ->twice()
             ->andReturn([]);
         $request->shouldReceive('getCookieParams')
-            ->once()
+            ->twice()
             ->andReturn([]);
         $request->shouldReceive('getParsedBody')
-            ->once()
+            ->twice()
             ->andReturn(['json_token_1' => '123.abc.def']);
 
         $auth = new Authenticate('secret', 'json_token_1');
@@ -380,13 +350,13 @@ class AuthenticateTest extends TestCase
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getHeader')
             ->with('authorization')
-            ->once()
+            ->twice()
             ->andReturn([]);
         $request->shouldReceive('getCookieParams')
-            ->once()
+            ->twice()
             ->andReturn([]);
         $request->shouldReceive('getParsedBody')
-            ->twice()
+            ->times(4)
             ->andReturn($token);
 
         $auth = new Authenticate('secret', 'my_token');
@@ -412,16 +382,16 @@ class AuthenticateTest extends TestCase
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getHeader')
             ->with('authorization')
-            ->once()
-            ->andReturn([]);
-        $request->shouldReceive('getCookieParams')
-            ->once()
-            ->andReturn([]);
-        $request->shouldReceive('getParsedBody')
             ->twice()
             ->andReturn([]);
+        $request->shouldReceive('getCookieParams')
+            ->twice()
+            ->andReturn([]);
+        $request->shouldReceive('getParsedBody')
+            ->times(4)
+            ->andReturn([]);
         $request->shouldReceive('getQueryParams')
-            ->once()
+            ->twice()
             ->andReturn(['auth_token' => '456.gfv.3-1']);
 
         $auth = new Authenticate('secret', 'auth_token');

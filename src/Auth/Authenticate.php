@@ -9,6 +9,7 @@ use ReallySimpleJWT\Exception\ValidateException;
 use PsrJwt\Factory\Jwt;
 use PsrJwt\Auth\Auth;
 use PsrJwt\Parser\Parse;
+use PsrJwt\Parser\Request;
 use PsrJwt\Validation\Validate;
 
 /**
@@ -99,17 +100,6 @@ class Authenticate
     }
 
     /**
-     * The token found in the request should not be empty.
-     *
-     * @param string $token
-     * @return bool
-     */
-    private function hasJwt(string $token): bool
-    {
-        return !empty($token);
-    }
-
-    /**
      * Find the token in the request. Ideally the token should be passed as
      * a bearer token in the authorization header. Passing the token via
      * query parameters is the least advisable option.
@@ -120,16 +110,10 @@ class Authenticate
      */
     private function getToken(ServerRequestInterface $request): string
     {
-        $parse = new Parse(['token_key' => $this->tokenKey]);
-        $parse->addParser(\PsrJwt\Parser\Bearer::class);
-        $parse->addParser(\PsrJwt\Parser\Cookie::class);
-        $parse->addParser(\PsrJwt\Parser\Body::class);
-        $parse->addParser(\PsrJwt\Parser\Query::class);
+        $parseRequest = new Request(new Parse());
 
-        $token = $parse->findToken($request);
-
-        if ($this->hasJwt($token)) {
-            return $token;
+        if ($parseRequest->hasToken($request, $this->tokenKey)) {
+            return $parseRequest->parse($request, $this->tokenKey);
         }
 
         throw new ValidateException('JSON Web Token not set.', 11);
