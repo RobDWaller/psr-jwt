@@ -6,6 +6,10 @@ namespace PsrJwt\Parser;
 
 use PsrJwt\Parser\Parse;
 use Psr\Http\Message\ServerRequestInterface;
+use PsrJwt\Parser\Bearer;
+use PsrJwt\Parser\Cookie;
+use PsrJwt\Parser\Body;
+use PsrJwt\Parser\Query;
 
 class Request
 {
@@ -14,20 +18,20 @@ class Request
     public function __construct(Parse $parse)
     {
         $this->parse = $parse;
-
-        $this->parse->addParser(\PsrJwt\Parser\Bearer::class);
-        $this->parse->addParser(\PsrJwt\Parser\Cookie::class);
-        $this->parse->addParser(\PsrJwt\Parser\Body::class);
-        $this->parse->addParser(\PsrJwt\Parser\Query::class);
     }
 
-    public function hasToken(ServerRequestInterface $request): bool
+    public function hasToken(ServerRequestInterface $request, string $tokenKey): bool
     {
-        return !empty($this->parse->findToken($request));
+        return !empty($this->parse($request, $tokenKey));
     }
 
-    public function findToken(ServerRequestInterface $request): string
+    public function parse(ServerRequestInterface $request, string $tokenKey): string
     {
+        $this->parse->addParser(new Bearer());
+        $this->parse->addParser(new Cookie($tokenKey));
+        $this->parse->addParser(new Body($tokenKey));
+        $this->parse->addParser(new Query($tokenKey));
+
         return $this->parse->findToken($request);
     }
 }

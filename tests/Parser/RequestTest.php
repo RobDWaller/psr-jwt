@@ -32,7 +32,7 @@ class RequestTest extends TestCase
 
         $request = new Request($parse);
 
-        $this->assertTrue($request->hasToken($httpRequest));
+        $this->assertTrue($request->hasToken($httpRequest, 'jwt'));
     }
 
     public function testHasNoToken()
@@ -48,10 +48,10 @@ class RequestTest extends TestCase
 
         $request = new Request($parse);
 
-        $this->assertFalse($request->hasToken($httpRequest));
+        $this->assertFalse($request->hasToken($httpRequest, 'jwt'));
     }
 
-    public function testFindToken()
+    public function testParse()
     {
         $parse = m::mock(Parse::class);
         $parse->shouldReceive('addParser')
@@ -64,10 +64,10 @@ class RequestTest extends TestCase
 
         $request = new Request($parse);
 
-        $this->assertSame('abcdef.123.abcdef', $request->findToken($httpRequest));
+        $this->assertSame('abcdef.123.abcdef', $request->parse($httpRequest, 'jwt'));
     }
 
-    public function testFindNoToken()
+    public function testParseNoToken()
     {
         $parse = m::mock(Parse::class);
         $parse->shouldReceive('addParser')
@@ -80,7 +80,7 @@ class RequestTest extends TestCase
 
         $request = new Request($parse);
 
-        $this->assertSame('', $request->findToken($httpRequest));
+        $this->assertSame('', $request->parse($httpRequest, 'jwt'));
     }
 
     public function tearDown(): void
