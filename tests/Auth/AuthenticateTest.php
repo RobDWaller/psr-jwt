@@ -43,17 +43,17 @@ class AuthenticateTest extends TestCase
 
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getCookieParams')
-            ->twice()
+            ->once()
             ->andReturn(['foo' => 'bar']);
         $request->shouldReceive('getQueryParams')
-            ->twice()
+            ->once()
             ->andReturn(['jwt' => $token]);
         $request->shouldReceive('getParsedBody')
-            ->times(4)
+            ->twice()
             ->andReturn([]);
         $request->shouldReceive('getHeader')
             ->with('authorization')
-            ->twice()
+            ->once()
             ->andReturn([]);
 
         $authenticate = new Authenticate('Secret123!456$', 'jwt');
@@ -101,7 +101,7 @@ class AuthenticateTest extends TestCase
         $result = $auth->authenticate($request);
 
         $this->assertSame(400, $result->getCode());
-        $this->assertSame('Bad Request: JSON Web Token not set.', $result->getMessage());
+        $this->assertSame('Bad Request: JSON Web Token not set in request.', $result->getMessage());
     }
 
     /**
@@ -264,7 +264,7 @@ class AuthenticateTest extends TestCase
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getHeader')
             ->with('authorization')
-            ->twice()
+            ->once()
             ->andReturn(['Bearer abc.def.ghi']);
 
         $auth = new Authenticate('secret', 'jwt');
@@ -288,10 +288,10 @@ class AuthenticateTest extends TestCase
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getHeader')
             ->with('authorization')
-            ->twice()
+            ->once()
             ->andReturn([]);
         $request->shouldReceive('getCookieParams')
-            ->twice()
+            ->once()
             ->andReturn(['token' => 'abc.123.def']);
 
         $auth = new Authenticate('secret', 'token');
@@ -316,13 +316,13 @@ class AuthenticateTest extends TestCase
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getHeader')
             ->with('authorization')
-            ->twice()
+            ->once()
             ->andReturn([]);
         $request->shouldReceive('getCookieParams')
-            ->twice()
+            ->once()
             ->andReturn([]);
         $request->shouldReceive('getParsedBody')
-            ->twice()
+            ->once()
             ->andReturn(['json_token_1' => '123.abc.def']);
 
         $auth = new Authenticate('secret', 'json_token_1');
@@ -350,13 +350,13 @@ class AuthenticateTest extends TestCase
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getHeader')
             ->with('authorization')
-            ->twice()
+            ->once()
             ->andReturn([]);
         $request->shouldReceive('getCookieParams')
-            ->twice()
+            ->once()
             ->andReturn([]);
         $request->shouldReceive('getParsedBody')
-            ->times(4)
+            ->twice()
             ->andReturn($token);
 
         $auth = new Authenticate('secret', 'my_token');
@@ -382,16 +382,16 @@ class AuthenticateTest extends TestCase
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getHeader')
             ->with('authorization')
-            ->twice()
+            ->once()
             ->andReturn([]);
         $request->shouldReceive('getCookieParams')
-            ->twice()
+            ->once()
             ->andReturn([]);
         $request->shouldReceive('getParsedBody')
-            ->times(4)
+            ->twice()
             ->andReturn([]);
         $request->shouldReceive('getQueryParams')
-            ->twice()
+            ->once()
             ->andReturn(['auth_token' => '456.gfv.3-1']);
 
         $auth = new Authenticate('secret', 'auth_token');
@@ -404,9 +404,8 @@ class AuthenticateTest extends TestCase
     }
 
     /**
-     * @expectedException ReallySimpleJWT\Exception\ValidateException
-     * @expectedExceptionMessage JSON Web Token not set.
-     * @expectedExceptionCode 11
+     * @expectedException PsrJwt\Parser\ParseException
+     * @expectedExceptionMessage JSON Web Token not set in request.
      * @covers PsrJwt\Auth\Authenticate::getToken
      * @uses PsrJwt\Auth\Authenticate
      * @uses PsrJwt\Parser\Parse

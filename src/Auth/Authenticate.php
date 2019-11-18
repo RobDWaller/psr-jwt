@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace PsrJwt\Auth;
 
 use Psr\Http\Message\ServerRequestInterface;
-use ReallySimpleJWT\Exception\ValidateException;
 use PsrJwt\Factory\Jwt;
 use PsrJwt\Auth\Auth;
 use PsrJwt\Parser\Parse;
 use PsrJwt\Parser\Request;
+use PsrJwt\Parser\ParseException;
 use PsrJwt\Validation\Validate;
 
 /**
@@ -53,7 +53,7 @@ class Authenticate
     {
         try {
             $token = $this->getToken($request);
-        } catch (ValidateException $e) {
+        } catch (ParseException $e) {
             return new Auth(400, 'Bad Request: ' . $e->getMessage());
         }
 
@@ -112,10 +112,6 @@ class Authenticate
     {
         $parseRequest = new Request(new Parse());
 
-        if ($parseRequest->hasToken($request, $this->tokenKey)) {
-            return $parseRequest->parse($request, $this->tokenKey);
-        }
-
-        throw new ValidateException('JSON Web Token not set.', 11);
+        return $parseRequest->parse($request, $this->tokenKey);
     }
 }
