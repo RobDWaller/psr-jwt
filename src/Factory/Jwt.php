@@ -22,7 +22,7 @@ class Jwt
      *
      * @return Build
      */
-    public static function builder(): Build
+    public function builder(): Build
     {
         return new Build(
             'JWT',
@@ -34,9 +34,9 @@ class Jwt
     /**
      * Allow for the parsing and validation of JSON Web Tokens
      *
-     * @return Parse
+     * @return RSParse
      */
-    public static function parser(string $token, string $secret): Parse
+    public function parser(string $token, string $secret): Parse
     {
         $jwt = new RSJwt($token, $secret);
 
