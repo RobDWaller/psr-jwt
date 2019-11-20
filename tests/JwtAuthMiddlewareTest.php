@@ -117,7 +117,7 @@ class JwtAuthMiddlewareTest extends TestCase
 
         $this->assertInstanceOf(ResponseInterface::class, $result);
         $this->assertSame(400, $result->getStatusCode());
-        $this->assertSame('Bad Request: JSON Web Token not set.', $result->getReasonPhrase());
+        $this->assertSame('Bad Request: JSON Web Token not set in request.', $result->getReasonPhrase());
     }
 
     /**
