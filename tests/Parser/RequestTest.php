@@ -10,7 +10,7 @@ use Mockery as m;
 
 class RequestTest extends TestCase
 {
-    /** 
+    /**
      * @covers PsrJwt\Parser\Request
      * @uses PsrJwt\Parser\Parse
      */
@@ -23,7 +23,7 @@ class RequestTest extends TestCase
         $this->assertInstanceOf(Request::class, $request);
     }
 
-    /** 
+    /**
      * @covers PsrJwt\Parser\Request::parse
      * @uses PsrJwt\Parser\Request
      * @uses PsrJwt\Parser\Bearer
@@ -48,7 +48,7 @@ class RequestTest extends TestCase
         $this->assertSame('abcdef.123.abcdef', $request->parse($httpRequest, 'jwt'));
     }
 
-    /** 
+    /**
      * @covers PsrJwt\Parser\Request::parse
      * @uses PsrJwt\Parser\Request
      * @uses PsrJwt\Parser\Bearer

@@ -16,7 +16,7 @@ class RequestTest extends TestCase
         'wIjoxNTczNzE2NDA3LCJpYXQiOjE1NzM3MTU1MDcsInVzZXJfaWQiOiIzMTM4NjE2MiJ9.' .
         '9Es0wWdByOQAU8WfcufxgRa9GEYwLefhRzclwWcgVCQ';
 
-    /** 
+    /**
      * @covers PsrJwt\Helper\Request
      */
     public function testRequest()
@@ -26,7 +26,7 @@ class RequestTest extends TestCase
         $this->assertInstanceOf(Request::class, $request);
     }
 
-    /** 
+    /**
      * @covers PsrJwt\Helper\Request::getParsedToken
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Parser\Bearer

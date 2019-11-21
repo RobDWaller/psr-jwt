@@ -7,7 +7,7 @@ use PsrJwt\Parser\ParseException;
 
 class ParseExceptionTest extends TestCase
 {
-    /** 
+    /**
      * @covers PsrJwt\Parser\ParseException
      */
     public function testParseException()
