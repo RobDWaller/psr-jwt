@@ -42,7 +42,8 @@ class JwtMiddlewareTest extends TestCase
      */
     public function testFactoryValidation()
     {
-        $jwt = Jwt::builder();
+        $jwt = $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->setPayloadClaim('nbf', time() - 60)
@@ -83,7 +84,8 @@ class JwtMiddlewareTest extends TestCase
      */
     public function testJsonFactoryValidation()
     {
-        $jwt = Jwt::builder();
+        $jwt = $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->setPayloadClaim('nbf', time() - 60)

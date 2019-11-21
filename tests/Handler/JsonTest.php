@@ -41,7 +41,8 @@ class JsonTest extends TestCase
      */
     public function testAuthenticateOk()
     {
-        $jwt = Jwt::builder();
+        $jwt = $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->build()
@@ -85,7 +86,8 @@ class JsonTest extends TestCase
      */
     public function testAuthenticateFail()
     {
-        $jwt = Jwt::builder();
+        $jwt = $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->build()

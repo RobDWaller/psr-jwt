@@ -15,15 +15,16 @@ class ValidateTest extends TestCase
      */
     public function testValidate()
     {
-        $jwt = Jwt::builder();
-        $token = $jwt->setSecret('Secret123!456$')
+        $jwt = new Jwt();
+        $builder = $jwt->builder();
+        $token = $builder->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->setPayloadClaim('exp', time() - 10)
             ->build()
             ->getToken();
 
         $validate = new Validate(
-            Jwt::parser($token, 'Secret123!456$')
+            $jwt->parser($token, 'Secret123!456$')
         );
 
         $this->assertInstanceOf(Validate::class, $validate);
@@ -36,15 +37,16 @@ class ValidateTest extends TestCase
      */
     public function testValidateOk()
     {
-        $jwt = Jwt::builder();
-        $token = $jwt->setSecret('Secret123!456$')
+        $jwt = new Jwt();
+        $builder = $jwt->builder();
+        $token = $builder->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->setPayloadClaim('exp', time() + 10)
             ->build()
             ->getToken();
 
         $validate = new Validate(
-            Jwt::parser($token, 'Secret123!456$')
+            $jwt->parser($token, 'Secret123!456$')
         );
 
         $result = $validate->validate();
@@ -60,15 +62,16 @@ class ValidateTest extends TestCase
      */
     public function testValidateExpiration()
     {
-        $jwt = Jwt::builder();
-        $token = $jwt->setSecret('Secret123!456$')
+        $jwt = new Jwt();
+        $builder = $jwt->builder();
+        $token = $builder->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->setPayloadClaim('exp', time() - 10)
             ->build()
             ->getToken();
 
         $validate = new Validate(
-            Jwt::parser($token, 'Secret123!456$')
+            $jwt->parser($token, 'Secret123!456$')
         );
 
         $result = $validate->validate();
@@ -84,8 +87,10 @@ class ValidateTest extends TestCase
      */
     public function testValidateTokenStructure()
     {
+        $jwt = new Jwt();
+
         $validate = new Validate(
-            Jwt::parser('123.abc', 'Secret123!456$')
+            $jwt->parser('123.abc', 'Secret123!456$')
         );
 
         $result = $validate->validate();
@@ -101,8 +106,10 @@ class ValidateTest extends TestCase
      */
     public function testValidateBadSignature()
     {
+        $jwt = new Jwt();
+
         $validate = new Validate(
-            Jwt::parser('123.abc.456', 'Secret123!456$')
+            $jwt->parser('123.abc.456', 'Secret123!456$')
         );
 
         $result = $validate->validate();
@@ -118,15 +125,16 @@ class ValidateTest extends TestCase
      */
     public function testValidateNotBefore()
     {
-        $jwt = Jwt::builder();
-        $token = $jwt->setSecret('Secret123!456$')
+        $jwt = new Jwt();
+        $builder = $jwt->builder();
+        $token = $builder->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->setPayloadClaim('nbf', time() + 10)
             ->build()
             ->getToken();
 
         $validate = new Validate(
-            Jwt::parser($token, 'Secret123!456$')
+            $jwt->parser($token, 'Secret123!456$')
         );
 
         $result = $validate->validateNotBefore(
@@ -144,15 +152,16 @@ class ValidateTest extends TestCase
      */
     public function testValidateNotBeforeOk()
     {
-        $jwt = Jwt::builder();
-        $token = $jwt->setSecret('Secret123!456$')
+        $jwt = new Jwt();
+        $builder = $jwt->builder();
+        $token = $builder->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->setPayloadClaim('nbf', time() - 20)
             ->build()
             ->getToken();
 
         $validate = new Validate(
-            Jwt::parser($token, 'Secret123!456$')
+            $jwt->parser($token, 'Secret123!456$')
         );
 
         $result = $validate->validateNotBefore(

@@ -44,7 +44,8 @@ class JwtAuthMiddlewareTest extends TestCase
      */
     public function testProcess()
     {
-        $jwt = Jwt::builder();
+        $jwt = $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->setPayloadClaim('nbf', time() - 60)
@@ -133,7 +134,8 @@ class JwtAuthMiddlewareTest extends TestCase
      */
     public function testInvoke()
     {
-        $jwt = Jwt::builder();
+        $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->setPayloadClaim('nbf', time() - 60)

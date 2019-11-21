@@ -41,7 +41,8 @@ class HtmlTest extends TestCase
      */
     public function testAuthenticateOk()
     {
-        $jwt = Jwt::builder();
+        $jwt = $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->build()
@@ -88,7 +89,8 @@ class HtmlTest extends TestCase
      */
     public function testAuthenticateNoBody()
     {
-        $jwt = Jwt::builder();
+        $jwt = $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->build()
@@ -134,7 +136,8 @@ class HtmlTest extends TestCase
      */
     public function testAuthenticateBadRequest()
     {
-        $jwt = Jwt::builder();
+        $jwt = $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->build()
@@ -178,7 +181,8 @@ class HtmlTest extends TestCase
      */
     public function testAuthenticateUnauthorized()
     {
-        $jwt = Jwt::builder();
+        $jwt = $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->build()

@@ -35,7 +35,8 @@ class AuthenticateTest extends TestCase
      */
     public function testAuthenticateOk()
     {
-        $jwt = Jwt::builder();
+        $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->build()
@@ -79,7 +80,8 @@ class AuthenticateTest extends TestCase
      */
     public function testAuthenticateBadRequest()
     {
-        $jwt = Jwt::builder();
+        $jwt = new Jwt();
+        $jwt = $jwt->builder();
 
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getCookieParams')
@@ -113,7 +115,8 @@ class AuthenticateTest extends TestCase
      */
     public function testValidate()
     {
-        $jwt = Jwt::builder();
+        $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->build()
@@ -138,7 +141,8 @@ class AuthenticateTest extends TestCase
      */
     public function testValidateBadSecret()
     {
-        $jwt = Jwt::builder();
+        $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->build()
@@ -163,7 +167,8 @@ class AuthenticateTest extends TestCase
      */
     public function testValidateBadExpiration()
     {
-        $jwt = Jwt::builder();
+        $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->setPayloadClaim('exp', time() - 10)
@@ -189,7 +194,8 @@ class AuthenticateTest extends TestCase
      */
     public function testValidateBadNotBefore()
     {
-        $jwt = Jwt::builder();
+        $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->setPayloadClaim('nbf', time() + 60)

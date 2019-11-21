@@ -69,7 +69,9 @@ class Authenticate
      */
     private function validate(string $token): Auth
     {
-        $parse = Jwt::parser($token, $this->secret);
+        $jwt = new Jwt();
+
+        $parse = $jwt->parser($token, $this->secret);
 
         $validate = new Validate($parse);
 
@@ -106,7 +108,6 @@ class Authenticate
      *
      * @param ServerRequestInterface $request
      * @return string
-     * @throws ValidateException
      */
     private function getToken(ServerRequestInterface $request): string
     {

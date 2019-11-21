@@ -12,7 +12,7 @@ class RequestTest extends TestCase
 {
     public function testRequest()
     {
-        $parse = new Parse(['token_key' => 'jwt']);
+        $parse = new Parse();
 
         $request = new Request($parse);
 
@@ -23,8 +23,9 @@ class RequestTest extends TestCase
     {
         $parse = m::mock(Parse::class);
         $parse->shouldReceive('addParser')
-            ->times(4)
-            ->shouldReceive('findToken')
+            ->times(4);
+            
+        $parse->shouldReceive('findToken')
             ->once()
             ->andReturn('abcdef.123.abcdef');
 
@@ -39,8 +40,9 @@ class RequestTest extends TestCase
     {
         $parse = m::mock(Parse::class);
         $parse->shouldReceive('addParser')
-            ->times(4)
-            ->shouldReceive('findToken')
+            ->times(4);
+            
+        $parse->shouldReceive('findToken')
             ->once()
             ->andReturn('');
 

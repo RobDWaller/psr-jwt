@@ -34,7 +34,7 @@ class Jwt
     /**
      * Allow for the parsing and validation of JSON Web Tokens
      *
-     * @return RSParse
+     * @return Parse
      */
     public function parser(string $token, string $secret): Parse
     {
