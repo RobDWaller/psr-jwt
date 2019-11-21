@@ -32,6 +32,7 @@ class AuthenticateTest extends TestCase
      * @uses PsrJwt\Parser\Bearer
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Request
      */
     public function testAuthenticateOk()
     {
@@ -77,6 +78,8 @@ class AuthenticateTest extends TestCase
      * @uses PsrJwt\Parser\Bearer
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Request
+     * @uses PsrJwt\Parser\ParseException
      */
     public function testAuthenticateBadRequest()
     {
@@ -264,6 +267,10 @@ class AuthenticateTest extends TestCase
      * @uses PsrJwt\Auth\Authenticate
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Query
+     * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Request
      */
     public function testGetToken()
     {
@@ -288,6 +295,9 @@ class AuthenticateTest extends TestCase
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Bearer
      * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Query
+     * @uses PsrJwt\Parser\Request
      */
     public function testGetTokenCookie()
     {
@@ -316,6 +326,8 @@ class AuthenticateTest extends TestCase
      * @uses PsrJwt\Parser\Bearer
      * @uses PsrJwt\Parser\Cookie
      * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Query
+     * @uses PsrJwt\Parser\Request
      */
     public function testGetTokenBody()
     {
@@ -347,6 +359,8 @@ class AuthenticateTest extends TestCase
      * @uses PsrJwt\Parser\Bearer
      * @uses PsrJwt\Parser\Cookie
      * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Query
+     * @uses PsrJwt\Parser\Request
      */
     public function testGetTokenBodyObject()
     {
@@ -382,6 +396,7 @@ class AuthenticateTest extends TestCase
      * @uses PsrJwt\Parser\Cookie
      * @uses PsrJwt\Parser\Body
      * @uses PsrJwt\Parser\Query
+     * @uses PsrJwt\Parser\Request
      */
     public function testGetTokenQuery()
     {
@@ -419,6 +434,8 @@ class AuthenticateTest extends TestCase
      * @uses PsrJwt\Parser\Body
      * @uses PsrJwt\Parser\Cookie
      * @uses PsrJwt\Parser\Query
+     * @uses PsrJwt\Parser\Request
+     * @uses PsrJwt\Parser\ParseException
      */
     public function testGetTokenNoToken()
     {

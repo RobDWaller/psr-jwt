@@ -16,7 +16,7 @@ use stdClass;
 class ParseTest extends TestCase
 {
     /**
-     * @covers PsrJwt\Parser\Parse::__construct
+     * @covers PsrJwt\Parser\Parse
      */
     public function testParse()
     {

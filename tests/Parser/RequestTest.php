@@ -10,6 +10,10 @@ use Mockery as m;
 
 class RequestTest extends TestCase
 {
+    /** 
+     * @covers PsrJwt\Parser\Request
+     * @uses PsrJwt\Parser\Parse
+     */
     public function testRequest()
     {
         $parse = new Parse();
@@ -19,6 +23,14 @@ class RequestTest extends TestCase
         $this->assertInstanceOf(Request::class, $request);
     }
 
+    /** 
+     * @covers PsrJwt\Parser\Request::parse
+     * @uses PsrJwt\Parser\Request
+     * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Query
+     */
     public function testParse()
     {
         $parse = m::mock(Parse::class);
@@ -36,6 +48,15 @@ class RequestTest extends TestCase
         $this->assertSame('abcdef.123.abcdef', $request->parse($httpRequest, 'jwt'));
     }
 
+    /** 
+     * @covers PsrJwt\Parser\Request::parse
+     * @uses PsrJwt\Parser\Request
+     * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Query
+     * @uses PsrJwt\Parser\ParseException
+     */
     public function testParseNoToken()
     {
         $parse = m::mock(Parse::class);

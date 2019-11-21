@@ -38,6 +38,8 @@ class JsonTest extends TestCase
      * @uses PsrJwt\Parser\Body
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Parse
+     * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Parser\Request
      */
     public function testAuthenticateOk()
     {
@@ -82,7 +84,11 @@ class JsonTest extends TestCase
      * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Parse
+     * @uses PsrJwt\Parser\Request
      */
     public function testAuthenticateFail()
     {

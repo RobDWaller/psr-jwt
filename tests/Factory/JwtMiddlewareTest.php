@@ -39,6 +39,10 @@ class JwtMiddlewareTest extends TestCase
      * @uses PsrJwt\Parser\Bearer
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Validation\Validate
+     * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Query
+     * @uses PsrJwt\Parser\Request
      */
     public function testFactoryValidation()
     {
@@ -81,6 +85,10 @@ class JwtMiddlewareTest extends TestCase
      * @uses PsrJwt\Parser\Bearer
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Validation\Validate
+     * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Query
+     * @uses PsrJwt\Parser\Request
      */
     public function testJsonFactoryValidation()
     {

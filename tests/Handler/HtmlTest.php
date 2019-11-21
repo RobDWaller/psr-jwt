@@ -38,6 +38,7 @@ class HtmlTest extends TestCase
      * @uses PsrJwt\Parser\Body
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Parse
+     * @uses PsrJwt\Parser\Request
      */
     public function testAuthenticateOk()
     {
@@ -86,6 +87,7 @@ class HtmlTest extends TestCase
      * @uses PsrJwt\Parser\Body
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Parse
+     * @uses PsrJwt\Parser\Request
      */
     public function testAuthenticateNoBody()
     {
@@ -133,6 +135,8 @@ class HtmlTest extends TestCase
      * @uses PsrJwt\Parser\Body
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Parse
+     * @uses PsrJwt\Parser\Request
+     * @uses PsrJwt\Parser\ParseException
      */
     public function testAuthenticateBadRequest()
     {
@@ -177,7 +181,10 @@ class HtmlTest extends TestCase
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Parser\Bearer
      * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Parse
+     * @uses PsrJwt\Parser\Request
      */
     public function testAuthenticateUnauthorized()
     {
