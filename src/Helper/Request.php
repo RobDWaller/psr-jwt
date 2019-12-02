@@ -10,8 +10,8 @@ use PsrJwt\Factory\Jwt;
 use ReallySimpleJWT\Parsed;
 use Psr\Http\Message\ServerRequestInterface;
 
-/** 
- * Interact with the request and the JSON web token independent of the 
+/**
+ * Interact with the request and the JSON web token independent of the
  * middleware and token authentication process.
  */
 class Request
@@ -36,7 +36,7 @@ class Request
      */
     public function getTokenHeader(ServerRequestInterface $request, string $tokenKey): array
     {
-        return $this->getParsedToken($request,$tokenKey)->getHeader();
+        return $this->getParsedToken($request, $tokenKey)->getHeader();
     }
 
     /**
@@ -44,6 +44,6 @@ class Request
      */
     public function getTokenPayload(ServerRequestInterface $request, string $tokenKey): array
     {
-        return $this->getParsedToken($request,$tokenKey)->getPayload();
+        return $this->getParsedToken($request, $tokenKey)->getPayload();
     }
 }

@@ -64,7 +64,7 @@ class RequestTest extends TestCase
 
         $this->assertIsArray($result);
         $this->assertSame($result['typ'], 'JWT');
-    } 
+    }
 
     public function testGetTokenPayload()
     {
