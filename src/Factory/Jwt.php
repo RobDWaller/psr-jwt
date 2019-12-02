@@ -11,9 +11,10 @@ use ReallySimpleJWT\Parse;
 use ReallySimpleJWT\Jwt as RSJwt;
 
 /**
- * This library wraps around the ReallySimpleJWT library to provide token
+ * PSR-JWT wraps around the ReallySimpleJWT library to provide token
  * creation and validation functionality. This factory class provides a builder
- * and parser method to provide quick access to this functionality.
+ * and parser method so you can create JSON Web Tokens and Parse and 
+ * validate them.
  */
 class Jwt
 {
