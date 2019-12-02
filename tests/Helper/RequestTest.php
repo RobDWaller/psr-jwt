@@ -51,6 +51,36 @@ class RequestTest extends TestCase
         );
     }
 
+    public function testGetTokenHeader()
+    {
+        $httpRequest = m::mock(ServerRequestInterface::class);
+        $httpRequest->shouldReceive('getHeader')
+            ->once()
+            ->andReturn(['Bearer ' . self::TOKEN]);
+
+        $request = new Request();
+
+        $result = $request->getTokenHeader($httpRequest, 'jwt');
+
+        $this->assertIsArray($result);
+        $this->assertSame($result['typ'], 'JWT');
+    } 
+
+    public function testGetTokenPayload()
+    {
+        $httpRequest = m::mock(ServerRequestInterface::class);
+        $httpRequest->shouldReceive('getHeader')
+            ->once()
+            ->andReturn(['Bearer ' . self::TOKEN]);
+
+        $request = new Request();
+
+        $result = $request->getTokenPayload($httpRequest, 'jwt');
+
+        $this->assertIsArray($result);
+        $this->assertSame($result['user_id'], '31386162');
+    }
+
     public function tearDown(): void
     {
         m::close();
