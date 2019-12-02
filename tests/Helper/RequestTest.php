@@ -51,6 +51,17 @@ class RequestTest extends TestCase
         );
     }
 
+    /**
+     * @covers PsrJwt\Helper\Request::getTokenHeader
+     * @uses PsrJwt\Helper\Request
+     * @uses PsrJwt\Factory\Jwt
+     * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Parse
+     * @uses PsrJwt\Parser\Query
+     * @uses PsrJwt\Parser\Request
+     */
     public function testGetTokenHeader()
     {
         $httpRequest = m::mock(ServerRequestInterface::class);
@@ -66,6 +77,17 @@ class RequestTest extends TestCase
         $this->assertSame($result['typ'], 'JWT');
     }
 
+    /**
+     * @covers PsrJwt\Helper\Request::getTokenPayload
+     * @uses PsrJwt\Helper\Request
+     * @uses PsrJwt\Factory\Jwt
+     * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Parse
+     * @uses PsrJwt\Parser\Query
+     * @uses PsrJwt\Parser\Request
+     */
     public function testGetTokenPayload()
     {
         $httpRequest = m::mock(ServerRequestInterface::class);
