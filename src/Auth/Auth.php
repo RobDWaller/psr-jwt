@@ -6,7 +6,7 @@ namespace PsrJwt\Auth;
 
 /**
  * Tell the middleware what the status code and reason phrase should be based
- * on completing the JWT authentication process.
+ * on completing the JWT authorisation process.
  */
 class Auth
 {
@@ -32,7 +32,7 @@ class Auth
     }
 
     /**
-     * Return the status code based on token authentication
+     * Return the status code based on token authorisation.
      *
      * @return int
      */
@@ -42,7 +42,7 @@ class Auth
     }
 
     /**
-     * Return the reason phrase based on token authentication
+     * Return the reason phrase based on token authorisation.
      *
      * @return string
      */
