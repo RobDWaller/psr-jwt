@@ -16,7 +16,7 @@ use PsrJwt\Validation\Validate;
  * Retrieve the JSON Web Token from the request and attempt to parse and
  * validate it.
  */
-class Authenticate
+class Authorise
 {
     /**
      * The secret required to parse and validate the JWT.
@@ -49,7 +49,7 @@ class Authenticate
      * @param ServerRequestInterface $request
      * @return Auth
      */
-    public function authenticate(ServerRequestInterface $request): Auth
+    public function authorise(ServerRequestInterface $request): Auth
     {
         try {
             $token = $this->getToken($request);
@@ -86,7 +86,7 @@ class Authenticate
     }
 
     /**
-     * The authentication can respond as Ok or Unauthorized.
+     * The authorisation can respond as Ok or Unauthorized.
      *
      * @param int $code
      * @param string $message
