@@ -4,7 +4,7 @@ namespace Tests\Handler;
 
 use PHPUnit\Framework\TestCase;
 use PsrJwt\Handler\Json;
-use PsrJwt\Auth\Authenticate;
+use PsrJwt\Auth\Authorise;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -22,7 +22,7 @@ class JsonTest extends TestCase
         $auth = new Json('secret', 'tokenKey', ['body']);
 
         $this->assertInstanceOf(Json::class, $auth);
-        $this->assertInstanceOf(Authenticate::class, $auth);
+        $this->assertInstanceOf(Authorise::class, $auth);
         $this->assertInstanceOf(RequestHandlerInterface::class, $auth);
     }
 

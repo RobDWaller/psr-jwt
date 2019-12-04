@@ -4,7 +4,7 @@ namespace Tests\Handler;
 
 use PHPUnit\Framework\TestCase;
 use PsrJwt\Handler\Html;
-use PsrJwt\Auth\Authenticate;
+use PsrJwt\Auth\Authorise;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -15,14 +15,14 @@ class HtmlTest extends TestCase
 {
     /**
      * @covers PsrJwt\Handler\Html::__construct
-     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Authorise
      */
     public function testAuthHandler()
     {
         $auth = new Html('secret', 'tokenKey', 'body');
 
         $this->assertInstanceOf(Html::class, $auth);
-        $this->assertInstanceOf(Authenticate::class, $auth);
+        $this->assertInstanceOf(Authorise::class, $auth);
         $this->assertInstanceOf(RequestHandlerInterface::class, $auth);
     }
 

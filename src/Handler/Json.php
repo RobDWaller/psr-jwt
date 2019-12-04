@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace PsrJwt\Handler;
 
-use PsrJwt\Auth\Authenticate;
+use PsrJwt\Auth\Authorise;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Nyholm\Psr7\Response;
 
 /**
- * JWT authentication handler which returns a application/json response on
- * authentication failure. Allows you to customise the body response with a
+ * JWT authorisation handler which returns a application/json response on
+ * authorisation failure. Allows you to customise the body response with a
  * simple message.
  */
-class Json extends Authenticate implements RequestHandlerInterface
+class Json extends Authorise implements RequestHandlerInterface
 {
     /**
      * @var array The content to add to the response body.
@@ -42,7 +42,7 @@ class Json extends Authenticate implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $auth = $this->authenticate($request);
+        $auth = $this->authorise($request);
 
         return new Response(
             $auth->getCode(),
