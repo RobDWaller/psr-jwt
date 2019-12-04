@@ -15,7 +15,7 @@ use PsrJwt\Auth\Auth;
 /**
  * Psr-Jwt provides a simple means by which to add JSON Web Token
  * authorisation middleware to PSR-7 and PSR-15 compliant frameworks such as
- * Slim PHP. It also allows for the generation of JSON Web Tokens via its 
+ * Slim PHP. It also allows for the generation of JSON Web Tokens via its
  * integration with ReallySimpleJWT.
  *
  * @author Rob Waller <rdwaller1984@gmail.com>
