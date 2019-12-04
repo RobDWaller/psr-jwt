@@ -44,10 +44,10 @@ composer require rbdwllr/psr-jwt
 PsrJwt can be used with any PSR-7 / PSR-15 compliant framework. Just call one of the middleware factory methods and they will return a middleware instance that exposes two methods, `__invoke()` and `process()`. The latter will work with PSR-15 compliant frameworks and the former will work with older PSR-7 compliant frameworks.
 
 ```php
-// Will generate a text/html response if JWT authentication fails.
+// Will generate a text/html response if JWT authorisation fails.
 \PsrJwt\Factory\JwtMiddleware::html('secret', 'tokenKey', 'body');
 
-// Will generate an application/json response if JWT authentication fails.
+// Will generate an application/json response if JWT authorisation fails.
 \PsrJwt\Factory\JwtMiddleware::json('secret', 'tokenKey', ['body']);
 ```
 
@@ -55,7 +55,7 @@ PsrJwt can be used with any PSR-7 / PSR-15 compliant framework. Just call one of
 
 **Token Key:** is the key required to retrieve the JSON Web Token from a cookie, query parameter or the request body. By default though the library looks for tokens in the bearer field of the authorization header. If you use the bearer field you can pass an empty string for the token key `''`.
 
-**Body:** is the body content you would like to return in the response if authentication fails. For example, `<h1>Authentication Failed!</h1>`.
+**Body:** is the body content you would like to return in the response if authorisation fails. For example, `<h1>Authorisation Failed!</h1>`.
 
 ### Slim PHP Example Implementation
 
@@ -69,7 +69,7 @@ $app->get('/jwt', function (Request $request, Response $response) {
     $response->getBody()->write("JSON Web Token is Valid!");
 
     return $response;
-})->add(\PsrJwt\Factory\JwtMiddleware::html('Secret123!456$', 'jwt', 'Authentication Failed'));
+})->add(\PsrJwt\Factory\JwtMiddleware::html('Secret123!456$', 'jwt', 'Authorisation Failed'));
 ```
 
 ### Generate a JSON Web Token
@@ -133,7 +133,7 @@ $helper->getTokenPayload($request, $tokenKey);
 
 ## Advanced Usage
 
-You don't have to use the factory methods explained above to generate the JWT authentication middleware you can instantiate all the required classes directly. This allows you to configure a custom setup.
+You don't have to use the factory methods explained above to generate the JWT authorisation middleware you can instantiate all the required classes directly. This allows you to configure a custom setup.
 
 ```php
 use PsrJwt\Handler\Html;
@@ -185,7 +185,7 @@ class MyHandler extends Authorise implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $auth = $this->authenticate($request);
+        $auth = $this->authorise($request);
 
         return new Response(
             $auth->getCode(),
