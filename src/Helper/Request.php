@@ -12,7 +12,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Interact with the request and the JSON web token independent of the
- * middleware and token authentication process.
+ * middleware and token authorisation process.
  */
 class Request
 {
