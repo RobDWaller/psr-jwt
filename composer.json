@@ -1,7 +1,7 @@
 {
     "name": "rbdwllr/psr-jwt",
     "description": "A PSR 7 compliant JSON Web Token Middleware Library.",
-    "keywords": ["jwt", "json", "tokens", "authentication", "json web tokens", "php", "psr-7"],
+    "keywords": ["jwt", "json", "tokens", "authentication", "authorisation", "json web tokens", "php", "psr-7"],
     "type": "library",
     "license": "MIT",
     "authors": [
