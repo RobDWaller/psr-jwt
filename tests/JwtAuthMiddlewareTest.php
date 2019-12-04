@@ -23,9 +23,9 @@ class JwtAuthMiddlewareTest extends TestCase
      */
     public function testJwtAuthProcess()
     {
-        $authenticate = new Html('secret', 'jwt', '');
+        $authorise = new Html('secret', 'jwt', '');
 
-        $process = new JwtAuthMiddleware($authenticate);
+        $process = new JwtAuthMiddleware($authorise);
 
         $this->assertInstanceOf(JwtAuthMiddleware::class, $process);
         $this->assertInstanceOf(MiddlewareInterface::class, $process);
@@ -70,9 +70,9 @@ class JwtAuthMiddlewareTest extends TestCase
             ->once()
             ->andReturn($response);
 
-        $authenticate = new Html('Secret123!456$', '', '');
+        $authorise = new Html('Secret123!456$', '', '');
 
-        $process = new JwtAuthMiddleware($authenticate);
+        $process = new JwtAuthMiddleware($authorise);
 
         $result = $process->process($request, $handler);
 
@@ -116,9 +116,9 @@ class JwtAuthMiddlewareTest extends TestCase
 
         $handler = m::mock(RequestHandlerInterface::class);
 
-        $authenticate = new Html('Secret123!456$', 'jwt', '');
+        $authorise = new Html('Secret123!456$', 'jwt', '');
 
-        $process = new JwtAuthMiddleware($authenticate);
+        $process = new JwtAuthMiddleware($authorise);
 
         $result = $process->process($request, $handler);
 

@@ -40,7 +40,7 @@ class HtmlTest extends TestCase
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Request
      */
-    public function testAuthenticateOk()
+    public function testAuthoriseOk()
     {
         $jwt = $jwt = new Jwt();
         $jwt = $jwt->builder();
@@ -89,7 +89,7 @@ class HtmlTest extends TestCase
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Request
      */
-    public function testAuthenticateNoBody()
+    public function testAuthoriseNoBody()
     {
         $jwt = $jwt = new Jwt();
         $jwt = $jwt->builder();
@@ -138,7 +138,7 @@ class HtmlTest extends TestCase
      * @uses PsrJwt\Parser\Request
      * @uses PsrJwt\Parser\ParseException
      */
-    public function testAuthenticateBadRequest()
+    public function testAuthoriseBadRequest()
     {
         $jwt = $jwt = new Jwt();
         $jwt = $jwt->builder();
@@ -186,7 +186,7 @@ class HtmlTest extends TestCase
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Request
      */
-    public function testAuthenticateUnauthorized()
+    public function testAuthoriseUnauthorized()
     {
         $jwt = $jwt = new Jwt();
         $jwt = $jwt->builder();

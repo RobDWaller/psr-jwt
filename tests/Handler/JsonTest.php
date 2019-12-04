@@ -41,7 +41,7 @@ class JsonTest extends TestCase
      * @uses PsrJwt\Parser\Bearer
      * @uses PsrJwt\Parser\Request
      */
-    public function testAuthenticateOk()
+    public function testAuthoriseOk()
     {
         $jwt = $jwt = new Jwt();
         $jwt = $jwt->builder();
@@ -90,7 +90,7 @@ class JsonTest extends TestCase
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Request
      */
-    public function testAuthenticateFail()
+    public function testAuthoriseFail()
     {
         $jwt = $jwt = new Jwt();
         $jwt = $jwt->builder();
