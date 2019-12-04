@@ -30,7 +30,7 @@ class HtmlTest extends TestCase
      * @covers PsrJwt\Handler\Html::handle
      * @uses PsrJwt\Handler\Html::__construct
      * @uses PsrJwt\Factory\Jwt
-     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Parser\Bearer
@@ -79,7 +79,7 @@ class HtmlTest extends TestCase
      * @covers PsrJwt\Handler\Html::handle
      * @uses PsrJwt\Handler\Html::__construct
      * @uses PsrJwt\Factory\Jwt
-     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Parser\Bearer
@@ -127,7 +127,7 @@ class HtmlTest extends TestCase
      * @covers PsrJwt\Handler\Html::handle
      * @uses PsrJwt\Handler\Html::__construct
      * @uses PsrJwt\Factory\Jwt
-     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Parser\Bearer
@@ -176,7 +176,7 @@ class HtmlTest extends TestCase
      * @covers PsrJwt\Handler\Html::handle
      * @uses PsrJwt\Handler\Html::__construct
      * @uses PsrJwt\Factory\Jwt
-     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Parser\Bearer

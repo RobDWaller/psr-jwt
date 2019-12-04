@@ -15,7 +15,7 @@ class JsonTest extends TestCase
 {
     /**
      * @covers PsrJwt\Handler\Json::__construct
-     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Authorise
      */
     public function testJsonAuthHandler()
     {
@@ -30,7 +30,7 @@ class JsonTest extends TestCase
      * @covers PsrJwt\Handler\Json::handle
      * @uses PsrJwt\Handler\Json::__construct
      * @uses PsrJwt\Factory\Jwt
-     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Parser\Bearer
@@ -80,7 +80,7 @@ class JsonTest extends TestCase
      * @covers PsrJwt\Handler\Json::handle
      * @uses PsrJwt\Handler\Json::__construct
      * @uses PsrJwt\Factory\Jwt
-     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Parser\Bearer
