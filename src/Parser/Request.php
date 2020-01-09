@@ -12,8 +12,14 @@ use PsrJwt\Parser\Body;
 use PsrJwt\Parser\Query;
 use PsrJwt\Parser\ParseException;
 
+/**
+ * Parse the request and find the JSON Web Token.
+ */
 class Request
 {
+    /**
+     * @var Parse $parse
+     */
     private $parse;
 
     public function __construct(Parse $parse)
@@ -21,6 +27,11 @@ class Request
         $this->parse = $parse;
     }
 
+    /**
+     * To find the JWT token in the request a number of parsers are run against 
+     * it. The default check is against the authorisation bearer token which is
+     * the safest place to put the token.
+     */
     public function parse(ServerRequestInterface $request, string $tokenKey): string
     {
         $this->parse->addParser(new Bearer());

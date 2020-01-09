@@ -35,7 +35,8 @@ class Html extends Authorise implements RequestHandlerInterface
     }
 
     /**
-     * Required by the RequestHandlerInterface and called by the JwtAuthMiddleware.
+     * Handle the authorisation process and generate the relevant text / html
+     * response and code.
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface

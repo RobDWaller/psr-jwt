@@ -35,8 +35,9 @@ class Json extends Authorise implements RequestHandlerInterface
     }
 
     /**
-     * Required by the RequestHandlerInterface and called by the JwtAuthMiddleware.
-     *
+     * Handle the authorisation process and generate the relevant json
+     * response and code.
+     * 
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */

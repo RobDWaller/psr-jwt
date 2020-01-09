@@ -10,14 +10,14 @@ use PsrJwt\Handler\Json;
 use PsrJwt\JwtAuthInvokable;
 
 /**
- * Easily add the PSR-JWT middleware to PSR compliant frameworks such as
- * Zend Expressive and Slim PHP.
+ * Factory to easily add the PSR-JWT middleware to PSR compliant frameworks such 
+ * as Slim PHP.
  */
 class JwtMiddleware
 {
     /**
      * Add the middleware to the relevant framework and return a text / html
-     * response on validation failure.
+     * response on authorisation failure.
      *
      * @param string $tokenKey
      * @param string $secret
@@ -33,7 +33,7 @@ class JwtMiddleware
 
     /**
      * Add the middleware to the relevant framework and return a JSON response
-     * on validation failure.
+     * on authorisation failure.
      *
      * @param string $tokenKey
      * @param string $secret

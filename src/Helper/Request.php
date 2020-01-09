@@ -18,7 +18,7 @@ class Request
 {
     /**
      * Retrieve a JSON Web Token from a request. Returned as a ReallySimpleJWT
-     * parsed object.
+     * Parsed object.
      */
     public function getParsedToken(ServerRequestInterface $request, string $tokenKey): Parsed
     {

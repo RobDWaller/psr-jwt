@@ -29,7 +29,8 @@ class Parse
     }
 
     /**
-     * Parsers are only instantiated if the JWT can't be found.
+     * Search the request for the token. Each parser object is only 
+     * instantiated if the JWT can't be found in the previous parser object.
      *
      * @param ServerRequestInterface $request
      * @return string

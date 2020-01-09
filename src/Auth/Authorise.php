@@ -26,7 +26,7 @@ class Authorise
     private $secret;
 
     /**
-     * Define under what key the JWT can be found in the request.
+     * Define which key the JWT can be found under in the request.
      *
      * @var string $tokenKey
      */
@@ -61,8 +61,8 @@ class Authorise
     }
 
     /**
-     * Check the token will parse, the signature is valid, it is ready to use,
-     * and it has not expired.
+     * Check the token will parse, the signature is valid, the token is ready 
+     * to use, and it has not expired.
      *
      * @param string $token
      * @return Auth
@@ -86,7 +86,7 @@ class Authorise
     }
 
     /**
-     * The authorisation can respond as Ok or Unauthorized.
+     * The authorisation process can respond as 200 Ok or 401 Unauthorized.
      *
      * @param int $code
      * @param string $message
