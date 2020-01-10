@@ -37,7 +37,7 @@ class Json extends Authorise implements RequestHandlerInterface
     /**
      * Handle the authorisation process and generate the relevant json
      * response and code.
-     * 
+     *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */

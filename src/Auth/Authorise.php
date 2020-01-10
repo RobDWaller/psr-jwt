@@ -61,7 +61,7 @@ class Authorise
     }
 
     /**
-     * Check the token will parse, the signature is valid, the token is ready 
+     * Check the token will parse, the signature is valid, the token is ready
      * to use, and it has not expired.
      *
      * @param string $token

@@ -28,7 +28,7 @@ class Request
     }
 
     /**
-     * To find the JWT token in the request a number of parsers are run against 
+     * To find the JWT token in the request a number of parsers are run against
      * it. The default check is against the authorisation bearer token which is
      * the safest place to put the token.
      */

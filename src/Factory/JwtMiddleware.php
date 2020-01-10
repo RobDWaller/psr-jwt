@@ -10,7 +10,7 @@ use PsrJwt\Handler\Json;
 use PsrJwt\JwtAuthInvokable;
 
 /**
- * Factory to easily add the PSR-JWT middleware to PSR compliant frameworks such 
+ * Factory to easily add the PSR-JWT middleware to PSR compliant frameworks such
  * as Slim PHP.
  */
 class JwtMiddleware

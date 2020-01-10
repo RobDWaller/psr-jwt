@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PsrJwt\Auth;
 
 /**
- * Tell the middleware what the status code and reason phrase are when the JWT 
+ * Tell the middleware what the status code and reason phrase are when the JWT
  * authorisation process is complete.
  */
 class Auth
