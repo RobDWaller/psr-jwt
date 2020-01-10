@@ -14,7 +14,10 @@ class JwtTest extends TestCase
      */
     public function testJwtBuilder()
     {
-        $this->assertInstanceOf(Build::class, Jwt::builder());
+        $jwt = new Jwt();
+        $jwt = $jwt->builder();
+
+        $this->assertInstanceOf(Build::class, $jwt);
     }
 
     /**
@@ -22,6 +25,9 @@ class JwtTest extends TestCase
      */
     public function testJwtParser()
     {
-        $this->assertInstanceOf(Parse::class, Jwt::parser('aaa.bbb.ccc', 'secret'));
+        $jwt = new Jwt();
+        $jwt = $jwt->parser('aaa.bbb.ccc', 'secret');
+
+        $this->assertInstanceOf(Parse::class, $jwt);
     }
 }

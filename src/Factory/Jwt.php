@@ -11,18 +11,19 @@ use ReallySimpleJWT\Parse;
 use ReallySimpleJWT\Jwt as RSJwt;
 
 /**
- * This library wraps around the ReallySimpleJWT library to provide token
+ * PSR-JWT wraps around the ReallySimpleJWT library to provide token
  * creation and validation functionality. This factory class provides a builder
- * and parser method to provide quick access to this functionality.
+ * and parser method so you can create JSON Web Tokens, and Parse and
+ * validate them.
  */
 class Jwt
 {
     /**
-     * ALlow for the generation of JSON Web Tokens
+     * ALlow for the generation of JSON Web Tokens.
      *
      * @return Build
      */
-    public static function builder(): Build
+    public function builder(): Build
     {
         return new Build(
             'JWT',
@@ -32,11 +33,11 @@ class Jwt
     }
 
     /**
-     * Allow for the parsing and validation of JSON Web Tokens
+     * Allow for the parsing and validation of JSON Web Tokens.
      *
      * @return Parse
      */
-    public static function parser(string $token, string $secret): Parse
+    public function parser(string $token, string $secret): Parse
     {
         $jwt = new RSJwt($token, $secret);
 

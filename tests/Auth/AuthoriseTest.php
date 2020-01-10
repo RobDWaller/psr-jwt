@@ -4,26 +4,26 @@ namespace Tests\Auth;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
-use PsrJwt\Auth\Authenticate;
+use PsrJwt\Auth\Authorise;
 use PsrJwt\Auth\Auth;
 use PsrJwt\Factory\Jwt;
 use ReflectionMethod;
 use Mockery as m;
 
-class AuthenticateTest extends TestCase
+class AuthoriseTest extends TestCase
 {
     /**
-     * @covers PsrJwt\Auth\Authenticate::__construct
+     * @covers PsrJwt\Auth\Authorise::__construct
      */
-    public function testAuthenticate()
+    public function testAuthorise()
     {
-        $auth = new Authenticate('secret', 'jwt');
-        $this->assertInstanceOf(Authenticate::class, $auth);
+        $auth = new Authorise('secret', 'jwt');
+        $this->assertInstanceOf(Authorise::class, $auth);
     }
 
     /**
-     * @covers PsrJwt\Auth\Authenticate::authenticate
-     * @uses PsrJwt\Auth\Authenticate
+     * @covers PsrJwt\Auth\Authorise::authorise
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Validation\Validate
@@ -32,10 +32,12 @@ class AuthenticateTest extends TestCase
      * @uses PsrJwt\Parser\Bearer
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Request
      */
-    public function testAuthenticateOk()
+    public function testAuthoriseOk()
     {
-        $jwt = Jwt::builder();
+        $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->build()
@@ -56,9 +58,9 @@ class AuthenticateTest extends TestCase
             ->once()
             ->andReturn([]);
 
-        $authenticate = new Authenticate('Secret123!456$', 'jwt');
+        $authorise = new Authorise('Secret123!456$', 'jwt');
 
-        $result = $authenticate->authenticate($request);
+        $result = $authorise->authorise($request);
 
         $this->assertInstanceOf(Auth::class, $result);
         $this->assertSame(200, $result->getCode());
@@ -66,8 +68,8 @@ class AuthenticateTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Auth\Authenticate::authenticate
-     * @uses PsrJwt\Auth\Authenticate
+     * @covers PsrJwt\Auth\Authorise::authorise
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Validation\Validate
@@ -76,10 +78,13 @@ class AuthenticateTest extends TestCase
      * @uses PsrJwt\Parser\Bearer
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Request
+     * @uses PsrJwt\Parser\ParseException
      */
-    public function testAuthenticateBadRequest()
+    public function testAuthoriseBadRequest()
     {
-        $jwt = Jwt::builder();
+        $jwt = new Jwt();
+        $jwt = $jwt->builder();
 
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getCookieParams')
@@ -96,62 +101,33 @@ class AuthenticateTest extends TestCase
             ->once()
             ->andReturn([]);
 
-        $auth = new Authenticate('Secret123!456$', 'jwt');
+        $auth = new Authorise('Secret123!456$', 'jwt');
 
-        $result = $auth->authenticate($request);
+        $result = $auth->authorise($request);
 
         $this->assertSame(400, $result->getCode());
-        $this->assertSame('Bad Request: JSON Web Token not set.', $result->getMessage());
+        $this->assertSame('Bad Request: JSON Web Token not set in request.', $result->getMessage());
     }
 
     /**
-     * @covers PsrJwt\Auth\Authenticate::hasJwt
-     * @uses PsrJwt\Auth\Authenticate::__construct
-     */
-    public function testAuthenticateHasJwt()
-    {
-        $auth = new Authenticate('secret', 'jwt');
-
-        $method = new ReflectionMethod(Authenticate::class, 'hasJwt');
-        $method->setAccessible(true);
-        $result = $method->invokeArgs($auth, ['abc.abc.abc']);
-
-        $this->assertTrue($result);
-    }
-
-    /**
-     * @covers PsrJwt\Auth\Authenticate::hasJwt
-     * @uses PsrJwt\Auth\Authenticate::__construct
-     */
-    public function testAuthenticateHasJwtEmpty()
-    {
-        $auth = new Authenticate('secret', 'jwt');
-
-        $method = new ReflectionMethod(Authenticate::class, 'hasJwt');
-        $method->setAccessible(true);
-        $result = $method->invokeArgs($auth, ['']);
-
-        $this->assertFalse($result);
-    }
-
-    /**
-     * @covers PsrJwt\Auth\Authenticate::validate
-     * @uses PsrJwt\Auth\Authenticate
+     * @covers PsrJwt\Auth\Authorise::validate
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Validation\Validate
      */
     public function testValidate()
     {
-        $jwt = Jwt::builder();
+        $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->build()
             ->getToken();
 
-        $auth = new Authenticate('Secret123!456$', 'jwt');
+        $auth = new Authorise('Secret123!456$', 'jwt');
 
-        $method = new ReflectionMethod(Authenticate::class, 'validate');
+        $method = new ReflectionMethod(Authorise::class, 'validate');
         $method->setAccessible(true);
         $result = $method->invokeArgs($auth, [$token]);
 
@@ -160,23 +136,24 @@ class AuthenticateTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Auth\Authenticate::validate
-     * @uses PsrJwt\Auth\Authenticate
+     * @covers PsrJwt\Auth\Authorise::validate
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Validation\Validate
      */
     public function testValidateBadSecret()
     {
-        $jwt = Jwt::builder();
+        $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->build()
             ->getToken();
 
-        $auth = new Authenticate('Secret', 'jwt');
+        $auth = new Authorise('Secret', 'jwt');
 
-        $method = new ReflectionMethod(Authenticate::class, 'validate');
+        $method = new ReflectionMethod(Authorise::class, 'validate');
         $method->setAccessible(true);
         $result = $method->invokeArgs($auth, [$token]);
 
@@ -185,24 +162,25 @@ class AuthenticateTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Auth\Authenticate::validate
-     * @uses PsrJwt\Auth\Authenticate
+     * @covers PsrJwt\Auth\Authorise::validate
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Validation\Validate
      */
     public function testValidateBadExpiration()
     {
-        $jwt = Jwt::builder();
+        $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->setPayloadClaim('exp', time() - 10)
             ->build()
             ->getToken();
 
-        $auth = new Authenticate('Secret123!456$', 'jwt');
+        $auth = new Authorise('Secret123!456$', 'jwt');
 
-        $method = new ReflectionMethod(Authenticate::class, 'validate');
+        $method = new ReflectionMethod(Authorise::class, 'validate');
         $method->setAccessible(true);
         $result = $method->invokeArgs($auth, [$token]);
 
@@ -211,24 +189,25 @@ class AuthenticateTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Auth\Authenticate::validate
-     * @uses PsrJwt\Auth\Authenticate
+     * @covers PsrJwt\Auth\Authorise::validate
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Validation\Validate
      */
     public function testValidateBadNotBefore()
     {
-        $jwt = Jwt::builder();
+        $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->setPayloadClaim('nbf', time() + 60)
             ->build()
             ->getToken();
 
-        $auth = new Authenticate('Secret123!456$', 'jwt');
+        $auth = new Authorise('Secret123!456$', 'jwt');
 
-        $method = new ReflectionMethod(Authenticate::class, 'validate');
+        $method = new ReflectionMethod(Authorise::class, 'validate');
         $method->setAccessible(true);
         $result = $method->invokeArgs($auth, [$token]);
 
@@ -237,15 +216,15 @@ class AuthenticateTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Auth\Authenticate::validationResponse
-     * @uses PsrJwt\Auth\Authenticate::__construct
+     * @covers PsrJwt\Auth\Authorise::validationResponse
+     * @uses PsrJwt\Auth\Authorise::__construct
      * @uses PsrJwt\Auth\Auth
      */
     public function testValidationResponse()
     {
-        $auth = new Authenticate('secret', 'jwt');
+        $auth = new Authorise('secret', 'jwt');
 
-        $method = new ReflectionMethod(Authenticate::class, 'validationResponse');
+        $method = new ReflectionMethod(Authorise::class, 'validationResponse');
         $method->setAccessible(true);
         $result = $method->invokeArgs($auth, [0, 'Ok']);
 
@@ -255,15 +234,15 @@ class AuthenticateTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Auth\Authenticate::validationResponse
-     * @uses PsrJwt\Auth\Authenticate::__construct
+     * @covers PsrJwt\Auth\Authorise::validationResponse
+     * @uses PsrJwt\Auth\Authorise::__construct
      * @uses PsrJwt\Auth\Auth
      */
     public function testValidationResponseErrors()
     {
-        $auth = new Authenticate('secret', 'jwt');
+        $auth = new Authorise('secret', 'jwt');
 
-        $method = new ReflectionMethod(Authenticate::class, 'validationResponse');
+        $method = new ReflectionMethod(Authorise::class, 'validationResponse');
         $method->setAccessible(true);
 
         $errors = [
@@ -284,10 +263,14 @@ class AuthenticateTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Auth\Authenticate::getToken
-     * @uses PsrJwt\Auth\Authenticate
+     * @covers PsrJwt\Auth\Authorise::getToken
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Query
+     * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Request
      */
     public function testGetToken()
     {
@@ -297,9 +280,9 @@ class AuthenticateTest extends TestCase
             ->once()
             ->andReturn(['Bearer abc.def.ghi']);
 
-        $auth = new Authenticate('secret', 'jwt');
+        $auth = new Authorise('secret', 'jwt');
 
-        $method = new ReflectionMethod(Authenticate::class, 'getToken');
+        $method = new ReflectionMethod(Authorise::class, 'getToken');
         $method->setAccessible(true);
         $result = $method->invokeArgs($auth, [$request]);
 
@@ -307,11 +290,14 @@ class AuthenticateTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Auth\Authenticate::getToken
-     * @uses PsrJwt\Auth\Authenticate
+     * @covers PsrJwt\Auth\Authorise::getToken
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Bearer
      * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Query
+     * @uses PsrJwt\Parser\Request
      */
     public function testGetTokenCookie()
     {
@@ -324,9 +310,9 @@ class AuthenticateTest extends TestCase
             ->once()
             ->andReturn(['token' => 'abc.123.def']);
 
-        $auth = new Authenticate('secret', 'token');
+        $auth = new Authorise('secret', 'token');
 
-        $method = new ReflectionMethod(Authenticate::class, 'getToken');
+        $method = new ReflectionMethod(Authorise::class, 'getToken');
         $method->setAccessible(true);
         $result = $method->invokeArgs($auth, [$request]);
 
@@ -334,12 +320,14 @@ class AuthenticateTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Auth\Authenticate::getToken
-     * @uses PsrJwt\Auth\Authenticate
+     * @covers PsrJwt\Auth\Authorise::getToken
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Bearer
      * @uses PsrJwt\Parser\Cookie
      * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Query
+     * @uses PsrJwt\Parser\Request
      */
     public function testGetTokenBody()
     {
@@ -355,9 +343,9 @@ class AuthenticateTest extends TestCase
             ->once()
             ->andReturn(['json_token_1' => '123.abc.def']);
 
-        $auth = new Authenticate('secret', 'json_token_1');
+        $auth = new Authorise('secret', 'json_token_1');
 
-        $method = new ReflectionMethod(Authenticate::class, 'getToken');
+        $method = new ReflectionMethod(Authorise::class, 'getToken');
         $method->setAccessible(true);
         $result = $method->invokeArgs($auth, [$request]);
 
@@ -365,12 +353,14 @@ class AuthenticateTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Auth\Authenticate::getToken
-     * @uses PsrJwt\Auth\Authenticate
+     * @covers PsrJwt\Auth\Authorise::getToken
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Bearer
      * @uses PsrJwt\Parser\Cookie
      * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Query
+     * @uses PsrJwt\Parser\Request
      */
     public function testGetTokenBodyObject()
     {
@@ -389,9 +379,9 @@ class AuthenticateTest extends TestCase
             ->twice()
             ->andReturn($token);
 
-        $auth = new Authenticate('secret', 'my_token');
+        $auth = new Authorise('secret', 'my_token');
 
-        $method = new ReflectionMethod(Authenticate::class, 'getToken');
+        $method = new ReflectionMethod(Authorise::class, 'getToken');
         $method->setAccessible(true);
         $result = $method->invokeArgs($auth, [$request]);
 
@@ -399,13 +389,14 @@ class AuthenticateTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Auth\Authenticate::getToken
-     * @uses PsrJwt\Auth\Authenticate
+     * @covers PsrJwt\Auth\Authorise::getToken
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Bearer
      * @uses PsrJwt\Parser\Cookie
      * @uses PsrJwt\Parser\Body
      * @uses PsrJwt\Parser\Query
+     * @uses PsrJwt\Parser\Request
      */
     public function testGetTokenQuery()
     {
@@ -424,9 +415,9 @@ class AuthenticateTest extends TestCase
             ->once()
             ->andReturn(['auth_token' => '456.gfv.3-1']);
 
-        $auth = new Authenticate('secret', 'auth_token');
+        $auth = new Authorise('secret', 'auth_token');
 
-        $method = new ReflectionMethod(Authenticate::class, 'getToken');
+        $method = new ReflectionMethod(Authorise::class, 'getToken');
         $method->setAccessible(true);
         $result = $method->invokeArgs($auth, [$request]);
 
@@ -434,16 +425,17 @@ class AuthenticateTest extends TestCase
     }
 
     /**
-     * @expectedException ReallySimpleJWT\Exception\ValidateException
-     * @expectedExceptionMessage JSON Web Token not set.
-     * @expectedExceptionCode 11
-     * @covers PsrJwt\Auth\Authenticate::getToken
-     * @uses PsrJwt\Auth\Authenticate
+     * @expectedException PsrJwt\Parser\ParseException
+     * @expectedExceptionMessage JSON Web Token not set in request.
+     * @covers PsrJwt\Auth\Authorise::getToken
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Bearer
      * @uses PsrJwt\Parser\Body
      * @uses PsrJwt\Parser\Cookie
      * @uses PsrJwt\Parser\Query
+     * @uses PsrJwt\Parser\Request
+     * @uses PsrJwt\Parser\ParseException
      */
     public function testGetTokenNoToken()
     {
@@ -462,9 +454,9 @@ class AuthenticateTest extends TestCase
             ->twice()
             ->andReturn([]);
 
-        $auth = new Authenticate('secret', 'jwt');
+        $auth = new Authorise('secret', 'jwt');
 
-        $method = new ReflectionMethod(Authenticate::class, 'getToken');
+        $method = new ReflectionMethod(Authorise::class, 'getToken');
         $method->setAccessible(true);
         $result = $method->invokeArgs($auth, [$request]);
     }

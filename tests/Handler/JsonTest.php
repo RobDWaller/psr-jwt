@@ -4,7 +4,7 @@ namespace Tests\Handler;
 
 use PHPUnit\Framework\TestCase;
 use PsrJwt\Handler\Json;
-use PsrJwt\Auth\Authenticate;
+use PsrJwt\Auth\Authorise;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -15,14 +15,14 @@ class JsonTest extends TestCase
 {
     /**
      * @covers PsrJwt\Handler\Json::__construct
-     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Authorise
      */
     public function testJsonAuthHandler()
     {
         $auth = new Json('secret', 'tokenKey', ['body']);
 
         $this->assertInstanceOf(Json::class, $auth);
-        $this->assertInstanceOf(Authenticate::class, $auth);
+        $this->assertInstanceOf(Authorise::class, $auth);
         $this->assertInstanceOf(RequestHandlerInterface::class, $auth);
     }
 
@@ -30,7 +30,7 @@ class JsonTest extends TestCase
      * @covers PsrJwt\Handler\Json::handle
      * @uses PsrJwt\Handler\Json::__construct
      * @uses PsrJwt\Factory\Jwt
-     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Parser\Bearer
@@ -38,10 +38,13 @@ class JsonTest extends TestCase
      * @uses PsrJwt\Parser\Body
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Parse
+     * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Parser\Request
      */
-    public function testAuthenticateOk()
+    public function testAuthoriseOk()
     {
-        $jwt = Jwt::builder();
+        $jwt = $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->build()
@@ -77,15 +80,20 @@ class JsonTest extends TestCase
      * @covers PsrJwt\Handler\Json::handle
      * @uses PsrJwt\Handler\Json::__construct
      * @uses PsrJwt\Factory\Jwt
-     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Parse
+     * @uses PsrJwt\Parser\Request
      */
-    public function testAuthenticateFail()
+    public function testAuthoriseFail()
     {
-        $jwt = Jwt::builder();
+        $jwt = $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->build()

@@ -4,7 +4,7 @@ namespace Tests\Handler;
 
 use PHPUnit\Framework\TestCase;
 use PsrJwt\Handler\Html;
-use PsrJwt\Auth\Authenticate;
+use PsrJwt\Auth\Authorise;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -15,14 +15,14 @@ class HtmlTest extends TestCase
 {
     /**
      * @covers PsrJwt\Handler\Html::__construct
-     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Authorise
      */
     public function testAuthHandler()
     {
         $auth = new Html('secret', 'tokenKey', 'body');
 
         $this->assertInstanceOf(Html::class, $auth);
-        $this->assertInstanceOf(Authenticate::class, $auth);
+        $this->assertInstanceOf(Authorise::class, $auth);
         $this->assertInstanceOf(RequestHandlerInterface::class, $auth);
     }
 
@@ -30,7 +30,7 @@ class HtmlTest extends TestCase
      * @covers PsrJwt\Handler\Html::handle
      * @uses PsrJwt\Handler\Html::__construct
      * @uses PsrJwt\Factory\Jwt
-     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Parser\Bearer
@@ -38,10 +38,12 @@ class HtmlTest extends TestCase
      * @uses PsrJwt\Parser\Body
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Parse
+     * @uses PsrJwt\Parser\Request
      */
-    public function testAuthenticateOk()
+    public function testAuthoriseOk()
     {
-        $jwt = Jwt::builder();
+        $jwt = $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->build()
@@ -77,7 +79,7 @@ class HtmlTest extends TestCase
      * @covers PsrJwt\Handler\Html::handle
      * @uses PsrJwt\Handler\Html::__construct
      * @uses PsrJwt\Factory\Jwt
-     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Parser\Bearer
@@ -85,10 +87,12 @@ class HtmlTest extends TestCase
      * @uses PsrJwt\Parser\Body
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Parse
+     * @uses PsrJwt\Parser\Request
      */
-    public function testAuthenticateNoBody()
+    public function testAuthoriseNoBody()
     {
-        $jwt = Jwt::builder();
+        $jwt = $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->build()
@@ -123,7 +127,7 @@ class HtmlTest extends TestCase
      * @covers PsrJwt\Handler\Html::handle
      * @uses PsrJwt\Handler\Html::__construct
      * @uses PsrJwt\Factory\Jwt
-     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Parser\Bearer
@@ -131,10 +135,13 @@ class HtmlTest extends TestCase
      * @uses PsrJwt\Parser\Body
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Parse
+     * @uses PsrJwt\Parser\Request
+     * @uses PsrJwt\Parser\ParseException
      */
-    public function testAuthenticateBadRequest()
+    public function testAuthoriseBadRequest()
     {
-        $jwt = Jwt::builder();
+        $jwt = $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->build()
@@ -161,7 +168,7 @@ class HtmlTest extends TestCase
 
         $this->assertInstanceOf(ResponseInterface::class, $result);
         $this->assertSame(400, $result->getStatusCode());
-        $this->assertSame('Bad Request: JSON Web Token not set.', $result->getReasonPhrase());
+        $this->assertSame('Bad Request: JSON Web Token not set in request.', $result->getReasonPhrase());
         $this->assertSame('<h1>Fail!</h1>', $result->getBody()->__toString());
     }
 
@@ -169,16 +176,20 @@ class HtmlTest extends TestCase
      * @covers PsrJwt\Handler\Html::handle
      * @uses PsrJwt\Handler\Html::__construct
      * @uses PsrJwt\Factory\Jwt
-     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Parser\Bearer
      * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Parse
+     * @uses PsrJwt\Parser\Request
      */
-    public function testAuthenticateUnauthorized()
+    public function testAuthoriseUnauthorized()
     {
-        $jwt = Jwt::builder();
+        $jwt = $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->build()

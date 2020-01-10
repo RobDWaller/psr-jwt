@@ -5,17 +5,18 @@ declare(strict_types=1);
 namespace PsrJwt\Auth;
 
 use Psr\Http\Message\ServerRequestInterface;
-use ReallySimpleJWT\Exception\ValidateException;
 use PsrJwt\Factory\Jwt;
 use PsrJwt\Auth\Auth;
 use PsrJwt\Parser\Parse;
+use PsrJwt\Parser\Request;
+use PsrJwt\Parser\ParseException;
 use PsrJwt\Validation\Validate;
 
 /**
  * Retrieve the JSON Web Token from the request and attempt to parse and
  * validate it.
  */
-class Authenticate
+class Authorise
 {
     /**
      * The secret required to parse and validate the JWT.
@@ -25,7 +26,7 @@ class Authenticate
     private $secret;
 
     /**
-     * Define under what key the JWT can be found in the request.
+     * Define which key the JWT can be found under in the request.
      *
      * @var string $tokenKey
      */
@@ -48,11 +49,11 @@ class Authenticate
      * @param ServerRequestInterface $request
      * @return Auth
      */
-    public function authenticate(ServerRequestInterface $request): Auth
+    public function authorise(ServerRequestInterface $request): Auth
     {
         try {
             $token = $this->getToken($request);
-        } catch (ValidateException $e) {
+        } catch (ParseException $e) {
             return new Auth(400, 'Bad Request: ' . $e->getMessage());
         }
 
@@ -60,15 +61,17 @@ class Authenticate
     }
 
     /**
-     * Check the token will parse, the signature is valid, it is ready to use,
-     * and it has not expired.
+     * Check the token will parse, the signature is valid, the token is ready
+     * to use, and it has not expired.
      *
      * @param string $token
      * @return Auth
      */
     private function validate(string $token): Auth
     {
-        $parse = Jwt::parser($token, $this->secret);
+        $jwt = new Jwt();
+
+        $parse = $jwt->parser($token, $this->secret);
 
         $validate = new Validate($parse);
 
@@ -83,7 +86,7 @@ class Authenticate
     }
 
     /**
-     * The authentication can respond as Ok or Unauthorized.
+     * The authorisation process can respond as 200 Ok or 401 Unauthorized.
      *
      * @param int $code
      * @param string $message
@@ -99,39 +102,17 @@ class Authenticate
     }
 
     /**
-     * The token found in the request should not be empty.
-     *
-     * @param string $token
-     * @return bool
-     */
-    private function hasJwt(string $token): bool
-    {
-        return !empty($token);
-    }
-
-    /**
      * Find the token in the request. Ideally the token should be passed as
      * a bearer token in the authorization header. Passing the token via
      * query parameters is the least advisable option.
      *
      * @param ServerRequestInterface $request
      * @return string
-     * @throws ValidateException
      */
     private function getToken(ServerRequestInterface $request): string
     {
-        $parse = new Parse(['token_key' => $this->tokenKey]);
-        $parse->addParser(\PsrJwt\Parser\Bearer::class);
-        $parse->addParser(\PsrJwt\Parser\Cookie::class);
-        $parse->addParser(\PsrJwt\Parser\Body::class);
-        $parse->addParser(\PsrJwt\Parser\Query::class);
+        $parseRequest = new Request(new Parse());
 
-        $token = $parse->findToken($request);
-
-        if ($this->hasJwt($token)) {
-            return $token;
-        }
-
-        throw new ValidateException('JSON Web Token not set.', 11);
+        return $parseRequest->parse($request, $this->tokenKey);
     }
 }

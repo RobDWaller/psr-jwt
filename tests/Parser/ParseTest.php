@@ -16,11 +16,11 @@ use stdClass;
 class ParseTest extends TestCase
 {
     /**
-     * @covers PsrJwt\Parser\Parse::__construct
+     * @covers PsrJwt\Parser\Parse
      */
     public function testParse()
     {
-        $parse = new Parse(['token_key' => 'jwt']);
+        $parse = new Parse();
         $this->assertInstanceOf(Parse::class, $parse);
     }
 
@@ -38,8 +38,8 @@ class ParseTest extends TestCase
             ->once()
             ->andReturn(['Bearer abc.def.ghi']);
 
-        $parse = new Parse(['token_key' => 'jwt']);
-        $parse->addParser(Bearer::class);
+        $parse = new Parse();
+        $parse->addParser(new Bearer());
 
         $result = $parse->findToken($request);
 
@@ -65,10 +65,10 @@ class ParseTest extends TestCase
             ->once()
             ->andReturn(['jwt' => 'abc.123.ghi']);
 
-        $parse = new Parse(['token_key' => 'jwt']);
-        $parse->addParser(Bearer::class);
-        $parse->addParser(Body::class);
-        $parse->addParser(Query::class);
+        $parse = new Parse();
+        $parse->addParser(new Bearer());
+        $parse->addParser(new Body('jwt'));
+        $parse->addParser(new Query('jwt'));
 
         $result = $parse->findToken($request);
 
@@ -83,7 +83,7 @@ class ParseTest extends TestCase
     {
         $request = m::mock(ServerRequestInterface::class);
 
-        $parse = new Parse(['token_key' => 'jwt']);
+        $parse = new Parse();
         $result = $parse->findToken($request);
 
         $this->assertEmpty($result);

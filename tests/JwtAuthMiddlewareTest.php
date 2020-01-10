@@ -18,14 +18,14 @@ class JwtAuthMiddlewareTest extends TestCase
 {
     /**
      * @covers PsrJwt\JwtAuthMiddleware
-     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Handler\Html
      */
     public function testJwtAuthProcess()
     {
-        $authenticate = new Html('secret', 'jwt', '');
+        $authorise = new Html('secret', 'jwt', '');
 
-        $process = new JwtAuthMiddleware($authenticate);
+        $process = new JwtAuthMiddleware($authorise);
 
         $this->assertInstanceOf(JwtAuthMiddleware::class, $process);
         $this->assertInstanceOf(MiddlewareInterface::class, $process);
@@ -34,17 +34,22 @@ class JwtAuthMiddlewareTest extends TestCase
     /**
      * @covers PsrJwt\JwtAuthMiddleware::process
      * @uses PsrJwt\JwtAuthMiddleware::__construct
-     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Parser\Bearer
      * @uses PsrJwt\Handler\Html
+     * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Query
+     * @uses PsrJwt\Parser\Request
      */
     public function testProcess()
     {
-        $jwt = Jwt::builder();
+        $jwt = $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->setPayloadClaim('nbf', time() - 60)
@@ -65,9 +70,9 @@ class JwtAuthMiddlewareTest extends TestCase
             ->once()
             ->andReturn($response);
 
-        $authenticate = new Html('Secret123!456$', '', '');
+        $authorise = new Html('Secret123!456$', '', '');
 
-        $process = new JwtAuthMiddleware($authenticate);
+        $process = new JwtAuthMiddleware($authorise);
 
         $result = $process->process($request, $handler);
 
@@ -79,7 +84,7 @@ class JwtAuthMiddlewareTest extends TestCase
     /**
      * @covers PsrJwt\JwtAuthMiddleware::process
      * @uses PsrJwt\JwtAuthMiddleware
-     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Parser\Parse
@@ -89,6 +94,8 @@ class JwtAuthMiddlewareTest extends TestCase
      * @uses PsrJwt\Parser\Cookie
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Handler\Html
+     * @uses PsrJwt\Parser\Request
+     * @uses PsrJwt\Parser\ParseException
      */
     public function testProcessFail()
     {
@@ -109,31 +116,37 @@ class JwtAuthMiddlewareTest extends TestCase
 
         $handler = m::mock(RequestHandlerInterface::class);
 
-        $authenticate = new Html('Secret123!456$', 'jwt', '');
+        $authorise = new Html('Secret123!456$', 'jwt', '');
 
-        $process = new JwtAuthMiddleware($authenticate);
+        $process = new JwtAuthMiddleware($authorise);
 
         $result = $process->process($request, $handler);
 
         $this->assertInstanceOf(ResponseInterface::class, $result);
         $this->assertSame(400, $result->getStatusCode());
-        $this->assertSame('Bad Request: JSON Web Token not set.', $result->getReasonPhrase());
+        $this->assertSame('Bad Request: JSON Web Token not set in request.', $result->getReasonPhrase());
     }
 
     /**
      * @covers PsrJwt\JwtAuthMiddleware::__invoke
      * @uses PsrJwt\JwtAuthMiddleware::__construct
-     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Bearer
+     * @uses PsrJwt\Parser\Query
+     * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Handler\Html
+     * @uses PsrJwt\Parser\Request
      * @uses PsrJwt\Handler\Html
      */
     public function testInvoke()
     {
-        $jwt = Jwt::builder();
+        $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->setPayloadClaim('nbf', time() - 60)
@@ -172,7 +185,7 @@ class JwtAuthMiddlewareTest extends TestCase
     /**
      * @covers PsrJwt\JwtAuthMiddleware::__invoke
      * @uses PsrJwt\JwtAuthMiddleware
-     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Validation\Validate
@@ -182,6 +195,7 @@ class JwtAuthMiddlewareTest extends TestCase
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Cookie
      * @uses PsrJwt\Handler\Html
+     * @uses PsrJwt\Parser\Request
      */
     public function testInvokeFail()
     {

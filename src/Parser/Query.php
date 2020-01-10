@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PsrJwt\Parser;
 
-use PsrJwt\Parser\ArgumentsInterface;
+use PsrJwt\Parser\ParserInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -12,19 +12,19 @@ use Psr\Http\Message\ServerRequestInterface;
  * in a low security situation, PII should not be associated with these
  * types of requests.
  */
-class Query implements ArgumentsInterface
+class Query implements ParserInterface
 {
     /**
-     * @var array $arguments
+     * @var string $tokenKey
      */
-    private $arguments;
+    private $tokenKey;
 
     /**
-     * @param array $arguments
+     * @param string $tokenKey
      */
-    public function __construct(array $arguments)
+    public function __construct(string $tokenKey)
     {
-        $this->arguments = $arguments;
+        $this->tokenKey = $tokenKey;
     }
 
     /**
@@ -33,6 +33,6 @@ class Query implements ArgumentsInterface
      */
     public function parse(ServerRequestInterface $request): string
     {
-        return $request->getQueryParams()[$this->arguments['token_key']] ?? '';
+        return $request->getQueryParams()[$this->tokenKey] ?? '';
     }
 }

@@ -5,7 +5,7 @@ namespace Tests\Factory;
 use PHPUnit\Framework\TestCase;
 use PsrJwt\Factory\JwtMiddleware;
 use PsrJwt\JwtAuthMiddleware;
-use PsrJwt\Auth\Authenticate;
+use PsrJwt\Auth\Authorise;
 use PsrJwt\Factory\Jwt;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -17,7 +17,7 @@ class JwtMiddlewareTest extends TestCase
     /**
      * @covers PsrJwt\Factory\JwtMiddleware::html
      * @uses PsrJwt\JwtAuthMiddleware::__construct
-     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Handler\Html
      */
     public function testJwtMiddlewareHtml()
@@ -32,17 +32,22 @@ class JwtMiddlewareTest extends TestCase
      * @covers PsrJwt\JwtAuthMiddleware::process
      * @uses PsrJwt\Factory\JwtMiddleware
      * @uses PsrJwt\Auth\Auth
-     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Handler\Html
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\JwtAuthMiddleware
      * @uses PsrJwt\Parser\Bearer
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Validation\Validate
+     * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Query
+     * @uses PsrJwt\Parser\Request
      */
     public function testFactoryValidation()
     {
-        $jwt = Jwt::builder();
+        $jwt = $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->setPayloadClaim('nbf', time() - 60)
@@ -73,17 +78,22 @@ class JwtMiddlewareTest extends TestCase
     /**
      * @covers PsrJwt\Factory\JwtMiddleware::json
      * @uses PsrJwt\Auth\Auth
-     * @uses PsrJwt\Auth\Authenticate
+     * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Handler\Json
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\JwtAuthMiddleware
      * @uses PsrJwt\Parser\Bearer
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Validation\Validate
+     * @uses PsrJwt\Parser\Body
+     * @uses PsrJwt\Parser\Cookie
+     * @uses PsrJwt\Parser\Query
+     * @uses PsrJwt\Parser\Request
      */
     public function testJsonFactoryValidation()
     {
-        $jwt = Jwt::builder();
+        $jwt = $jwt = new Jwt();
+        $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
             ->setIssuer('localhost')
             ->setPayloadClaim('nbf', time() - 60)
