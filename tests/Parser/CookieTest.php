@@ -38,7 +38,7 @@ class CookieTest extends TestCase
         $this->assertSame('abc.def.ghi', $result);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
     }

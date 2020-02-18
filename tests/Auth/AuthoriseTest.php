@@ -461,7 +461,7 @@ class AuthoriseTest extends TestCase
         $result = $method->invokeArgs($auth, [$request]);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
     }
