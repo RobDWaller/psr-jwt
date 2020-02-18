@@ -8,6 +8,7 @@ use ReallySimpleJWT\Build;
 use ReallySimpleJWT\Validate;
 use ReallySimpleJWT\Encode;
 use ReallySimpleJWT\Parse;
+use ReallySimpleJWT\Secret;
 use ReallySimpleJWT\Jwt as RSJwt;
 
 /**
@@ -28,6 +29,7 @@ class Jwt
         return new Build(
             'JWT',
             new Validate(),
+            new Secret(),
             new Encode()
         );
     }
