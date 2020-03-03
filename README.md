@@ -112,7 +112,7 @@ For more information on creating, parsing and validating tokens please read the 
 
 If you would like to retrieve the JSON Web Token from the request outside of the normal middleware authorisation flow you can use the request helper class. 
 
-It allows you to retrive the token itself or just access the token's payload or header.
+It allows you to retrieve the token itself or just access the token's payload or header.
 
 ```php
 require 'vendor/autoload.php';
@@ -171,6 +171,7 @@ Next you will need to extend the `PsrJwt\Auth\Authorise` class as this will give
 ```php
 // An example JWT Authorisation Handler.
 use PsrJwt\Auth\Authorise;
+use PsrJwt\JwtAuthMiddleware;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -196,6 +197,15 @@ class MyHandler extends Authorise implements RequestHandlerInterface
         );
     }
 }
+
+// Add Handler to Middleware.
+$middleware = new JwtAuthMiddleware(new MyHandler('secret', 'token-key'));
+
+// Add Middleware to Slim PHP route.
+$app->get('/my/route', function (ServerRequestInterface $request, ResponseInterface $response) {
+    $response->getBody()->write("OK!");
+    return $response;
+})->add($middleware);
 ```
 
 ## License
