@@ -3,7 +3,7 @@
 
 PSR-JWT is a middleware library which allows you to authorise JSON Web Tokens contained in a web request. It is [PSR-7](https://www.php-fig.org/psr/psr-7/) and [PSR-15](https://www.php-fig.org/psr/psr-15/) compliant and built on top of [ReallySimpleJWT](https://github.com/RobDWaller/ReallySimpleJWT).
 
-The library also allows you to generate JSON Web Tokens and the PSR-7 PSR-15 compliant middleware can be added to any compatible framework, such as [Slim PHP](http://www.slimframework.com/).
+The library also allows you to generate JSON Web Tokens and the PSR-7 / PSR-15 compliant middleware can be added to any compatible framework, such as [Slim PHP](http://www.slimframework.com/).
 
 For more information on JSON Web Tokens please read [RFC 7519](https://tools.ietf.org/html/rfc7519). Also to learn more about how to pass JSON Web Tokens to web applications please read up on bearer token authorisation in [RFC 6750](https://tools.ietf.org/html/rfc6750).
 
@@ -14,7 +14,7 @@ For more information on JSON Web Tokens please read [RFC 7519](https://tools.iet
     - [Slim PHP Example Implementation](#slim-php-example-implementation)
     - [Generate JSON Web Token](#generate-json-web-token)
     - [Parse and Validate JSON Web Token](#parse-and-validate-json-web-token)
-    - [Retrieve Token From the Request](retrieve-token-from-the-request)
+    - [Retrieve Token From Request](#retrieve-token-from-request)
 - [Advanced Usage](#advanced-usage)
     - [Handlers](#handlers)
     - [Create Custom Handler](#create-custom-handler)
@@ -72,7 +72,7 @@ $app->get('/jwt', function (Request $request, Response $response) {
 })->add(\PsrJwt\Factory\JwtMiddleware::html('Secret123!456$', 'jwt', 'Authorisation Failed'));
 ```
 
-### Generate a JSON Web Token
+### Generate JSON Web Token
 
 To generate JSON Web Tokens PsrJwt offers a wrapper for the library [ReallySimpleJWT](https://github.com/RobDWaller/ReallySimpleJWT). You can create an instance of the ReallySimpleJWT builder by calling the built in factory method.
 
@@ -108,7 +108,7 @@ $parser->parse();
 
 For more information on creating, parsing and validating tokens please read the [ReallySimpleJWT](https://github.com/RobDWaller/ReallySimpleJWT/blob/master/readme.md) documentation.
 
-### Retrieve Token From the Request
+### Retrieve Token From Request
 
 If you would like to retrieve the JSON Web Token from the request outside of the normal middleware authorisation flow you can use the request helper class. 
 
