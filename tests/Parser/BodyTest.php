@@ -141,7 +141,7 @@ class BodyTest extends TestCase
         $this->assertSame('', $result);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
     }

@@ -230,7 +230,7 @@ class JwtAuthMiddlewareTest extends TestCase
         $this->assertSame('Unauthorized: Signature is invalid.', $result->getReasonPhrase());
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
     }

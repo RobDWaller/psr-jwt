@@ -214,7 +214,7 @@ class HtmlTest extends TestCase
         $this->assertSame('<h1>Fail!</h1>', $result->getBody()->__toString());
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
     }

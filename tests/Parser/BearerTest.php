@@ -55,7 +55,7 @@ class BearerTest extends TestCase
         $this->assertEmpty($result);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
     }

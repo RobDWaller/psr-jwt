@@ -5,3 +5,4 @@ infection.log
 coverage.xml
 Dockerfile
 docker-compose.yml
+.phpunit.result.cache
