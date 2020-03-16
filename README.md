@@ -86,6 +86,8 @@ $builder = $factory->builder();
 $token = $builder->setSecret('!secReT$123*')
     ->setPayloadClaim('uid', 12)
     ->build();
+
+echo $token->getToken();
 ```
 
 ### Parse and Validate JSON Web Token
@@ -103,7 +105,9 @@ $parser = $factory->parse('token', 'secret');
 
 $parser->validate();
 
-$parser->parse();
+$parsed = $parser->parse();
+
+var_dump($parsed->getPayload());
 ```
 
 For more information on creating, parsing and validating tokens please read the [ReallySimpleJWT](https://github.com/RobDWaller/ReallySimpleJWT/blob/master/readme.md) documentation.
