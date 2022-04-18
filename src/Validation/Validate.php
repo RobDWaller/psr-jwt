@@ -16,7 +16,7 @@ class Validate
     /**
      * @param Parse $parse
      */
-    private $parse;
+    private Parse $parse;
 
     /**
      * @param Parse $parse
@@ -29,7 +29,7 @@ class Validate
     /**
      * The JSON Web Token must be valid and not have expired.
      *
-     * @return array
+     * @return mixed[]
      */
     public function validate(): array
     {
@@ -48,7 +48,8 @@ class Validate
     /**
      * The token must be ready to use.
      *
-     * @return array
+     * @param mixed[] $validationState
+     * @return mixed[]
      */
     public function validateNotBefore(array $validationState): array
     {

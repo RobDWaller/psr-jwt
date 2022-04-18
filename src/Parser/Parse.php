@@ -13,7 +13,7 @@ use Psr\Http\Message\ServerRequestInterface;
 class Parse
 {
     /**
-     * @var array $parsers
+     * @var mixed[] $parsers
      */
     private $parsers = [];
 
