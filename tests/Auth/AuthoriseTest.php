@@ -15,7 +15,7 @@ class AuthoriseTest extends TestCase
     /**
      * @covers PsrJwt\Auth\Authorise::__construct
      */
-    public function testAuthorise()
+    public function testAuthorise(): void
     {
         $auth = new Authorise('secret', 'jwt');
         $this->assertInstanceOf(Authorise::class, $auth);
@@ -34,7 +34,7 @@ class AuthoriseTest extends TestCase
      * @uses PsrJwt\Parser\Cookie
      * @uses PsrJwt\Parser\Request
      */
-    public function testAuthoriseOk()
+    public function testAuthoriseOk(): void
     {
         $jwt = new Jwt();
         $jwt = $jwt->builder();
@@ -81,7 +81,7 @@ class AuthoriseTest extends TestCase
      * @uses PsrJwt\Parser\Request
      * @uses PsrJwt\Parser\ParseException
      */
-    public function testAuthoriseBadRequest()
+    public function testAuthoriseBadRequest(): void
     {
         $jwt = new Jwt();
         $jwt = $jwt->builder();
@@ -116,7 +116,7 @@ class AuthoriseTest extends TestCase
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Validation\Validate
      */
-    public function testValidate()
+    public function testValidate(): void
     {
         $jwt = new Jwt();
         $jwt = $jwt->builder();
@@ -142,7 +142,7 @@ class AuthoriseTest extends TestCase
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Validation\Validate
      */
-    public function testValidateBadSecret()
+    public function testValidateBadSecret(): void
     {
         $jwt = new Jwt();
         $jwt = $jwt->builder();
@@ -168,7 +168,7 @@ class AuthoriseTest extends TestCase
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Validation\Validate
      */
-    public function testValidateBadExpiration()
+    public function testValidateBadExpiration(): void
     {
         $jwt = new Jwt();
         $jwt = $jwt->builder();
@@ -195,7 +195,7 @@ class AuthoriseTest extends TestCase
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Validation\Validate
      */
-    public function testValidateBadNotBefore()
+    public function testValidateBadNotBefore(): void
     {
         $jwt = new Jwt();
         $jwt = $jwt->builder();
@@ -220,7 +220,7 @@ class AuthoriseTest extends TestCase
      * @uses PsrJwt\Auth\Authorise::__construct
      * @uses PsrJwt\Auth\Auth
      */
-    public function testValidationResponse()
+    public function testValidationResponse(): void
     {
         $auth = new Authorise('secret', 'jwt');
 
@@ -238,7 +238,7 @@ class AuthoriseTest extends TestCase
      * @uses PsrJwt\Auth\Authorise::__construct
      * @uses PsrJwt\Auth\Auth
      */
-    public function testValidationResponseErrors()
+    public function testValidationResponseErrors(): void
     {
         $auth = new Authorise('secret', 'jwt');
 
@@ -272,7 +272,7 @@ class AuthoriseTest extends TestCase
      * @uses PsrJwt\Parser\Body
      * @uses PsrJwt\Parser\Request
      */
-    public function testGetToken()
+    public function testGetToken(): void
     {
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getHeader')
@@ -299,7 +299,7 @@ class AuthoriseTest extends TestCase
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Request
      */
-    public function testGetTokenCookie()
+    public function testGetTokenCookie(): void
     {
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getHeader')
@@ -329,7 +329,7 @@ class AuthoriseTest extends TestCase
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Request
      */
-    public function testGetTokenBody()
+    public function testGetTokenBody(): void
     {
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getHeader')
@@ -362,7 +362,7 @@ class AuthoriseTest extends TestCase
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Request
      */
-    public function testGetTokenBodyObject()
+    public function testGetTokenBodyObject(): void
     {
         $token = new \stdClass();
         $token->my_token = 'ghi.123.xyz';
@@ -398,7 +398,7 @@ class AuthoriseTest extends TestCase
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Request
      */
-    public function testGetTokenQuery()
+    public function testGetTokenQuery(): void
     {
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getHeader')
@@ -437,7 +437,7 @@ class AuthoriseTest extends TestCase
      * @uses PsrJwt\Parser\Request
      * @uses PsrJwt\Parser\ParseException
      */
-    public function testGetTokenNoToken()
+    public function testGetTokenNoToken(): void
     {
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getHeader')

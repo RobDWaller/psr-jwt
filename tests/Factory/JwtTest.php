@@ -12,7 +12,7 @@ class JwtTest extends TestCase
     /**
      * @covers PsrJwt\Factory\Jwt::builder
      */
-    public function testJwtBuilder()
+    public function testJwtBuilder(): void
     {
         $jwt = new Jwt();
         $jwt = $jwt->builder();
@@ -23,7 +23,7 @@ class JwtTest extends TestCase
     /**
      * @covers PsrJwt\Factory\Jwt::parser
      */
-    public function testJwtParser()
+    public function testJwtParser(): void
     {
         $jwt = new Jwt();
         $jwt = $jwt->parser('aaa.bbb.ccc', 'secret');

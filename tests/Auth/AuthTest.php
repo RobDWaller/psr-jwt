@@ -10,7 +10,7 @@ class AuthTest extends TestCase
     /**
      * @covers PsrJwt\Auth\Auth::__construct
      */
-    public function testAuth()
+    public function testAuth(): Auth
     {
         $auth = new Auth(200, 'Ok');
         $this->assertInstanceOf(Auth::class, $auth);
@@ -21,7 +21,7 @@ class AuthTest extends TestCase
      * @depends testAuth
      * @covers PsrJwt\Auth\Auth::getCode
      */
-    public function testGetCode($auth)
+    public function testGetCode(Auth $auth): void
     {
         $this->assertSame(200, $auth->getCode());
     }
@@ -30,7 +30,7 @@ class AuthTest extends TestCase
      * @depends testAuth
      * @covers PsrJwt\Auth\Auth::getMessage
      */
-    public function testGetMessage($auth)
+    public function testGetMessage(Auth $auth): void
     {
         $this->assertSame('Ok', $auth->getMessage());
     }

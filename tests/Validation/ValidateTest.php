@@ -13,7 +13,7 @@ class ValidateTest extends TestCase
      * @covers PsrJwt\Validation\Validate::__construct
      * @uses PsrJwt\Factory\Jwt
      */
-    public function testValidate()
+    public function testValidate(): void
     {
         $jwt = new Jwt();
         $builder = $jwt->builder();
@@ -35,7 +35,7 @@ class ValidateTest extends TestCase
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Factory\Jwt
      */
-    public function testValidateOk()
+    public function testValidateOk(): void
     {
         $jwt = new Jwt();
         $builder = $jwt->builder();
@@ -60,7 +60,7 @@ class ValidateTest extends TestCase
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Factory\Jwt
      */
-    public function testValidateExpiration()
+    public function testValidateExpiration(): void
     {
         $jwt = new Jwt();
         $builder = $jwt->builder();
@@ -85,7 +85,7 @@ class ValidateTest extends TestCase
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Factory\Jwt::parser
      */
-    public function testValidateTokenStructure()
+    public function testValidateTokenStructure(): void
     {
         $jwt = new Jwt();
 
@@ -104,7 +104,7 @@ class ValidateTest extends TestCase
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Factory\Jwt::parser
      */
-    public function testValidateBadSignature()
+    public function testValidateBadSignature(): void
     {
         $jwt = new Jwt();
 
@@ -123,7 +123,7 @@ class ValidateTest extends TestCase
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Factory\Jwt
      */
-    public function testValidateNotBefore()
+    public function testValidateNotBefore(): void
     {
         $jwt = new Jwt();
         $builder = $jwt->builder();
@@ -150,7 +150,7 @@ class ValidateTest extends TestCase
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Factory\Jwt
      */
-    public function testValidateNotBeforeOk()
+    public function testValidateNotBeforeOk(): void
     {
         $jwt = new Jwt();
         $builder = $jwt->builder();

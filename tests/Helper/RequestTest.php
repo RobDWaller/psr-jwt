@@ -19,7 +19,7 @@ class RequestTest extends TestCase
     /**
      * @covers PsrJwt\Helper\Request
      */
-    public function testRequest()
+    public function testRequest(): void
     {
         $request = new Request();
 
@@ -36,7 +36,7 @@ class RequestTest extends TestCase
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Request
      */
-    public function testGetParsedToken()
+    public function testGetParsedToken(): void
     {
         $httpRequest = m::mock(ServerRequestInterface::class);
         $httpRequest->shouldReceive('getHeader')
@@ -62,7 +62,7 @@ class RequestTest extends TestCase
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Request
      */
-    public function testGetTokenHeader()
+    public function testGetTokenHeader(): void
     {
         $httpRequest = m::mock(ServerRequestInterface::class);
         $httpRequest->shouldReceive('getHeader')
@@ -88,7 +88,7 @@ class RequestTest extends TestCase
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Request
      */
-    public function testGetTokenPayload()
+    public function testGetTokenPayload(): void
     {
         $httpRequest = m::mock(ServerRequestInterface::class);
         $httpRequest->shouldReceive('getHeader')
