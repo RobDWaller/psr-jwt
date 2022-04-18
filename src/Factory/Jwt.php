@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace PsrJwt\Factory;
 
+use ReallySimpleJWT\Tokens;
 use ReallySimpleJWT\Build;
-use ReallySimpleJWT\Validate;
-use ReallySimpleJWT\Encode;
 use ReallySimpleJWT\Parse;
-use ReallySimpleJWT\Secret;
-use ReallySimpleJWT\Jwt as RSJwt;
 
 /**
  * PSR-JWT wraps around the ReallySimpleJWT library to provide token
@@ -26,12 +23,9 @@ class Jwt
      */
     public function builder(): Build
     {
-        return new Build(
-            'JWT',
-            new Validate(),
-            new Secret(),
-            new Encode()
-        );
+        $tokens = new Tokens();
+
+        return $tokens->builder();
     }
 
     /**
@@ -41,12 +35,8 @@ class Jwt
      */
     public function parser(string $token, string $secret): Parse
     {
-        $jwt = new RSJwt($token, $secret);
+        $tokens = new Tokens();
 
-        return new Parse(
-            $jwt,
-            new Validate(),
-            new Encode()
-        );
+        return $tokens->parser($token, $secret);
     }
 }
