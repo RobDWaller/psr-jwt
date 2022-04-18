@@ -36,7 +36,7 @@ class RequestTest extends TestCase
         $parse = m::mock(Parse::class);
         $parse->shouldReceive('addParser')
             ->times(4);
-            
+
         $parse->shouldReceive('findToken')
             ->once()
             ->andReturn('abcdef.123.abcdef');
@@ -62,7 +62,7 @@ class RequestTest extends TestCase
         $parse = m::mock(Parse::class);
         $parse->shouldReceive('addParser')
             ->times(4);
-            
+
         $parse->shouldReceive('findToken')
             ->once()
             ->andReturn('');
