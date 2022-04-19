@@ -32,7 +32,8 @@ class Validate
     {
         try {
             $this->validate->structure()
-                ->expiration();
+                ->expiration()
+                ->signature();
         } catch (ValidateException $e) {
             if (in_array($e->getCode(), [1, 2, 3, 4], true)) {
                 return ['code' => $e->getCode(), 'message' => $e->getMessage()];
