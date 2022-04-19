@@ -71,9 +71,9 @@ class Authorise
     {
         $jwt = new Jwt();
 
-        $parse = $jwt->parser($token, $this->secret);
+        $validator = $jwt->validator($token, $this->secret);
 
-        $validate = new Validate($parse);
+        $validate = new Validate($validator);
 
         $validationState = $validate->validate();
 

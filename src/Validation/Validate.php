@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PsrJwt\Validation;
 
-use ReallySimpleJWT\Parse;
+use ReallySimpleJWT\Validate as RSValidate;
 use ReallySimpleJWT\Exception\ValidateException;
 
 /**
@@ -14,16 +14,13 @@ use ReallySimpleJWT\Exception\ValidateException;
 class Validate
 {
     /**
-     * @param Parse $parse
+     * @param RSValidate $validate
      */
-    private Parse $parse;
+    private RSValidate $validate;
 
-    /**
-     * @param Parse $parse
-     */
-    public function __construct(Parse $parse)
+    public function __construct(RSValidate $validate)
     {
-        $this->parse = $parse;
+        $this->validate = $validate;
     }
 
     /**
@@ -34,8 +31,8 @@ class Validate
     public function validate(): array
     {
         try {
-            $this->parse->validate()
-                ->validateExpiration();
+            $this->validate->structure()
+                ->expiration();
         } catch (ValidateException $e) {
             if (in_array($e->getCode(), [1, 2, 3, 4], true)) {
                 return ['code' => $e->getCode(), 'message' => $e->getMessage()];
@@ -54,7 +51,7 @@ class Validate
     public function validateNotBefore(array $validationState): array
     {
         try {
-            $this->parse->validateNotBefore();
+            $this->validate->notBefore();
         } catch (ValidateException $e) {
             if ($e->getCode()  === 5) {
                 return ['code' => $e->getCode(), 'message' => $e->getMessage()];

@@ -7,6 +7,7 @@ namespace PsrJwt\Factory;
 use ReallySimpleJWT\Tokens;
 use ReallySimpleJWT\Build;
 use ReallySimpleJWT\Parse;
+use ReallySimpleJWT\Validate;
 
 /**
  * PSR-JWT wraps around the ReallySimpleJWT library to provide token
@@ -38,5 +39,12 @@ class Jwt
         $tokens = new Tokens();
 
         return $tokens->parser($token, $secret);
+    }
+
+    public function validator(string $token, string $secret): Validate
+    {
+        $tokens = new Tokens();
+
+        return $tokens->validator($token, $secret);
     }
 }
