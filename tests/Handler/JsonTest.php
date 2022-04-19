@@ -46,6 +46,8 @@ class JsonTest extends TestCase
         $jwt = $jwt = new Jwt();
         $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
+            ->setExpiration(time() + 10)
+            ->setNotBefore(time() - 10)
             ->setIssuer('localhost')
             ->build()
             ->getToken();
@@ -95,6 +97,8 @@ class JsonTest extends TestCase
         $jwt = $jwt = new Jwt();
         $jwt = $jwt->builder();
         $token = $jwt->setSecret('Secret123!456$')
+            ->setExpiration(time() + 10)
+            ->setNotBefore(time() - 10)
             ->setIssuer('localhost')
             ->build()
             ->getToken();
