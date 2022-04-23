@@ -6,6 +6,7 @@ namespace PsrJwt\Validation;
 
 use ReallySimpleJWT\Validate as RSValidate;
 use ReallySimpleJWT\Exception\ValidateException;
+use ReallySimpleJWT\Exception\ParseException;
 
 /**
  * Validate the JSON Web Token will parse, has a valid signature, is ready to
@@ -34,7 +35,7 @@ class Validate
             $this->validate->structure()
                 ->signature()
                 ->expiration();
-        } catch (ValidateException $e) {
+        } catch (ValidateException | ParseException $e) {
             if (in_array($e->getCode(), [1, 2, 3, 4], true)) {
                 return ['code' => $e->getCode(), 'message' => $e->getMessage()];
             }
@@ -53,7 +54,7 @@ class Validate
     {
         try {
             $this->validate->notBefore();
-        } catch (ValidateException $e) {
+        } catch (ValidateException | ParseException $e) {
             if ($e->getCode()  === 5) {
                 return ['code' => $e->getCode(), 'message' => $e->getMessage()];
             }

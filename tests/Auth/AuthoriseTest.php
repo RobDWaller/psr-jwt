@@ -7,6 +7,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use PsrJwt\Auth\Authorise;
 use PsrJwt\Auth\Auth;
 use PsrJwt\Factory\Jwt;
+use PsrJwt\Parser\ParseException;
 use ReflectionMethod;
 use Mockery as m;
 
@@ -425,8 +426,6 @@ class AuthoriseTest extends TestCase
     }
 
     /**
-     * @expectedException PsrJwt\Parser\ParseException
-     * @expectedExceptionMessage JSON Web Token not set in request.
      * @covers PsrJwt\Auth\Authorise::getToken
      * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Parser\Parse
@@ -458,7 +457,9 @@ class AuthoriseTest extends TestCase
 
         $method = new ReflectionMethod(Authorise::class, 'getToken');
         $method->setAccessible(true);
-        $result = $method->invokeArgs($auth, [$request]);
+        $this->expectException(ParseException::class);
+        $this->expectExceptionMessage("JSON Web Token not set in request.");
+        $method->invokeArgs($auth, [$request]);
     }
 
     public function tearDown(): void
