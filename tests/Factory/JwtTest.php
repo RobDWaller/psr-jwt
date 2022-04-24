@@ -5,6 +5,7 @@ namespace Tests\Factory;
 use PHPUnit\Framework\TestCase;
 use ReallySimpleJWT\Build;
 use ReallySimpleJWT\Parse;
+use ReallySimpleJWT\Validate;
 use PsrJwt\Factory\Jwt;
 
 class JwtTest extends TestCase
@@ -29,5 +30,16 @@ class JwtTest extends TestCase
         $jwt = $jwt->parser('aaa.bbb.ccc', 'secret');
 
         $this->assertInstanceOf(Parse::class, $jwt);
+    }
+
+    /**
+     * @covers PsrJwt\Factory\Jwt::validator
+     */
+    public function testJwtValidator(): void
+    {
+        $jwt = new Jwt();
+        $jwt = $jwt->validator('aaa.bbb.ccc', 'secret');
+
+        $this->assertInstanceOf(Validate::class, $jwt);
     }
 }
