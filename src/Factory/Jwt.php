@@ -30,7 +30,7 @@ class Jwt
     }
 
     /**
-     * Allow for the parsing and validation of JSON Web Tokens.
+     * Allow for the parsing of JSON Web Tokens.
      *
      * @return Parse
      */
@@ -41,6 +41,11 @@ class Jwt
         return $tokens->parser($token, $secret);
     }
 
+    /**
+     * Allow for the validation JSON Web Tokens.
+     *
+     * @return Validate
+     */
     public function validator(string $token, string $secret): Validate
     {
         $tokens = new Tokens();
