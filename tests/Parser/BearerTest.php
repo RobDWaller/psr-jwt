@@ -13,7 +13,7 @@ class BearerTest extends TestCase
     /**
      * @covers PsrJwt\Parser\Bearer
      */
-    public function testBearer()
+    public function testBearer(): void
     {
         $bearer = new Bearer();
 
@@ -24,7 +24,7 @@ class BearerTest extends TestCase
     /**
      * @covers PsrJwt\Parser\Bearer::parse
      */
-    public function testParse()
+    public function testParse(): void
     {
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getHeader')
@@ -41,7 +41,7 @@ class BearerTest extends TestCase
     /**
      * @covers PsrJwt\Parser\Bearer::parse
      */
-    public function testParseInvalid()
+    public function testParseInvalid(): void
     {
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getHeader')

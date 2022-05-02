@@ -18,7 +18,7 @@ class ParseTest extends TestCase
     /**
      * @covers PsrJwt\Parser\Parse
      */
-    public function testParse()
+    public function testParse(): void
     {
         $parse = new Parse();
         $this->assertInstanceOf(Parse::class, $parse);
@@ -30,7 +30,7 @@ class ParseTest extends TestCase
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Bearer
      */
-    public function testFindToken()
+    public function testFindToken(): void
     {
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getHeader')
@@ -54,7 +54,7 @@ class ParseTest extends TestCase
      * @uses PsrJwt\Parser\Body
      * @uses PsrJwt\Parser\Query
      */
-    public function testFindTokenMultiParser()
+    public function testFindTokenMultiParser(): void
     {
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getHeader')
@@ -79,7 +79,7 @@ class ParseTest extends TestCase
      * @covers PsrJwt\Parser\Parse::findToken
      * @uses PsrJwt\Parser\Parse
      */
-    public function testFindTokenFail()
+    public function testFindTokenFail(): void
     {
         $request = m::mock(ServerRequestInterface::class);
 

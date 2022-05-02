@@ -33,6 +33,8 @@ class Request
 
     /**
      * Retrieve the JWT header information from a request.
+     *
+     * @return mixed[]
      */
     public function getTokenHeader(ServerRequestInterface $request, string $tokenKey): array
     {
@@ -41,6 +43,8 @@ class Request
 
     /**
      * Retrieve the JWT payload information from a request.
+     *
+     * @return mixed[]
      */
     public function getTokenPayload(ServerRequestInterface $request, string $tokenKey): array
     {

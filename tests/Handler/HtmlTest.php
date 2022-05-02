@@ -17,7 +17,7 @@ class HtmlTest extends TestCase
      * @covers PsrJwt\Handler\Html::__construct
      * @uses PsrJwt\Auth\Authorise
      */
-    public function testAuthHandler()
+    public function testAuthHandler(): void
     {
         $auth = new Html('secret', 'tokenKey', 'body');
 
@@ -40,7 +40,7 @@ class HtmlTest extends TestCase
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Request
      */
-    public function testAuthoriseOk()
+    public function testAuthoriseOk(): void
     {
         $jwt = $jwt = new Jwt();
         $jwt = $jwt->builder();
@@ -89,7 +89,7 @@ class HtmlTest extends TestCase
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Request
      */
-    public function testAuthoriseNoBody()
+    public function testAuthoriseNoBody(): void
     {
         $jwt = $jwt = new Jwt();
         $jwt = $jwt->builder();
@@ -138,7 +138,7 @@ class HtmlTest extends TestCase
      * @uses PsrJwt\Parser\Request
      * @uses PsrJwt\Parser\ParseException
      */
-    public function testAuthoriseBadRequest()
+    public function testAuthoriseBadRequest(): void
     {
         $jwt = $jwt = new Jwt();
         $jwt = $jwt->builder();
@@ -186,7 +186,7 @@ class HtmlTest extends TestCase
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Request
      */
-    public function testAuthoriseUnauthorized()
+    public function testAuthoriseUnauthorized(): void
     {
         $jwt = $jwt = new Jwt();
         $jwt = $jwt->builder();

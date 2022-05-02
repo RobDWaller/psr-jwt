@@ -3,7 +3,7 @@
 namespace Tests\Validation;
 
 use PHPUnit\Framework\TestCase;
-use ReallySimpleJWT\Parse;
+use ReallySimpleJWT\Validate as RSValidate;
 use PsrJwt\Factory\Jwt;
 use PsrJwt\Validation\Validate;
 
@@ -13,7 +13,7 @@ class ValidateTest extends TestCase
      * @covers PsrJwt\Validation\Validate::__construct
      * @uses PsrJwt\Factory\Jwt
      */
-    public function testValidate()
+    public function testValidate(): void
     {
         $jwt = new Jwt();
         $builder = $jwt->builder();
@@ -24,7 +24,7 @@ class ValidateTest extends TestCase
             ->getToken();
 
         $validate = new Validate(
-            $jwt->parser($token, 'Secret123!456$')
+            $jwt->validator($token, 'Secret123!456$')
         );
 
         $this->assertInstanceOf(Validate::class, $validate);
@@ -35,7 +35,7 @@ class ValidateTest extends TestCase
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Factory\Jwt
      */
-    public function testValidateOk()
+    public function testValidateOk(): void
     {
         $jwt = new Jwt();
         $builder = $jwt->builder();
@@ -46,7 +46,7 @@ class ValidateTest extends TestCase
             ->getToken();
 
         $validate = new Validate(
-            $jwt->parser($token, 'Secret123!456$')
+            $jwt->validator($token, 'Secret123!456$')
         );
 
         $result = $validate->validate();
@@ -60,7 +60,7 @@ class ValidateTest extends TestCase
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Factory\Jwt
      */
-    public function testValidateExpiration()
+    public function testValidateExpiration(): void
     {
         $jwt = new Jwt();
         $builder = $jwt->builder();
@@ -71,7 +71,7 @@ class ValidateTest extends TestCase
             ->getToken();
 
         $validate = new Validate(
-            $jwt->parser($token, 'Secret123!456$')
+            $jwt->validator($token, 'Secret123!456$')
         );
 
         $result = $validate->validate();
@@ -83,14 +83,14 @@ class ValidateTest extends TestCase
     /**
      * @covers PsrJwt\Validation\Validate::validate
      * @uses PsrJwt\Validation\Validate
-     * @uses PsrJwt\Factory\Jwt::parser
+     * @uses PsrJwt\Factory\Jwt::validator
      */
-    public function testValidateTokenStructure()
+    public function testValidateTokenStructure(): void
     {
         $jwt = new Jwt();
 
         $validate = new Validate(
-            $jwt->parser('123.abc', 'Secret123!456$')
+            $jwt->validator('123.abc', 'Secret123!456$')
         );
 
         $result = $validate->validate();
@@ -102,14 +102,14 @@ class ValidateTest extends TestCase
     /**
      * @covers PsrJwt\Validation\Validate::validate
      * @uses PsrJwt\Validation\Validate
-     * @uses PsrJwt\Factory\Jwt::parser
+     * @uses PsrJwt\Factory\Jwt::validator
      */
-    public function testValidateBadSignature()
+    public function testValidateBadSignature(): void
     {
         $jwt = new Jwt();
 
         $validate = new Validate(
-            $jwt->parser('123.abc.456', 'Secret123!456$')
+            $jwt->validator('123.abc.456', 'Secret123!456$')
         );
 
         $result = $validate->validate();
@@ -123,7 +123,7 @@ class ValidateTest extends TestCase
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Factory\Jwt
      */
-    public function testValidateNotBefore()
+    public function testValidateNotBefore(): void
     {
         $jwt = new Jwt();
         $builder = $jwt->builder();
@@ -134,7 +134,7 @@ class ValidateTest extends TestCase
             ->getToken();
 
         $validate = new Validate(
-            $jwt->parser($token, 'Secret123!456$')
+            $jwt->validator($token, 'Secret123!456$')
         );
 
         $result = $validate->validateNotBefore(
@@ -150,7 +150,7 @@ class ValidateTest extends TestCase
      * @uses PsrJwt\Validation\Validate
      * @uses PsrJwt\Factory\Jwt
      */
-    public function testValidateNotBeforeOk()
+    public function testValidateNotBeforeOk(): void
     {
         $jwt = new Jwt();
         $builder = $jwt->builder();
@@ -161,7 +161,7 @@ class ValidateTest extends TestCase
             ->getToken();
 
         $validate = new Validate(
-            $jwt->parser($token, 'Secret123!456$')
+            $jwt->validator($token, 'Secret123!456$')
         );
 
         $result = $validate->validateNotBefore(

@@ -21,7 +21,7 @@ class JwtAuthMiddlewareTest extends TestCase
      * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Handler\Html
      */
-    public function testJwtAuthProcess()
+    public function testJwtAuthProcess(): void
     {
         $authorise = new Html('secret', 'jwt', '');
 
@@ -46,7 +46,7 @@ class JwtAuthMiddlewareTest extends TestCase
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Request
      */
-    public function testProcess()
+    public function testProcess(): void
     {
         $jwt = $jwt = new Jwt();
         $jwt = $jwt->builder();
@@ -97,7 +97,7 @@ class JwtAuthMiddlewareTest extends TestCase
      * @uses PsrJwt\Parser\Request
      * @uses PsrJwt\Parser\ParseException
      */
-    public function testProcessFail()
+    public function testProcessFail(): void
     {
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getCookieParams')
@@ -143,7 +143,7 @@ class JwtAuthMiddlewareTest extends TestCase
      * @uses PsrJwt\Parser\Request
      * @uses PsrJwt\Handler\Html
      */
-    public function testInvoke()
+    public function testInvoke(): void
     {
         $jwt = new Jwt();
         $jwt = $jwt->builder();
@@ -197,7 +197,7 @@ class JwtAuthMiddlewareTest extends TestCase
      * @uses PsrJwt\Handler\Html
      * @uses PsrJwt\Parser\Request
      */
-    public function testInvokeFail()
+    public function testInvokeFail(): void
     {
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getCookieParams')

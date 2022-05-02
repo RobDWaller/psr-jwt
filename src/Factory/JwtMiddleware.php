@@ -37,7 +37,7 @@ class JwtMiddleware
      *
      * @param string $tokenKey
      * @param string $secret
-     * @param array $body
+     * @param mixed[] $body
      * @return JwtAuthMiddleware
      */
     public static function json(string $secret, string $tokenKey = '', array $body = []): JwtAuthMiddleware

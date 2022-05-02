@@ -18,14 +18,14 @@ use Nyholm\Psr7\Response;
 class Json extends Authorise implements RequestHandlerInterface
 {
     /**
-     * @var array The content to add to the response body.
+     * @var mixed[] The content to add to the response body.
      */
     private $body;
 
     /**
      * @param string $secret
      * @param string $tokenKey
-     * @param array $body
+     * @param mixed[] $body
      */
     public function __construct(string $secret, string $tokenKey, array $body)
     {

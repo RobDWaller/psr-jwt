@@ -13,7 +13,7 @@ class CookieTest extends TestCase
     /**
      * @covers PsrJwt\Parser\Cookie::__construct
      */
-    public function testCookie()
+    public function testCookie(): void
     {
         $cookie = new Cookie('jwt');
 
@@ -25,7 +25,7 @@ class CookieTest extends TestCase
      * @covers PsrJwt\Parser\Cookie::parse
      * @uses PsrJwt\Parser\Cookie::__construct
      */
-    public function testParse()
+    public function testParse(): void
     {
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getCookieParams')

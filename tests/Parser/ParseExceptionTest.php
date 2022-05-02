@@ -11,7 +11,7 @@ class ParseExceptionTest extends TestCase
     /**
      * @covers PsrJwt\Parser\ParseException
      */
-    public function testParseException()
+    public function testParseException(): void
     {
         $exception = new ParseException('Error', 1, null);
 

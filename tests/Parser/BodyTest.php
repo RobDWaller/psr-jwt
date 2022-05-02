@@ -14,7 +14,7 @@ class BodyTest extends TestCase
     /**
      * @covers PsrJwt\Parser\Body::__construct
      */
-    public function testBody()
+    public function testBody(): void
     {
         $body = new Body('jwt');
 
@@ -26,7 +26,7 @@ class BodyTest extends TestCase
      * @covers PsrJwt\Parser\Body::parse
      * @uses PsrJwt\Parser\Body::__construct
      */
-    public function testParse()
+    public function testParse(): void
     {
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getParsedBody')
@@ -43,7 +43,7 @@ class BodyTest extends TestCase
      * @covers PsrJwt\Parser\Body::parse
      * @uses PsrJwt\Parser\Body
      */
-    public function testParseObject()
+    public function testParseObject(): void
     {
         $object = new \stdClass();
         $object->jwt = 'abc.def.ghi';
@@ -63,7 +63,7 @@ class BodyTest extends TestCase
      * @covers PsrJwt\Parser\Body::parse
      * @uses PsrJwt\Parser\Body
      */
-    public function testParseString()
+    public function testParseString(): void
     {
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getParsedBody')
@@ -80,7 +80,7 @@ class BodyTest extends TestCase
      * @covers PsrJwt\Parser\Body::parseBodyObject
      * @uses PsrJwt\Parser\Body::__construct
      */
-    public function testParseBodyObject()
+    public function testParseBodyObject(): void
     {
         $object = new \stdClass();
         $object->jwt = 'abc.def.ghi';
@@ -103,7 +103,7 @@ class BodyTest extends TestCase
      * @covers PsrJwt\Parser\Body::parseBodyObject
      * @uses PsrJwt\Parser\Body::__construct
      */
-    public function testParseBodyObjectNoKey()
+    public function testParseBodyObjectNoKey(): void
     {
         $object = new \stdClass();
 
@@ -125,7 +125,7 @@ class BodyTest extends TestCase
      * @covers PsrJwt\Parser\Body::parseBodyObject
      * @uses PsrJwt\Parser\Body::__construct
      */
-    public function testParseBodyObjectNoObject()
+    public function testParseBodyObjectNoObject(): void
     {
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getParsedBody')

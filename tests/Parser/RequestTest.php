@@ -14,7 +14,7 @@ class RequestTest extends TestCase
      * @covers PsrJwt\Parser\Request
      * @uses PsrJwt\Parser\Parse
      */
-    public function testRequest()
+    public function testRequest(): void
     {
         $parse = new Parse();
 
@@ -31,12 +31,12 @@ class RequestTest extends TestCase
      * @uses PsrJwt\Parser\Body
      * @uses PsrJwt\Parser\Query
      */
-    public function testParse()
+    public function testParse(): void
     {
         $parse = m::mock(Parse::class);
         $parse->shouldReceive('addParser')
             ->times(4);
-            
+
         $parse->shouldReceive('findToken')
             ->once()
             ->andReturn('abcdef.123.abcdef');
@@ -57,12 +57,12 @@ class RequestTest extends TestCase
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\ParseException
      */
-    public function testParseNoToken()
+    public function testParseNoToken(): void
     {
         $parse = m::mock(Parse::class);
         $parse->shouldReceive('addParser')
             ->times(4);
-            
+
         $parse->shouldReceive('findToken')
             ->once()
             ->andReturn('');

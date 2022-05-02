@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace PsrJwt\Validation;
 
-use ReallySimpleJWT\Parse;
+use ReallySimpleJWT\Validate as RSValidate;
 use ReallySimpleJWT\Exception\ValidateException;
+use ReallySimpleJWT\Exception\ParseException;
 
 /**
  * Validate the JSON Web Token will parse, has a valid signature, is ready to
@@ -14,29 +15,27 @@ use ReallySimpleJWT\Exception\ValidateException;
 class Validate
 {
     /**
-     * @param Parse $parse
+     * @param RSValidate $validate
      */
-    private $parse;
+    private RSValidate $validate;
 
-    /**
-     * @param Parse $parse
-     */
-    public function __construct(Parse $parse)
+    public function __construct(RSValidate $validate)
     {
-        $this->parse = $parse;
+        $this->validate = $validate;
     }
 
     /**
      * The JSON Web Token must be valid and not have expired.
      *
-     * @return array
+     * @return mixed[]
      */
     public function validate(): array
     {
         try {
-            $this->parse->validate()
-                ->validateExpiration();
-        } catch (ValidateException $e) {
+            $this->validate->structure()
+                ->signature()
+                ->expiration();
+        } catch (ValidateException | ParseException $e) {
             if (in_array($e->getCode(), [1, 2, 3, 4], true)) {
                 return ['code' => $e->getCode(), 'message' => $e->getMessage()];
             }
@@ -48,13 +47,14 @@ class Validate
     /**
      * The token must be ready to use.
      *
-     * @return array
+     * @param mixed[] $validationState
+     * @return mixed[]
      */
     public function validateNotBefore(array $validationState): array
     {
         try {
-            $this->parse->validateNotBefore();
-        } catch (ValidateException $e) {
+            $this->validate->notBefore();
+        } catch (ValidateException | ParseException $e) {
             if ($e->getCode()  === 5) {
                 return ['code' => $e->getCode(), 'message' => $e->getMessage()];
             }

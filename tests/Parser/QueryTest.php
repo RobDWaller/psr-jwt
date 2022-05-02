@@ -13,7 +13,7 @@ class QueryTest extends TestCase
     /**
      * @covers PsrJwt\Parser\Query::__construct
      */
-    public function testQuery()
+    public function testQuery(): void
     {
         $query = new Query('jwt');
 
@@ -25,7 +25,7 @@ class QueryTest extends TestCase
      * @covers PsrJwt\Parser\Query::parse
      * @uses PsrJwt\Parser\Query::__construct
      */
-    public function testParse()
+    public function testParse(): void
     {
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getQueryParams')

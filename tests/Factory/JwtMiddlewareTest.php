@@ -20,7 +20,7 @@ class JwtMiddlewareTest extends TestCase
      * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Handler\Html
      */
-    public function testJwtMiddlewareHtml()
+    public function testJwtMiddlewareHtml(): void
     {
         $this->assertInstanceOf(
             JwtAuthMiddleware::class,
@@ -44,7 +44,7 @@ class JwtMiddlewareTest extends TestCase
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Request
      */
-    public function testFactoryValidation()
+    public function testFactoryValidation(): void
     {
         $jwt = $jwt = new Jwt();
         $jwt = $jwt->builder();
@@ -90,7 +90,7 @@ class JwtMiddlewareTest extends TestCase
      * @uses PsrJwt\Parser\Query
      * @uses PsrJwt\Parser\Request
      */
-    public function testJsonFactoryValidation()
+    public function testJsonFactoryValidation(): void
     {
         $jwt = $jwt = new Jwt();
         $jwt = $jwt->builder();
