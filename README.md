@@ -101,7 +101,7 @@ require 'vendor/autoload.php';
 
 $factory = new \PsrJwt\Factory\Jwt();
 
-$parser = $factory->parse('token', 'secret');
+$parser = $factory->parser('token', 'secret');
 
 $parser->validate();
 
