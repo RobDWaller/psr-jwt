@@ -44,5 +44,10 @@
             "vendor/bin/phpcpd --min-lines=2 --min-tokens=35 src/",
             "vendor/bin/phploc src/"
         ]
+    },
+    "config": {
+        "allow-plugins": {
+            "infection/extension-installer": true
+        }
     }
 }
