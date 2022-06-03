@@ -32,8 +32,7 @@ class Validate
     public function validate(): array
     {
         try {
-            $this->validate->structure()
-                ->signature()
+            $this->validate->signature()
                 ->expiration();
         } catch (ValidateException | ParseException $e) {
             if (in_array($e->getCode(), [1, 2, 3, 4], true)) {
