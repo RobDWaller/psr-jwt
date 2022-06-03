@@ -49,9 +49,9 @@ class JwtAuthMiddlewareTest extends TestCase
     public function testProcess(): void
     {
         $jwt = $jwt = new Jwt();
-        $jwt = $jwt->builder();
-        $token = $jwt->setSecret('Secret123!456$')
-            ->setIssuer('localhost')
+        $jwt = $jwt->builder('Secret123!456$');
+        $token = $jwt->setIssuer('localhost')
+            ->setExpiration(time() + 10)
             ->setPayloadClaim('nbf', time() - 60)
             ->build()
             ->getToken();
@@ -146,9 +146,9 @@ class JwtAuthMiddlewareTest extends TestCase
     public function testInvoke(): void
     {
         $jwt = new Jwt();
-        $jwt = $jwt->builder();
-        $token = $jwt->setSecret('Secret123!456$')
-            ->setIssuer('localhost')
+        $jwt = $jwt->builder('Secret123!456$');
+        $token = $jwt->setIssuer('localhost')
+            ->setExpiration(time() + 10)
             ->setPayloadClaim('nbf', time() - 60)
             ->build()
             ->getToken();
@@ -199,13 +199,21 @@ class JwtAuthMiddlewareTest extends TestCase
      */
     public function testInvokeFail(): void
     {
+        $jwt = new Jwt();
+        $jwt = $jwt->builder('Secret123!456$');
+        $token = $jwt->setIssuer('localhost')
+            ->setExpiration(time() + 10)
+            ->setPayloadClaim('nbf', time() - 60)
+            ->build()
+            ->getToken();
+
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getCookieParams')
             ->once()
             ->andReturn(['car' => 'park']);
         $request->shouldReceive('getQueryParams')
             ->once()
-            ->andReturn(['jwt' => 'abc.abc.abc']);
+            ->andReturn(['jwt' => substr($token, 0, -1)]);
         $request->shouldReceive('getParsedBody')
             ->twice()
             ->andReturn(['gary' => 'barlow']);
