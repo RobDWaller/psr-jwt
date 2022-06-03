@@ -22,11 +22,11 @@ class Jwt
      *
      * @return Build
      */
-    public function builder(): Build
+    public function builder(string $secret): Build
     {
         $tokens = new Tokens();
 
-        return $tokens->builder();
+        return $tokens->builder($secret);
     }
 
     /**
