@@ -76,7 +76,7 @@ class ValidateTest extends TestCase
         $this->assertSame(4, $result['code']);
         $this->assertSame('Expiration claim has expired.', $result['message']);
     }
-    
+
     /**
      * @covers PsrJwt\Validation\Validate::validate
      * @uses PsrJwt\Validation\Validate
