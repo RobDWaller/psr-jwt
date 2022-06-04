@@ -16,7 +16,7 @@ class JwtTest extends TestCase
     public function testJwtBuilder(): void
     {
         $jwt = new Jwt();
-        $jwt = $jwt->builder();
+        $jwt = $jwt->builder('S3cr4t!Passw0rd');
 
         $this->assertInstanceOf(Build::class, $jwt);
     }
