@@ -16,9 +16,8 @@ class ValidateTest extends TestCase
     public function testValidate(): void
     {
         $jwt = new Jwt();
-        $builder = $jwt->builder();
-        $token = $builder->setSecret('Secret123!456$')
-            ->setIssuer('localhost')
+        $builder = $jwt->builder('Secret123!456$');
+        $token = $builder->setIssuer('localhost')
             ->setPayloadClaim('exp', time() - 10)
             ->build()
             ->getToken();
@@ -38,9 +37,8 @@ class ValidateTest extends TestCase
     public function testValidateOk(): void
     {
         $jwt = new Jwt();
-        $builder = $jwt->builder();
-        $token = $builder->setSecret('Secret123!456$')
-            ->setIssuer('localhost')
+        $builder = $jwt->builder('Secret123!456$');
+        $token = $builder->setIssuer('localhost')
             ->setPayloadClaim('exp', time() + 10)
             ->build()
             ->getToken();
@@ -63,9 +61,8 @@ class ValidateTest extends TestCase
     public function testValidateExpiration(): void
     {
         $jwt = new Jwt();
-        $builder = $jwt->builder();
-        $token = $builder->setSecret('Secret123!456$')
-            ->setIssuer('localhost')
+        $builder = $jwt->builder('Secret123!456$');
+        $token = $builder->setIssuer('localhost')
             ->setPayloadClaim('exp', time() - 10)
             ->build()
             ->getToken();
@@ -79,26 +76,7 @@ class ValidateTest extends TestCase
         $this->assertSame(4, $result['code']);
         $this->assertSame('Expiration claim has expired.', $result['message']);
     }
-
-    /**
-     * @covers PsrJwt\Validation\Validate::validate
-     * @uses PsrJwt\Validation\Validate
-     * @uses PsrJwt\Factory\Jwt::validator
-     */
-    public function testValidateTokenStructure(): void
-    {
-        $jwt = new Jwt();
-
-        $validate = new Validate(
-            $jwt->validator('123.abc', 'Secret123!456$')
-        );
-
-        $result = $validate->validate();
-
-        $this->assertSame(1, $result['code']);
-        $this->assertSame('Token is invalid.', $result['message']);
-    }
-
+    
     /**
      * @covers PsrJwt\Validation\Validate::validate
      * @uses PsrJwt\Validation\Validate
@@ -126,9 +104,8 @@ class ValidateTest extends TestCase
     public function testValidateNotBefore(): void
     {
         $jwt = new Jwt();
-        $builder = $jwt->builder();
-        $token = $builder->setSecret('Secret123!456$')
-            ->setIssuer('localhost')
+        $builder = $jwt->builder('Secret123!456$');
+        $token = $builder->setIssuer('localhost')
             ->setPayloadClaim('nbf', time() + 10)
             ->build()
             ->getToken();
@@ -153,9 +130,8 @@ class ValidateTest extends TestCase
     public function testValidateNotBeforeOk(): void
     {
         $jwt = new Jwt();
-        $builder = $jwt->builder();
-        $token = $builder->setSecret('Secret123!456$')
-            ->setIssuer('localhost')
+        $builder = $jwt->builder('Secret123!456$');
+        $token = $builder->setIssuer('localhost')
             ->setPayloadClaim('nbf', time() - 20)
             ->build()
             ->getToken();
