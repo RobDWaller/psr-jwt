@@ -44,9 +44,8 @@ class JsonTest extends TestCase
     public function testAuthoriseOk(): void
     {
         $jwt = $jwt = new Jwt();
-        $jwt = $jwt->builder();
-        $token = $jwt->setSecret('Secret123!456$')
-            ->setExpiration(time() + 10)
+        $jwt = $jwt->builder('Secret123!456$');
+        $token = $jwt->setExpiration(time() + 10)
             ->setNotBefore(time() - 10)
             ->setIssuer('localhost')
             ->build()
@@ -95,9 +94,8 @@ class JsonTest extends TestCase
     public function testAuthoriseFail(): void
     {
         $jwt = $jwt = new Jwt();
-        $jwt = $jwt->builder();
-        $token = $jwt->setSecret('Secret123!456$')
-            ->setExpiration(time() + 10)
+        $jwt = $jwt->builder('Secret123!456$');
+        $token = $jwt->setExpiration(time() + 10)
             ->setNotBefore(time() - 10)
             ->setIssuer('localhost')
             ->build()
