@@ -43,9 +43,10 @@ class HtmlTest extends TestCase
     public function testAuthoriseOk(): void
     {
         $jwt = $jwt = new Jwt();
-        $jwt = $jwt->builder();
-        $token = $jwt->setSecret('Secret123!456$')
-            ->setIssuer('localhost')
+        $jwt = $jwt->builder('Secret123!456$');
+        $token = $jwt->setIssuer('localhost')
+            ->setExpiration(time() + 20)
+            ->setNotBefore(time() - 20)
             ->build()
             ->getToken();
 
@@ -92,9 +93,10 @@ class HtmlTest extends TestCase
     public function testAuthoriseNoBody(): void
     {
         $jwt = $jwt = new Jwt();
-        $jwt = $jwt->builder();
-        $token = $jwt->setSecret('Secret123!456$')
-            ->setIssuer('localhost')
+        $jwt = $jwt->builder('Secret123!456$');
+        $token = $jwt->setIssuer('localhost')
+            ->setExpiration(time() + 20)
+            ->setNotBefore(time() - 20)
             ->build()
             ->getToken();
 
@@ -141,9 +143,10 @@ class HtmlTest extends TestCase
     public function testAuthoriseBadRequest(): void
     {
         $jwt = $jwt = new Jwt();
-        $jwt = $jwt->builder();
-        $token = $jwt->setSecret('Secret123!456$')
-            ->setIssuer('localhost')
+        $jwt = $jwt->builder('Secret123!456$');
+        $token = $jwt->setIssuer('localhost')
+            ->setExpiration(time() + 20)
+            ->setNotBefore(time() - 20)
             ->build()
             ->getToken();
 
@@ -189,9 +192,10 @@ class HtmlTest extends TestCase
     public function testAuthoriseUnauthorized(): void
     {
         $jwt = $jwt = new Jwt();
-        $jwt = $jwt->builder();
-        $token = $jwt->setSecret('Secret123!456$')
-            ->setIssuer('localhost')
+        $jwt = $jwt->builder('Secret123!456$');
+        $token = $jwt->setIssuer('localhost')
+            ->setExpiration(time() + 20)
+            ->setNotBefore(time() - 20)
             ->build()
             ->getToken();
 
