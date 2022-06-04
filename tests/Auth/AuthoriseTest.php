@@ -38,9 +38,8 @@ class AuthoriseTest extends TestCase
     public function testAuthoriseOk(): void
     {
         $jwt = new Jwt();
-        $jwt = $jwt->builder();
-        $token = $jwt->setSecret('Secret123!456$')
-            ->setIssuer('localhost')
+        $jwt = $jwt->builder('Secret123!456$');
+        $token = $jwt->setIssuer('localhost')
             ->build()
             ->getToken();
 
@@ -85,7 +84,7 @@ class AuthoriseTest extends TestCase
     public function testAuthoriseBadRequest(): void
     {
         $jwt = new Jwt();
-        $jwt = $jwt->builder();
+        $jwt = $jwt->builder('secR3t456!78');
 
         $request = m::mock(ServerRequestInterface::class);
         $request->shouldReceive('getCookieParams')
@@ -120,9 +119,8 @@ class AuthoriseTest extends TestCase
     public function testValidate(): void
     {
         $jwt = new Jwt();
-        $jwt = $jwt->builder();
-        $token = $jwt->setSecret('Secret123!456$')
-            ->setIssuer('localhost')
+        $jwt = $jwt->builder('Secret123!456$');
+        $token = $jwt->setIssuer('localhost')
             ->build()
             ->getToken();
 
@@ -146,9 +144,8 @@ class AuthoriseTest extends TestCase
     public function testValidateBadSecret(): void
     {
         $jwt = new Jwt();
-        $jwt = $jwt->builder();
-        $token = $jwt->setSecret('Secret123!456$')
-            ->setIssuer('localhost')
+        $jwt = $jwt->builder('Secret123!456$');
+        $token = $jwt->setIssuer('localhost')
             ->build()
             ->getToken();
 
@@ -172,9 +169,8 @@ class AuthoriseTest extends TestCase
     public function testValidateBadExpiration(): void
     {
         $jwt = new Jwt();
-        $jwt = $jwt->builder();
-        $token = $jwt->setSecret('Secret123!456$')
-            ->setIssuer('localhost')
+        $jwt = $jwt->builder('Secret123!456$');
+        $token = $jwt->setIssuer('localhost')
             ->setPayloadClaim('exp', time() - 10)
             ->build()
             ->getToken();
@@ -199,9 +195,8 @@ class AuthoriseTest extends TestCase
     public function testValidateBadNotBefore(): void
     {
         $jwt = new Jwt();
-        $jwt = $jwt->builder();
-        $token = $jwt->setSecret('Secret123!456$')
-            ->setIssuer('localhost')
+        $jwt = $jwt->builder('Secret123!456$');
+        $token = $jwt->setIssuer('localhost')
             ->setPayloadClaim('nbf', time() + 60)
             ->build()
             ->getToken();
