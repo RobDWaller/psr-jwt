@@ -28,7 +28,7 @@ class Request
 
         $jwt = new Jwt();
 
-        return $jwt->parser($token, '')->parse();
+        return $jwt->parser($token)->parse();
     }
 
     /**

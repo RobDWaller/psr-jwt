@@ -27,7 +27,7 @@ class JwtTest extends TestCase
     public function testJwtParser(): void
     {
         $jwt = new Jwt();
-        $jwt = $jwt->parser('aaa.bbb.ccc', 'secret');
+        $jwt = $jwt->parser('aaa.bbb.ccc');
 
         $this->assertInstanceOf(Parse::class, $jwt);
     }

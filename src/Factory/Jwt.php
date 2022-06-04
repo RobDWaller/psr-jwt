@@ -34,11 +34,11 @@ class Jwt
      *
      * @return Parse
      */
-    public function parser(string $token, string $secret): Parse
+    public function parser(string $token): Parse
     {
         $tokens = new Tokens();
 
-        return $tokens->parser($token, $secret);
+        return $tokens->parser($token);
     }
 
     /**
