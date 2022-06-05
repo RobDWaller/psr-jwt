@@ -6,7 +6,6 @@ namespace PsrJwt\Validation;
 
 use ReallySimpleJWT\Validate as RSValidate;
 use ReallySimpleJWT\Exception\ValidateException;
-use ReallySimpleJWT\Exception\JwtException;
 use ReallySimpleJWT\Exception\ParsedException;
 
 /**
@@ -33,10 +32,9 @@ class Validate
     public function validate(): array
     {
         try {
-            $this->validate->signature()
-                ->expiration();
-        } catch (JwtException | ValidateException | ParsedException $e) {
-            if (in_array($e->getCode(), [1, 3, 4], true)) {
+            $this->validate->signature()->expiration();
+        } catch (ValidateException | ParsedException $e) {
+            if (in_array($e->getCode(), [3, 4], true)) {
                 return ['code' => $e->getCode(), 'message' => $e->getMessage()];
             }
         }
@@ -54,7 +52,7 @@ class Validate
     {
         try {
             $this->validate->notBefore();
-        } catch (JwtException | ValidateException | ParsedException $e) {
+        } catch (ValidateException | ParsedException $e) {
             if ($e->getCode()  === 5) {
                 return ['code' => $e->getCode(), 'message' => $e->getMessage()];
             }
