@@ -6,7 +6,6 @@ namespace PsrJwt\Auth;
 
 use Psr\Http\Message\ServerRequestInterface;
 use PsrJwt\Factory\Jwt;
-use PsrJwt\Auth\Auth;
 use PsrJwt\Parser\Parse;
 use PsrJwt\Parser\Request;
 use PsrJwt\Parser\ParseException;

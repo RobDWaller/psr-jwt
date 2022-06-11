@@ -4,13 +4,7 @@ declare(strict_types=1);
 
 namespace PsrJwt\Parser;
 
-use PsrJwt\Parser\Parse;
 use Psr\Http\Message\ServerRequestInterface;
-use PsrJwt\Parser\Bearer;
-use PsrJwt\Parser\Cookie;
-use PsrJwt\Parser\Body;
-use PsrJwt\Parser\Query;
-use PsrJwt\Parser\ParseException;
 
 /**
  * Parse the request and find the JSON Web Token.

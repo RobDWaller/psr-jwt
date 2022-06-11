@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PsrJwt\Parser;
 
 use Psr\Http\Message\ServerRequestInterface;

@@ -7,7 +7,6 @@ namespace PsrJwt\Factory;
 use PsrJwt\JwtAuthMiddleware;
 use PsrJwt\Handler\Html;
 use PsrJwt\Handler\Json;
-use PsrJwt\JwtAuthInvokable;
 
 /**
  * Factory to easily add the PSR-JWT middleware to PSR compliant frameworks such
