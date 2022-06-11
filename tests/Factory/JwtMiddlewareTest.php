@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Factory;
 
 use PHPUnit\Framework\TestCase;
 use PsrJwt\Factory\JwtMiddleware;
 use PsrJwt\JwtAuthMiddleware;
-use PsrJwt\Auth\Authorise;
 use PsrJwt\Factory\Jwt;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;

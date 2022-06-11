@@ -1,17 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Parser;
 
 use PHPUnit\Framework\TestCase;
 use PsrJwt\Parser\Parse;
 use Psr\Http\Message\ServerRequestInterface;
 use PsrJwt\Parser\Bearer;
-use PsrJwt\Parser\Cookie;
 use PsrJwt\Parser\Body;
 use PsrJwt\Parser\Query;
-use ReflectionMethod;
 use Mockery as m;
-use stdClass;
 
 class ParseTest extends TestCase
 {

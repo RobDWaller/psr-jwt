@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Helper;
 
 use PHPUnit\Framework\TestCase;
 use PsrJwt\Helper\Request;
-use PsrJwt\Parser\Parse;
 use ReallySimpleJWT\Parsed;
 use Psr\Http\Message\ServerRequestInterface;
 use Mockery as m;

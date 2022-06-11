@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Validation;
 
 use PHPUnit\Framework\TestCase;
-use ReallySimpleJWT\Validate as RSValidate;
 use PsrJwt\Factory\Jwt;
 use PsrJwt\Validation\Validate;
 
