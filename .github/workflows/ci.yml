@@ -24,7 +24,7 @@ jobs:
       run: composer validate --strict
 
     - name: Install Composer Dependencies 
-      run: composer install --no-interaction --prefer-source
+      run: composer update --no-interaction --prefer-source
     
     - name: Run Tests
       run: composer pipeline
