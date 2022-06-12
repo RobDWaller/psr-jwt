@@ -8,7 +8,6 @@ use PHPUnit\Framework\TestCase;
 use PsrJwt\Parser\Query;
 use PsrJwt\Parser\ParserInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Mockery as m;
 
 class QueryTest extends TestCase
 {
@@ -29,19 +28,14 @@ class QueryTest extends TestCase
      */
     public function testParse(): void
     {
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getQueryParams')
-            ->once()
-            ->andReturn(['jwt' => 'abc.def.ghi']);
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getQueryParams')
+            ->willReturn(['jwt' => 'abc.def.ghi']);
 
         $query = new Query('jwt');
         $result = $query->parse($request);
 
         $this->assertSame('abc.def.ghi', $result);
-    }
-
-    public function tearDown(): void
-    {
-        m::close();
     }
 }

@@ -11,7 +11,6 @@ use PsrJwt\Factory\Jwt;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Nyholm\Psr7\Factory\Psr17Factory;
-use Mockery as m;
 
 class JwtMiddlewareTest extends TestCase
 {
@@ -54,19 +53,19 @@ class JwtMiddlewareTest extends TestCase
             ->build()
             ->getToken();
 
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getHeader')
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getHeader')
             ->with('authorization')
-            ->once()
-            ->andReturn(['Bearer ' . $token]);
+            ->willReturn(['Bearer ' . $token]);
 
         $response = new Psr17Factory();
         $response = $response->createResponse(200, 'Ok');
 
-        $handler = m::mock(RequestHandlerInterface::class);
-        $handler->shouldReceive('handle')
-            ->once()
-            ->andReturn($response);
+        $handler = $this->createMock(RequestHandlerInterface::class);
+        $handler->expects($this->once())
+            ->method('handle')
+            ->willReturn($response);
 
         $middleware = JwtMiddleware::html('Secret123!456$', 'jwt');
 
@@ -99,19 +98,19 @@ class JwtMiddlewareTest extends TestCase
             ->build()
             ->getToken();
 
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getHeader')
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getHeader')
             ->with('authorization')
-            ->once()
-            ->andReturn(['Bearer ' . $token]);
+            ->willReturn(['Bearer ' . $token]);
 
         $response = new Psr17Factory();
         $response = $response->createResponse(200, 'Ok');
 
-        $handler = m::mock(RequestHandlerInterface::class);
-        $handler->shouldReceive('handle')
-            ->once()
-            ->andReturn($response);
+        $handler = $this->createMock(RequestHandlerInterface::class);
+        $handler->expects($this->once())
+            ->method('handle')
+            ->willReturn($response);
 
         $middleware = JwtMiddleware::json('Secret123!456$', 'jwt');
 

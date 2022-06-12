@@ -8,7 +8,6 @@ use PHPUnit\Framework\TestCase;
 use PsrJwt\Parser\Body;
 use PsrJwt\Parser\ParserInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Mockery as m;
 use ReflectionMethod;
 
 class BodyTest extends TestCase
@@ -30,10 +29,10 @@ class BodyTest extends TestCase
      */
     public function testParse(): void
     {
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getParsedBody')
-            ->once()
-            ->andReturn(['jwt' => 'abc.def.ghi']);
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getParsedBody')
+            ->willReturn(['jwt' => 'abc.def.ghi']);
 
         $body = new Body('jwt');
         $result = $body->parse($request);
@@ -50,10 +49,10 @@ class BodyTest extends TestCase
         $object = new \stdClass();
         $object->jwt = 'abc.def.ghi';
 
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getParsedBody')
-            ->twice()
-            ->andReturn($object);
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->exactly(2))
+            ->method('getParsedBody')
+            ->willReturn($object);
 
         $body = new Body('jwt');
         $result = $body->parse($request);
@@ -67,10 +66,10 @@ class BodyTest extends TestCase
      */
     public function testParseString(): void
     {
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getParsedBody')
-            ->twice()
-            ->andReturn('hello');
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->exactly(2))
+            ->method('getParsedBody')
+            ->willReturn('hello');
 
         $body = new Body('jwt');
         $result = $body->parse($request);
@@ -87,10 +86,10 @@ class BodyTest extends TestCase
         $object = new \stdClass();
         $object->jwt = 'abc.def.ghi';
 
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getParsedBody')
-            ->once()
-            ->andReturn($object);
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getParsedBody')
+            ->willReturn($object);
 
         $body = new Body('jwt');
 
@@ -109,10 +108,10 @@ class BodyTest extends TestCase
     {
         $object = new \stdClass();
 
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getParsedBody')
-            ->once()
-            ->andReturn($object);
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getParsedBody')
+            ->willReturn($object);
 
         $body = new Body('jwt');
 
@@ -129,10 +128,10 @@ class BodyTest extends TestCase
      */
     public function testParseBodyObjectNoObject(): void
     {
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getParsedBody')
-            ->once()
-            ->andReturn([]);
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getParsedBody')
+            ->willReturn([]);
 
         $body = new Body('jwt');
 
@@ -141,10 +140,5 @@ class BodyTest extends TestCase
         $result = $method->invokeArgs($body, [$request]);
 
         $this->assertSame('', $result);
-    }
-
-    public function tearDown(): void
-    {
-        m::close();
     }
 }

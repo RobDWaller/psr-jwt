@@ -8,7 +8,6 @@ use PHPUnit\Framework\TestCase;
 use PsrJwt\Parser\Parse;
 use PsrJwt\Parser\Request;
 use Psr\Http\Message\ServerRequestInterface;
-use Mockery as m;
 
 class RequestTest extends TestCase
 {
@@ -35,15 +34,15 @@ class RequestTest extends TestCase
      */
     public function testParse(): void
     {
-        $parse = m::mock(Parse::class);
-        $parse->shouldReceive('addParser')
-            ->times(4);
+        $parse = $this->createMock(Parse::class);
+        $parse->expects($this->exactly(4))
+            ->method('addParser');
 
-        $parse->shouldReceive('findToken')
-            ->once()
-            ->andReturn('abcdef.123.abcdef');
+        $parse->expects($this->once())
+            ->method('findToken')
+            ->willReturn('abcdef.123.abcdef');
 
-        $httpRequest = m::mock(ServerRequestInterface::class);
+        $httpRequest = $this->createMock(ServerRequestInterface::class);
 
         $request = new Request($parse);
 
@@ -61,25 +60,20 @@ class RequestTest extends TestCase
      */
     public function testParseNoToken(): void
     {
-        $parse = m::mock(Parse::class);
-        $parse->shouldReceive('addParser')
-            ->times(4);
+        $parse = $this->createMock(Parse::class);
+        $parse->expects($this->exactly(4))
+            ->method('addParser');
 
-        $parse->shouldReceive('findToken')
-            ->once()
-            ->andReturn('');
+        $parse->expects($this->once())
+            ->method('findToken')
+            ->willReturn('');
 
-        $httpRequest = m::mock(ServerRequestInterface::class);
+        $httpRequest = $this->createMock(ServerRequestInterface::class);
 
         $request = new Request($parse);
 
         $this->expectException(\PsrJwt\Parser\ParseException::class);
         $this->expectExceptionMessage('JSON Web Token not set in request.');
         $request->parse($httpRequest, 'jwt');
-    }
-
-    public function tearDown(): void
-    {
-        m::close();
     }
 }

@@ -11,7 +11,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use PsrJwt\Factory\Jwt;
-use Mockery as m;
 
 class HtmlTest extends TestCase
 {
@@ -52,20 +51,20 @@ class HtmlTest extends TestCase
             ->build()
             ->getToken();
 
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getHeader')
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getHeader')
             ->with('authorization')
-            ->once()
-            ->andReturn([]);
-        $request->shouldReceive('getCookieParams')
-            ->once()
-            ->andReturn(['foo' => 'bar']);
-        $request->shouldReceive('getParsedBody')
-            ->twice()
-            ->andReturn([]);
-        $request->shouldReceive('getQueryParams')
-            ->once()
-            ->andReturn(['jwt' => $token]);
+            ->willReturn([]);
+        $request->expects($this->once())
+            ->method('getCookieParams')
+            ->willReturn(['foo' => 'bar']);
+        $request->expects($this->exactly(2))
+            ->method('getParsedBody')
+            ->willReturn([]);
+        $request->expects($this->once())
+            ->method('getQueryParams')
+            ->willReturn(['jwt' => $token]);
 
         $auth = new Html('Secret123!456$', 'jwt', '<h1>Ok</h1>');
 
@@ -102,20 +101,20 @@ class HtmlTest extends TestCase
             ->build()
             ->getToken();
 
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getHeader')
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getHeader')
             ->with('authorization')
-            ->once()
-            ->andReturn([]);
-        $request->shouldReceive('getCookieParams')
-            ->once()
-            ->andReturn(['foo' => 'bar']);
-        $request->shouldReceive('getParsedBody')
-            ->twice()
-            ->andReturn([]);
-        $request->shouldReceive('getQueryParams')
-            ->once()
-            ->andReturn(['jwt' => $token]);
+            ->willReturn([]);
+        $request->expects($this->once())
+            ->method('getCookieParams')
+            ->willReturn(['foo' => 'bar']);
+        $request->expects($this->exactly(2))
+            ->method('getParsedBody')
+            ->willReturn([]);
+        $request->expects($this->once())
+            ->method('getQueryParams')
+            ->willReturn(['jwt' => $token]);
 
         $auth = new Html('Secret123!456$', 'jwt', '');
 
@@ -152,20 +151,20 @@ class HtmlTest extends TestCase
             ->build()
             ->getToken();
 
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getHeader')
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getHeader')
             ->with('authorization')
-            ->once()
-            ->andReturn([]);
-        $request->shouldReceive('getCookieParams')
-            ->once()
-            ->andReturn(['foo' => 'bar']);
-        $request->shouldReceive('getParsedBody')
-            ->twice()
-            ->andReturn(['jwt' => $token]);
-        $request->shouldReceive('getQueryParams')
-            ->once()
-            ->andReturn([]);
+            ->willReturn([]);
+        $request->expects($this->once())
+            ->method('getCookieParams')
+            ->willReturn(['foo' => 'bar']);
+        $request->expects($this->exactly(2))
+            ->method('getParsedBody')
+            ->willReturn(['jwt' => $token]);
+        $request->expects($this->once())
+            ->method('getQueryParams')
+            ->willReturn([]);
 
         $auth = new Html('Secret123!456$', '', '<h1>Fail!</h1>');
 
@@ -201,14 +200,14 @@ class HtmlTest extends TestCase
             ->build()
             ->getToken();
 
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getHeader')
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getHeader')
             ->with('authorization')
-            ->once()
-            ->andReturn([]);
-        $request->shouldReceive('getCookieParams')
-            ->once()
-            ->andReturn(['foo' => $token]);
+            ->willReturn([]);
+        $request->expects($this->once())
+            ->method('getCookieParams')
+            ->willReturn(['foo' => $token]);
 
         $auth = new Html('1Secret23!456$', 'foo', '<h1>Fail!</h1>');
 
@@ -218,10 +217,5 @@ class HtmlTest extends TestCase
         $this->assertSame(401, $result->getStatusCode());
         $this->assertSame('Unauthorized: Signature is invalid.', $result->getReasonPhrase());
         $this->assertSame('<h1>Fail!</h1>', $result->getBody()->__toString());
-    }
-
-    public function tearDown(): void
-    {
-        m::close();
     }
 }

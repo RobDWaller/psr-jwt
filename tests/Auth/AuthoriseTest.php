@@ -11,7 +11,6 @@ use PsrJwt\Auth\Auth;
 use PsrJwt\Factory\Jwt;
 use PsrJwt\Parser\ParseException;
 use ReflectionMethod;
-use Mockery as m;
 
 class AuthoriseTest extends TestCase
 {
@@ -45,20 +44,20 @@ class AuthoriseTest extends TestCase
             ->build()
             ->getToken();
 
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getCookieParams')
-            ->once()
-            ->andReturn(['foo' => 'bar']);
-        $request->shouldReceive('getQueryParams')
-            ->once()
-            ->andReturn(['jwt' => $token]);
-        $request->shouldReceive('getParsedBody')
-            ->twice()
-            ->andReturn([]);
-        $request->shouldReceive('getHeader')
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getCookieParams')
+            ->willReturn(['foo' => 'bar']);
+        $request->expects($this->once())
+            ->method('getQueryParams')
+            ->willReturn(['jwt' => $token]);
+        $request->expects($this->exactly(2))
+            ->method('getParsedBody')
+            ->willReturn([]);
+        $request->expects($this->once())
+            ->method('getHeader')
             ->with('authorization')
-            ->once()
-            ->andReturn([]);
+            ->willReturn([]);
 
         $authorise = new Authorise('Secret123!456$', 'jwt');
 
@@ -88,20 +87,20 @@ class AuthoriseTest extends TestCase
         $jwt = new Jwt();
         $jwt = $jwt->builder('secR3t456!78');
 
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getCookieParams')
-            ->once()
-            ->andReturn(['foo' => 'bar']);
-        $request->shouldReceive('getQueryParams')
-            ->once()
-            ->andReturn(['hello' => 'world']);
-        $request->shouldReceive('getParsedBody')
-            ->twice()
-            ->andReturn([]);
-        $request->shouldReceive('getHeader')
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getCookieParams')
+            ->willReturn(['foo' => 'bar']);
+        $request->expects($this->once())
+            ->method('getQueryParams')
+            ->willReturn(['hello' => 'world']);
+        $request->expects($this->exactly(2))
+            ->method('getParsedBody')
+            ->willReturn([]);
+        $request->expects($this->once())
+            ->method('getHeader')
             ->with('authorization')
-            ->once()
-            ->andReturn([]);
+            ->willReturn([]);
 
         $auth = new Authorise('Secret123!456$', 'jwt');
 
@@ -272,11 +271,11 @@ class AuthoriseTest extends TestCase
      */
     public function testGetToken(): void
     {
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getHeader')
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getHeader')
             ->with('authorization')
-            ->once()
-            ->andReturn(['Bearer abc.def.ghi']);
+            ->willReturn(['Bearer abc.def.ghi']);
 
         $auth = new Authorise('secret', 'jwt');
 
@@ -299,14 +298,14 @@ class AuthoriseTest extends TestCase
      */
     public function testGetTokenCookie(): void
     {
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getHeader')
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getHeader')
             ->with('authorization')
-            ->once()
-            ->andReturn([]);
-        $request->shouldReceive('getCookieParams')
-            ->once()
-            ->andReturn(['token' => 'abc.123.def']);
+            ->willReturn([]);
+        $request->expects($this->once())
+            ->method('getCookieParams')
+            ->willReturn(['token' => 'abc.123.def']);
 
         $auth = new Authorise('secret', 'token');
 
@@ -329,17 +328,17 @@ class AuthoriseTest extends TestCase
      */
     public function testGetTokenBody(): void
     {
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getHeader')
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getHeader')
             ->with('authorization')
-            ->once()
-            ->andReturn([]);
-        $request->shouldReceive('getCookieParams')
-            ->once()
-            ->andReturn([]);
-        $request->shouldReceive('getParsedBody')
-            ->once()
-            ->andReturn(['json_token_1' => '123.abc.def']);
+            ->willReturn([]);
+        $request->expects($this->once())
+            ->method('getCookieParams')
+            ->willReturn([]);
+        $request->expects($this->once())
+            ->method('getParsedBody')
+            ->willReturn(['json_token_1' => '123.abc.def']);
 
         $auth = new Authorise('secret', 'json_token_1');
 
@@ -365,17 +364,17 @@ class AuthoriseTest extends TestCase
         $token = new \stdClass();
         $token->my_token = 'ghi.123.xyz';
 
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getHeader')
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getHeader')
             ->with('authorization')
-            ->once()
-            ->andReturn([]);
-        $request->shouldReceive('getCookieParams')
-            ->once()
-            ->andReturn([]);
-        $request->shouldReceive('getParsedBody')
-            ->twice()
-            ->andReturn($token);
+            ->willReturn([]);
+        $request->expects($this->once())
+            ->method('getCookieParams')
+            ->willReturn([]);
+        $request->expects($this->exactly(2))
+            ->method('getParsedBody')
+            ->willReturn($token);
 
         $auth = new Authorise('secret', 'my_token');
 
@@ -398,20 +397,20 @@ class AuthoriseTest extends TestCase
      */
     public function testGetTokenQuery(): void
     {
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getHeader')
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getHeader')
             ->with('authorization')
-            ->once()
-            ->andReturn([]);
-        $request->shouldReceive('getCookieParams')
-            ->once()
-            ->andReturn([]);
-        $request->shouldReceive('getParsedBody')
-            ->twice()
-            ->andReturn([]);
-        $request->shouldReceive('getQueryParams')
-            ->once()
-            ->andReturn(['auth_token' => '456.gfv.3-1']);
+            ->willReturn([]);
+        $request->expects($this->once())
+            ->method('getCookieParams')
+            ->willReturn([]);
+        $request->expects($this->exactly(2))
+            ->method('getParsedBody')
+            ->willReturn([]);
+        $request->expects($this->once())
+            ->method('getQueryParams')
+            ->willReturn(['auth_token' => '456.gfv.3-1']);
 
         $auth = new Authorise('secret', 'auth_token');
 
@@ -435,20 +434,20 @@ class AuthoriseTest extends TestCase
      */
     public function testGetTokenNoToken(): void
     {
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getHeader')
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getHeader')
             ->with('authorization')
-            ->once()
-            ->andReturn([]);
-        $request->shouldReceive('getCookieParams')
-            ->once()
-            ->andReturn([]);
-        $request->shouldReceive('getQueryParams')
-            ->once()
-            ->andReturn([]);
-        $request->shouldReceive('getParsedBody')
-            ->twice()
-            ->andReturn([]);
+            ->willReturn([]);
+        $request->expects($this->once())
+            ->method('getCookieParams')
+            ->willReturn([]);
+        $request->expects($this->once())
+            ->method('getQueryParams')
+            ->willReturn([]);
+        $request->expects($this->exactly(2))
+            ->method('getParsedBody')
+            ->willReturn([]);
 
         $auth = new Authorise('secret', 'jwt');
 
@@ -457,10 +456,5 @@ class AuthoriseTest extends TestCase
         $this->expectException(ParseException::class);
         $this->expectExceptionMessage("JSON Web Token not set in request.");
         $method->invokeArgs($auth, [$request]);
-    }
-
-    public function tearDown(): void
-    {
-        m::close();
     }
 }

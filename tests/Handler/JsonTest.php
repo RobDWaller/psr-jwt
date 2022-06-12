@@ -11,7 +11,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use PsrJwt\Factory\Jwt;
-use Mockery as m;
 
 class JsonTest extends TestCase
 {
@@ -53,20 +52,20 @@ class JsonTest extends TestCase
             ->build()
             ->getToken();
 
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getHeader')
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getHeader')
             ->with('authorization')
-            ->once()
-            ->andReturn([]);
-        $request->shouldReceive('getCookieParams')
-            ->once()
-            ->andReturn(['foo' => 'bar']);
-        $request->shouldReceive('getParsedBody')
-            ->twice()
-            ->andReturn([]);
-        $request->shouldReceive('getQueryParams')
-            ->once()
-            ->andReturn(['jwt' => $token]);
+            ->willReturn([]);
+        $request->expects($this->once())
+            ->method('getCookieParams')
+            ->willReturn(['foo' => 'bar']);
+        $request->expects($this->exactly(2))
+            ->method('getParsedBody')
+            ->willReturn([]);
+        $request->expects($this->once())
+            ->method('getQueryParams')
+            ->willReturn(['jwt' => $token]);
 
         $auth = new Json('Secret123!456$', 'jwt', ['Ok']);
 
@@ -103,11 +102,11 @@ class JsonTest extends TestCase
             ->build()
             ->getToken();
 
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getHeader')
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getHeader')
             ->with('authorization')
-            ->once()
-            ->andReturn(['Bearer ' . $token]);
+            ->willReturn(['Bearer ' . $token]);
 
         $auth = new Json('Secret123!456', 'jwt', ['message' => 'Bad']);
 

@@ -8,7 +8,6 @@ use PHPUnit\Framework\TestCase;
 use PsrJwt\Parser\Bearer;
 use PsrJwt\Parser\ParserInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Mockery as m;
 
 class BearerTest extends TestCase
 {
@@ -28,11 +27,11 @@ class BearerTest extends TestCase
      */
     public function testParse(): void
     {
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getHeader')
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getHeader')
             ->with('authorization')
-            ->once()
-            ->andReturn(['Bearer abc.def.ghi']);
+            ->willReturn(['Bearer abc.def.ghi']);
 
         $bearer = new Bearer();
         $result = $bearer->parse($request);
@@ -45,20 +44,15 @@ class BearerTest extends TestCase
      */
     public function testParseInvalid(): void
     {
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getHeader')
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getHeader')
             ->with('authorization')
-            ->once()
-            ->andReturn(['Bear']);
+            ->willReturn(['Bear']);
 
         $bearer = new Bearer();
         $result = $bearer->parse($request);
 
         $this->assertEmpty($result);
-    }
-
-    public function tearDown(): void
-    {
-        m::close();
     }
 }

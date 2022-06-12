@@ -10,7 +10,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use PsrJwt\Parser\Bearer;
 use PsrJwt\Parser\Body;
 use PsrJwt\Parser\Query;
-use Mockery as m;
 
 class ParseTest extends TestCase
 {
@@ -31,11 +30,11 @@ class ParseTest extends TestCase
      */
     public function testFindToken(): void
     {
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getHeader')
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getHeader')
             ->with('authorization')
-            ->once()
-            ->andReturn(['Bearer abc.def.ghi']);
+            ->willReturn(['Bearer abc.def.ghi']);
 
         $parse = new Parse();
         $parse->addParser(new Bearer());
@@ -55,14 +54,14 @@ class ParseTest extends TestCase
      */
     public function testFindTokenMultiParser(): void
     {
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getHeader')
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getHeader')
             ->with('authorization')
-            ->once()
-            ->andReturn([]);
-        $request->shouldReceive('getParsedBody')
-            ->once()
-            ->andReturn(['jwt' => 'abc.123.ghi']);
+            ->willReturn([]);
+        $request->expects($this->once())
+            ->method('getParsedBody')
+            ->willReturn(['jwt' => 'abc.123.ghi']);
 
         $parse = new Parse();
         $parse->addParser(new Bearer());
@@ -80,16 +79,11 @@ class ParseTest extends TestCase
      */
     public function testFindTokenFail(): void
     {
-        $request = m::mock(ServerRequestInterface::class);
+        $request = $this->createMock(ServerRequestInterface::class);
 
         $parse = new Parse();
         $result = $parse->findToken($request);
 
         $this->assertEmpty($result);
-    }
-
-    public function tearDown(): void
-    {
-        m::close();
     }
 }

@@ -13,7 +13,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Server\MiddlewareInterface;
-use Mockery as m;
 
 class JwtAuthMiddlewareTest extends TestCase
 {
@@ -57,19 +56,19 @@ class JwtAuthMiddlewareTest extends TestCase
             ->build()
             ->getToken();
 
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getHeader')
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getHeader')
             ->with('authorization')
-            ->once()
-            ->andReturn(['Bearer ' . $token]);
+            ->willReturn(['Bearer ' . $token]);
 
         $response = new Psr17Factory();
         $response = $response->createResponse(200, 'Ok');
 
-        $handler = m::mock(RequestHandlerInterface::class);
-        $handler->shouldReceive('handle')
-            ->once()
-            ->andReturn($response);
+        $handler = $this->createMock(RequestHandlerInterface::class);
+        $handler->expects($this->once())
+            ->method('handle')
+            ->willReturn($response);
 
         $authorise = new Html('Secret123!456$', '', '');
 
@@ -100,22 +99,22 @@ class JwtAuthMiddlewareTest extends TestCase
      */
     public function testProcessFail(): void
     {
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getCookieParams')
-            ->once()
-            ->andReturn(['car' => 'park']);
-        $request->shouldReceive('getQueryParams')
-            ->once()
-            ->andReturn(['farm' => 'yard']);
-        $request->shouldReceive('getParsedBody')
-            ->twice()
-            ->andReturn(['gary' => 'barlow']);
-        $request->shouldReceive('getHeader')
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getCookieParams')
+            ->willReturn(['car' => 'park']);
+        $request->expects($this->once())
+            ->method('getQueryParams')
+            ->willReturn(['farm' => 'yard']);
+        $request->expects($this->exactly(2))
+            ->method('getParsedBody')
+            ->willReturn(['gary' => 'barlow']);
+        $request->expects($this->once())
+            ->method('getHeader')
             ->with('authorization')
-            ->once()
-            ->andReturn([]);
+            ->willReturn([]);
 
-        $handler = m::mock(RequestHandlerInterface::class);
+        $handler = $this->createMock(RequestHandlerInterface::class);
 
         $authorise = new Html('Secret123!456$', 'jwt', '');
 
@@ -154,19 +153,19 @@ class JwtAuthMiddlewareTest extends TestCase
             ->build()
             ->getToken();
 
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getHeader')
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getHeader')
             ->with('authorization')
-            ->once()
-            ->andReturn(['Bearer ' . $token]);
+            ->willReturn(['Bearer ' . $token]);
 
-        $response = m::mock(ResponseInterface::class);
-        $response->shouldReceive('getStatusCode')
-            ->once()
-            ->andReturn(200);
-        $response->shouldReceive('getReasonPhrase')
-            ->once()
-            ->andReturn('Ok');
+        $response = $this->createMock(ResponseInterface::class);
+        $response->expects($this->once())
+            ->method('getStatusCode')
+            ->willReturn(200);
+        $response->expects($this->once())
+            ->method('getReasonPhrase')
+            ->willReturn('Ok');
 
         $next = function ($request, $response) {
             return $response;
@@ -208,22 +207,22 @@ class JwtAuthMiddlewareTest extends TestCase
             ->build()
             ->getToken();
 
-        $request = m::mock(ServerRequestInterface::class);
-        $request->shouldReceive('getCookieParams')
-            ->once()
-            ->andReturn(['car' => 'park']);
-        $request->shouldReceive('getQueryParams')
-            ->once()
-            ->andReturn(['jwt' => substr($token, 0, -1)]);
-        $request->shouldReceive('getParsedBody')
-            ->twice()
-            ->andReturn(['gary' => 'barlow']);
-        $request->shouldReceive('getHeader')
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getCookieParams')
+            ->willReturn(['car' => 'park']);
+        $request->expects($this->once())
+            ->method('getQueryParams')
+            ->willReturn(['jwt' => substr($token, 0, -1)]);
+        $request->expects($this->exactly(2))
+            ->method('getParsedBody')
+            ->willReturn(['gary' => 'barlow']);
+        $request->expects($this->once())
+            ->method('getHeader')
             ->with('authorization')
-            ->once()
-            ->andReturn([]);
+            ->willReturn([]);
 
-        $response = m::mock(ResponseInterface::class);
+        $response = $this->createMock(ResponseInterface::class);
 
         $next = function ($request, $response) {
             return $response;
@@ -237,10 +236,5 @@ class JwtAuthMiddlewareTest extends TestCase
 
         $this->assertSame(401, $result->getStatusCode());
         $this->assertSame('Unauthorized: Signature is invalid.', $result->getReasonPhrase());
-    }
-
-    public function tearDown(): void
-    {
-        m::close();
     }
 }

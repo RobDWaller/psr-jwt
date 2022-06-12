@@ -8,7 +8,6 @@ use PHPUnit\Framework\TestCase;
 use PsrJwt\Helper\Request;
 use ReallySimpleJWT\Parsed;
 use Psr\Http\Message\ServerRequestInterface;
-use Mockery as m;
 
 class RequestTest extends TestCase
 {
@@ -39,10 +38,10 @@ class RequestTest extends TestCase
      */
     public function testGetParsedToken(): void
     {
-        $httpRequest = m::mock(ServerRequestInterface::class);
-        $httpRequest->shouldReceive('getHeader')
-            ->once()
-            ->andReturn(['Bearer ' . self::TOKEN]);
+        $httpRequest = $this->createMock(ServerRequestInterface::class);
+        $httpRequest->expects($this->once())
+            ->method('getHeader')
+            ->willReturn(['Bearer ' . self::TOKEN]);
 
         $request = new Request();
 
@@ -65,10 +64,10 @@ class RequestTest extends TestCase
      */
     public function testGetTokenHeader(): void
     {
-        $httpRequest = m::mock(ServerRequestInterface::class);
-        $httpRequest->shouldReceive('getHeader')
-            ->once()
-            ->andReturn(['Bearer ' . self::TOKEN]);
+        $httpRequest = $this->createMock(ServerRequestInterface::class);
+        $httpRequest->expects($this->once())
+            ->method('getHeader')
+            ->willReturn(['Bearer ' . self::TOKEN]);
 
         $request = new Request();
 
@@ -91,10 +90,10 @@ class RequestTest extends TestCase
      */
     public function testGetTokenPayload(): void
     {
-        $httpRequest = m::mock(ServerRequestInterface::class);
-        $httpRequest->shouldReceive('getHeader')
-            ->once()
-            ->andReturn(['Bearer ' . self::TOKEN]);
+        $httpRequest = $this->createMock(ServerRequestInterface::class);
+        $httpRequest->expects($this->once())
+            ->method('getHeader')
+            ->willReturn(['Bearer ' . self::TOKEN]);
 
         $request = new Request();
 
@@ -102,10 +101,5 @@ class RequestTest extends TestCase
 
         $this->assertIsArray($result);
         $this->assertSame($result['user_id'], '31386162');
-    }
-
-    public function tearDown(): void
-    {
-        m::close();
     }
 }
