@@ -75,7 +75,7 @@ class Authorise
      */
     private function validationResponse(int $code, string $message): Auth
     {
-        if (in_array($code, [1, 2, 3, 4, 5], true)) {
+        if (in_array($code, [3, 4, 5], true)) {
             return new Auth(401, 'Unauthorized: ' . $message);
         }
 
