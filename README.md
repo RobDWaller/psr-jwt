@@ -35,7 +35,7 @@ composer require rbdwllr/psr-jwt
 
 ```javascript
 "require": {
-    "rbdwllr/psr-jwt": "^0.3"
+    "rbdwllr/psr-jwt": "^3.0"
 }
 ```
 
