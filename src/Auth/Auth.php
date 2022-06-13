@@ -10,20 +10,10 @@ namespace PsrJwt\Auth;
  */
 class Auth
 {
-    /**
-     * @var int $code
-     */
-    private $code;
+    private int $code;
 
-    /**
-     * @var string $message
-     */
-    private $message;
+    private string $message;
 
-    /**
-     * @param int $code
-     * @param string $message
-     */
     public function __construct(int $code, string $message)
     {
         $this->code = $code;
@@ -33,8 +23,6 @@ class Auth
 
     /**
      * Return the status code based on token authorisation.
-     *
-     * @return int
      */
     public function getCode(): int
     {
@@ -43,8 +31,6 @@ class Auth
 
     /**
      * Return the reason phrase based on token authorisation.
-     *
-     * @return string
      */
     public function getMessage(): string
     {

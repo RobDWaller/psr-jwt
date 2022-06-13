@@ -19,22 +19,14 @@ class Authorise
 {
     /**
      * The secret required to parse and validate the JWT.
-     *
-     * @var string $secret
      */
-    private $secret;
+    private string $secret;
 
     /**
      * Define which key the JWT can be found under in the request.
-     *
-     * @var string $tokenKey
      */
-    private $tokenKey;
+    private string $tokenKey;
 
-    /**
-     * @param string $secret
-     * @param string $tokenKey
-     */
     public function __construct(string $secret, string $tokenKey)
     {
         $this->secret = $secret;
@@ -44,9 +36,6 @@ class Authorise
 
     /**
      * Find, parse and validate the JSON Web Token.
-     *
-     * @param ServerRequestInterface $request
-     * @return Auth
      */
     public function authorise(ServerRequestInterface $request): Auth
     {
@@ -62,9 +51,6 @@ class Authorise
     /**
      * Check the token will parse, the signature is valid, the token is ready
      * to use, and it has not expired.
-     *
-     * @param string $token
-     * @return Auth
      */
     private function validate(string $token): Auth
     {
@@ -86,10 +72,6 @@ class Authorise
 
     /**
      * The authorisation process can respond as 200 Ok or 401 Unauthorized.
-     *
-     * @param int $code
-     * @param string $message
-     * @return Auth
      */
     private function validationResponse(int $code, string $message): Auth
     {
@@ -104,9 +86,6 @@ class Authorise
      * Find the token in the request. Ideally the token should be passed as
      * a bearer token in the authorization header. Passing the token via
      * query parameters is the least advisable option.
-     *
-     * @param ServerRequestInterface $request
-     * @return string
      */
     private function getToken(ServerRequestInterface $request): string
     {
