@@ -14,9 +14,6 @@ use ReallySimpleJWT\Exception\ParsedException;
  */
 class Validate
 {
-    /**
-     * @param RSValidate $validate
-     */
     private RSValidate $validate;
 
     public function __construct(RSValidate $validate)
