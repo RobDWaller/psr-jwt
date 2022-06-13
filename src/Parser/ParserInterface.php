@@ -7,7 +7,7 @@ namespace PsrJwt\Parser;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * The parse method is used to retrieve the JWT token from the request object. 
+ * The parse method is used to retrieve the JWT token from the request object.
  */
 interface ParserInterface
 {
