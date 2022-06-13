@@ -38,6 +38,6 @@ class Parse
             }
         }
 
-        return '';
+        throw new ParseException('JSON Web Token not set in request.');
     }
 }

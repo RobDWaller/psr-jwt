@@ -30,12 +30,6 @@ class Request
         $this->parse->addParser(new Body($tokenKey));
         $this->parse->addParser(new Query($tokenKey));
 
-        $token = $this->parse->findToken($request);
-
-        if (!empty($token)) {
-            return $token;
-        }
-
-        throw new ParseException('JSON Web Token not set in request.');
+        return $this->parse->findToken($request);
     }
 }

@@ -48,32 +48,4 @@ class RequestTest extends TestCase
 
         $this->assertSame('abcdef.123.abcdef', $request->parse($httpRequest, 'jwt'));
     }
-
-    /**
-     * @covers PsrJwt\Parser\Request::parse
-     * @uses PsrJwt\Parser\Request
-     * @uses PsrJwt\Parser\Bearer
-     * @uses PsrJwt\Parser\Cookie
-     * @uses PsrJwt\Parser\Body
-     * @uses PsrJwt\Parser\Query
-     * @uses PsrJwt\Parser\ParseException
-     */
-    public function testParseNoToken(): void
-    {
-        $parse = $this->createMock(Parse::class);
-        $parse->expects($this->exactly(4))
-            ->method('addParser');
-
-        $parse->expects($this->once())
-            ->method('findToken')
-            ->willReturn('');
-
-        $httpRequest = $this->createMock(ServerRequestInterface::class);
-
-        $request = new Request($parse);
-
-        $this->expectException(\PsrJwt\Parser\ParseException::class);
-        $this->expectExceptionMessage('JSON Web Token not set in request.');
-        $request->parse($httpRequest, 'jwt');
-    }
 }

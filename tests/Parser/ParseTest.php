@@ -6,6 +6,7 @@ namespace Tests\Parser;
 
 use PHPUnit\Framework\TestCase;
 use PsrJwt\Parser\Parse;
+use PsrJwt\Parser\ParseException;
 use Psr\Http\Message\ServerRequestInterface;
 use PsrJwt\Parser\Bearer;
 use PsrJwt\Parser\Body;
@@ -76,14 +77,15 @@ class ParseTest extends TestCase
     /**
      * @covers PsrJwt\Parser\Parse::findToken
      * @uses PsrJwt\Parser\Parse
+     * @uses PsrJwt\Parser\ParseException
      */
     public function testFindTokenFail(): void
     {
         $request = $this->createMock(ServerRequestInterface::class);
 
         $parse = new Parse();
-        $result = $parse->findToken($request);
-
-        $this->assertEmpty($result);
+        $this->expectException(ParseException::class);
+        $this->expectExceptionMessage("JSON Web Token not set in request.");
+        $parse->findToken($request);
     }
 }
