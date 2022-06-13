@@ -19,14 +19,8 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class JwtAuthMiddleware implements MiddlewareInterface
 {
-    /**
-     * @var RequestHandlerInterface
-     */
-    private $authorise;
+    private RequestHandlerInterface $authorise;
 
-    /**
-     * @param RequestHandlerInterface $authorise
-     */
     public function __construct(RequestHandlerInterface $authorise)
     {
         $this->authorise = $authorise;
@@ -34,11 +28,6 @@ class JwtAuthMiddleware implements MiddlewareInterface
 
     /**
      * PSR-7 compliant middleware compatible with frameworks like Slim PHP.
-     *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @param callable $next
-     * @return ResponseInterface
      */
     public function __invoke(
         ServerRequestInterface $request,
@@ -56,10 +45,6 @@ class JwtAuthMiddleware implements MiddlewareInterface
 
     /**
      * PSR-15 compliant middleware method.
-     *
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
-     * @return ResponseInterface
      */
     public function process(
         ServerRequestInterface $request,
