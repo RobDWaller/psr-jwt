@@ -20,11 +20,9 @@ class Json extends Authorise implements RequestHandlerInterface
     /**
      * @var mixed[] The content to add to the response body.
      */
-    private $body;
+    private array $body;
 
     /**
-     * @param string $secret
-     * @param string $tokenKey
      * @param mixed[] $body
      */
     public function __construct(string $secret, string $tokenKey, array $body)
@@ -37,9 +35,6 @@ class Json extends Authorise implements RequestHandlerInterface
     /**
      * Handle the authorisation process and generate the relevant json
      * response and code.
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

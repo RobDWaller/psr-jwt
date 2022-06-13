@@ -17,16 +17,8 @@ use Nyholm\Psr7\Response;
  */
 class Html extends Authorise implements RequestHandlerInterface
 {
-    /**
-     * @var string The content to add to the response body.
-     */
-    private $body;
+    private string $body;
 
-    /**
-     * @param string $secret
-     * @param string $tokenKey
-     * @param string $body
-     */
     public function __construct(string $secret, string $tokenKey, string $body)
     {
         parent::__construct($secret, $tokenKey);
@@ -37,9 +29,6 @@ class Html extends Authorise implements RequestHandlerInterface
     /**
      * Handle the authorisation process and generate the relevant text / html
      * response and code.
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
