@@ -12,10 +12,6 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class Bearer implements ParserInterface
 {
-    /**
-     * @param ServerRequestInterface $request
-     * @return string
-     */
     public function parse(ServerRequestInterface $request): string
     {
         $authorization = $request->getHeader('authorization');

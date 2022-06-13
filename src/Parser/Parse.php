@@ -14,13 +14,11 @@ class Parse
     /**
      * @var mixed[] $parsers
      */
-    private $parsers = [];
+    private array $parsers = [];
 
     /**
      * The JSON web token can be found in various parts of the request, a new
      * parser is required to search each part.
-     *
-     * @param ParserInterface $parser
      */
     public function addParser(ParserInterface $parser): void
     {
@@ -30,9 +28,6 @@ class Parse
     /**
      * Search the request for the token. Each parser object is only
      * instantiated if the JWT can't be found in the previous parser object.
-     *
-     * @param ServerRequestInterface $request
-     * @return string
      */
     public function findToken(ServerRequestInterface $request): string
     {

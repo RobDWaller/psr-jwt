@@ -12,14 +12,8 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class Body implements ParserInterface
 {
-    /**
-     * @var string $tokenKey
-     */
-    private $tokenKey;
+    private string $tokenKey;
 
-    /**
-     * @param string $tokenKey
-     */
     public function __construct(string $tokenKey)
     {
         $this->tokenKey = $tokenKey;
@@ -27,9 +21,6 @@ class Body implements ParserInterface
 
     /**
      * The parsed body information can be returned as an array or an object.
-     *
-     * @param ServerRequestInterface $request
-     * @return string
      */
     public function parse(ServerRequestInterface $request): string
     {
@@ -45,9 +36,6 @@ class Body implements ParserInterface
     /**
      * If the body information is not returned as an array see if it is
      * returned as an object.
-     *
-     * @param ServerRequestInterface $request
-     * @return string
      */
     private function parseBodyObject(ServerRequestInterface $request): string
     {

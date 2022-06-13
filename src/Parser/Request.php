@@ -11,10 +11,7 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class Request
 {
-    /**
-     * @var Parse $parse
-     */
-    private $parse;
+    private Parse $parse;
 
     public function __construct(Parse $parse)
     {

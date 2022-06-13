@@ -12,23 +12,13 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class Cookie implements ParserInterface
 {
-    /**
-     * @var string $tokenKey
-     */
-    private $tokenKey;
+    private string $tokenKey;
 
-    /**
-     * @param string $tokenKey
-     */
     public function __construct(string $tokenKey)
     {
         $this->tokenKey = $tokenKey;
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @return string
-     */
     public function parse(ServerRequestInterface $request): string
     {
         return $request->getCookieParams()[$this->tokenKey] ?? '';
