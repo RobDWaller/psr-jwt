@@ -19,8 +19,6 @@ class Jwt
 {
     /**
      * ALlow for the generation of JSON Web Tokens.
-     *
-     * @return Build
      */
     public function builder(string $secret): Build
     {
@@ -31,8 +29,6 @@ class Jwt
 
     /**
      * Allow for the parsing of JSON Web Tokens.
-     *
-     * @return Parse
      */
     public function parser(string $token): Parse
     {
@@ -43,8 +39,6 @@ class Jwt
 
     /**
      * Allow for the validation JSON Web Tokens.
-     *
-     * @return Validate
      */
     public function validator(string $token, string $secret): Validate
     {
