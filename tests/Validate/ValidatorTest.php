@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Tests\Validation;
+namespace Tests\Validate;
 
 use PHPUnit\Framework\TestCase;
 use PsrJwt\Factory\Jwt;
-use PsrJwt\Validation\Validate;
+use PsrJwt\Validate\Validator;
 
-class ValidateTest extends TestCase
+class ValidatorTest extends TestCase
 {
     /**
      * @covers PsrJwt\Validation\Validate::__construct
      * @uses PsrJwt\Factory\Jwt
      */
-    public function testValidate(): void
+    public function testValidator(): void
     {
         $jwt = new Jwt();
         $builder = $jwt->builder('Secret123!456$');
@@ -23,11 +23,11 @@ class ValidateTest extends TestCase
             ->build()
             ->getToken();
 
-        $validate = new Validate(
+        $validator = new Validator(
             $jwt->validator($token, 'Secret123!456$')
         );
 
-        $this->assertInstanceOf(Validate::class, $validate);
+        $this->assertInstanceOf(Validator::class, $validator);
     }
 
     /**
@@ -44,14 +44,14 @@ class ValidateTest extends TestCase
             ->build()
             ->getToken();
 
-        $validate = new Validate(
+        $validator = new Validator(
             $jwt->validator($token, 'Secret123!456$')
         );
 
-        $result = $validate->validate();
+        $result = $validator->validate();
 
-        $this->assertSame(0, $result['code']);
-        $this->assertSame('Ok', $result['message']);
+        $this->assertSame(0, $result->getCode());
+        $this->assertSame('Ok', $result->getMessage());
     }
 
     /**
@@ -68,14 +68,14 @@ class ValidateTest extends TestCase
             ->build()
             ->getToken();
 
-        $validate = new Validate(
+        $validator = new Validator(
             $jwt->validator($token, 'Secret123!456$')
         );
 
-        $result = $validate->validate();
+        $result = $validator->validate();
 
-        $this->assertSame(4, $result['code']);
-        $this->assertSame('Expiration claim has expired.', $result['message']);
+        $this->assertSame(4, $result->getCode());
+        $this->assertSame('Expiration claim has expired.', $result->getMessage());
     }
 
     /**
@@ -87,14 +87,14 @@ class ValidateTest extends TestCase
     {
         $jwt = new Jwt();
 
-        $validate = new Validate(
+        $validator = new Validator(
             $jwt->validator('123.abc.456', 'Secret123!456$')
         );
 
-        $result = $validate->validate();
+        $result = $validator->validate();
 
-        $this->assertSame(3, $result['code']);
-        $this->assertSame('Signature is invalid.', $result['message']);
+        $this->assertSame(3, $result->getCode());
+        $this->assertSame('Signature is invalid.', $result->getMessage());
     }
 
     /**
@@ -107,20 +107,19 @@ class ValidateTest extends TestCase
         $jwt = new Jwt();
         $builder = $jwt->builder('Secret123!456$');
         $token = $builder->setIssuer('localhost')
+            ->setExpiration(time() + 20)
             ->setPayloadClaim('nbf', time() + 10)
             ->build()
             ->getToken();
 
-        $validate = new Validate(
+        $validator = new Validator(
             $jwt->validator($token, 'Secret123!456$')
         );
 
-        $result = $validate->validateNotBefore(
-            ['code' => 0, 'message' => 'Ok']
-        );
+        $result = $validator->validate();
 
-        $this->assertSame(5, $result['code']);
-        $this->assertSame('Not Before claim has not elapsed.', $result['message']);
+        $this->assertSame(5, $result->getCode());
+        $this->assertSame('Not Before claim has not elapsed.', $result->getMessage());
     }
 
     /**
@@ -137,15 +136,13 @@ class ValidateTest extends TestCase
             ->build()
             ->getToken();
 
-        $validate = new Validate(
+        $validator = new Validator(
             $jwt->validator($token, 'Secret123!456$')
         );
 
-        $result = $validate->validateNotBefore(
-            ['code' => 0, 'message' => 'Ok']
-        );
+        $result = $validator->validate();
 
-        $this->assertSame(0, $result['code']);
-        $this->assertSame('Ok', $result['message']);
+        $this->assertSame(0, $result->getCode());
+        $this->assertSame('Ok', $result->getMessage());
     }
 }
