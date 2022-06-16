@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PsrJwt\Parser;
+namespace PsrJwt\Location;
 
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * The parse method is used to retrieve the JWT token from the request object.
  */
-interface ParserInterface
+interface LocationInterface
 {
-    public function parse(ServerRequestInterface $request): string;
+    public function find(ServerRequestInterface $request): string;
 }

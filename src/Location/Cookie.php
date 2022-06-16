@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PsrJwt\Parser;
+namespace PsrJwt\Location;
 
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * Find the JSON Web Token in a cookie. This is a good way to pass around JWTs,
  * make sure the cookie is a 'secure' one.
  */
-class Cookie implements ParserInterface
+class Cookie implements LocationInterface
 {
     private string $tokenKey;
 
@@ -19,7 +19,7 @@ class Cookie implements ParserInterface
         $this->tokenKey = $tokenKey;
     }
 
-    public function parse(ServerRequestInterface $request): string
+    public function find(ServerRequestInterface $request): string
     {
         return $request->getCookieParams()[$this->tokenKey] ?? '';
     }

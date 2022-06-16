@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Tests\Parser;
+namespace Tests;
 
 use PHPUnit\Framework\TestCase;
-use PsrJwt\Parser\Parse;
-use PsrJwt\Parser\ParseException;
+use PsrJwt\Retrieve;
+use PsrJwt\Location\LocationException;
 use Psr\Http\Message\ServerRequestInterface;
-use PsrJwt\Parser\Bearer;
-use PsrJwt\Parser\Body;
-use PsrJwt\Parser\Query;
+use PsrJwt\Location\Bearer;
+use PsrJwt\Location\Body;
+use PsrJwt\Location\Query;
 
-class ParseTest extends TestCase
+class RetrieveTest extends TestCase
 {
     /**
      * @covers PsrJwt\Parser\Parse
      */
-    public function testParse(): void
+    public function testRetrieve(): void
     {
-        $parse = new Parse();
-        $this->assertInstanceOf(Parse::class, $parse);
+        $retrieve = new Retrieve([new Bearer()]);
+        $this->assertInstanceOf(Retrieve::class, $retrieve);
     }
 
     /**
@@ -37,10 +37,9 @@ class ParseTest extends TestCase
             ->with('authorization')
             ->willReturn(['Bearer abc.def.ghi']);
 
-        $parse = new Parse();
-        $parse->addParser(new Bearer());
+        $retrieve = new Retrieve([new Bearer()]);
 
-        $result = $parse->findToken($request);
+        $result = $retrieve->findToken($request);
 
         $this->assertSame('abc.def.ghi', $result);
     }
@@ -64,12 +63,13 @@ class ParseTest extends TestCase
             ->method('getParsedBody')
             ->willReturn(['jwt' => 'abc.123.ghi']);
 
-        $parse = new Parse();
-        $parse->addParser(new Bearer());
-        $parse->addParser(new Body('jwt'));
-        $parse->addParser(new Query('jwt'));
+        $retrieve = new Retrieve([
+            new Bearer(),
+            new Body('jwt'),
+            new Query('jwt')
+        ]);
 
-        $result = $parse->findToken($request);
+        $result = $retrieve->findToken($request);
 
         $this->assertSame('abc.123.ghi', $result);
     }
@@ -83,9 +83,9 @@ class ParseTest extends TestCase
     {
         $request = $this->createMock(ServerRequestInterface::class);
 
-        $parse = new Parse();
-        $this->expectException(ParseException::class);
+        $retrieve = new Retrieve([new Bearer()]);
+        $this->expectException(LocationException::class);
         $this->expectExceptionMessage("JSON Web Token not set in request.");
-        $parse->findToken($request);
+        $retrieve->findToken($request);
     }
 }

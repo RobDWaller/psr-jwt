@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tests\Parser;
+namespace Tests\Location;
 
 use PHPUnit\Framework\TestCase;
-use PsrJwt\Parser\Query;
-use PsrJwt\Parser\ParserInterface;
+use PsrJwt\Location\Query;
+use PsrJwt\Location\LocationInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class QueryTest extends TestCase
@@ -19,14 +19,14 @@ class QueryTest extends TestCase
         $query = new Query('jwt');
 
         $this->assertInstanceOf(Query::class, $query);
-        $this->assertInstanceOf(ParserInterface::class, $query);
+        $this->assertInstanceOf(LocationInterface::class, $query);
     }
 
     /**
      * @covers PsrJwt\Parser\Query::parse
      * @uses PsrJwt\Parser\Query::__construct
      */
-    public function testParse(): void
+    public function testFind(): void
     {
         $request = $this->createMock(ServerRequestInterface::class);
         $request->expects($this->once())
@@ -34,7 +34,7 @@ class QueryTest extends TestCase
             ->willReturn(['jwt' => 'abc.def.ghi']);
 
         $query = new Query('jwt');
-        $result = $query->parse($request);
+        $result = $query->find($request);
 
         $this->assertSame('abc.def.ghi', $result);
     }

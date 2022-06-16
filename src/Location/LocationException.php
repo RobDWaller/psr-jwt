@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PsrJwt\Parser;
+namespace PsrJwt\Location;
 
 use Exception;
 use Throwable;
@@ -11,7 +11,7 @@ use Throwable;
  * Simple PHP exception extension class for all request parse exceptions to
  * make exceptions more specific and obvious.
  */
-class ParseException extends Exception
+class LocationException extends Exception
 {
     public function __construct(string $message, int $code = 0, Throwable $previous = null)
     {

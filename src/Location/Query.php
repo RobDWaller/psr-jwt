@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PsrJwt\Parser;
+namespace PsrJwt\Location;
 
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -11,7 +11,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * in a low security situation, PII should not be associated with these
  * types of requests.
  */
-class Query implements ParserInterface
+class Query implements LocationInterface
 {
     private string $tokenKey;
 
@@ -20,7 +20,7 @@ class Query implements ParserInterface
         $this->tokenKey = $tokenKey;
     }
 
-    public function parse(ServerRequestInterface $request): string
+    public function find(ServerRequestInterface $request): string
     {
         return $request->getQueryParams()[$this->tokenKey] ?? '';
     }

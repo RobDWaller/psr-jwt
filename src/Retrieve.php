@@ -2,27 +2,30 @@
 
 declare(strict_types=1);
 
-namespace PsrJwt\Parser;
+namespace PsrJwt;
 
+use PsrJwt\Location\LocationException;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Find the JSON Web Token within the incoming request object.
  */
-class Parse
+class Retrieve
 {
     /**
-     * @var mixed[] $parsers
+     * @var LocationInterface[] $locations
      */
-    private array $parsers = [];
+    private array $locations;
 
     /**
      * The JSON web token can be found in various parts of the request, a new
      * parser is required to search each part.
+     * 
+     * @param LocationInterface[] $locations
      */
-    public function addParser(ParserInterface $parser): void
+    public function __construct(array $locations)
     {
-        $this->parsers[] = $parser;
+        $this->locations = $locations;
     }
 
     /**
@@ -31,13 +34,13 @@ class Parse
      */
     public function findToken(ServerRequestInterface $request): string
     {
-        foreach ($this->parsers as $parser) {
-            $token = $parser->parse($request);
+        foreach ($this->locations as $location) {
+            $token = $location->find($request);
             if (!empty($token)) {
                 return $token;
             }
         }
 
-        throw new ParseException('JSON Web Token not set in request.');
+        throw new LocationException('JSON Web Token not set in request.');
     }
 }

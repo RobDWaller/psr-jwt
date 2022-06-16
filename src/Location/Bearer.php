@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PsrJwt\Parser;
+namespace PsrJwt\Location;
 
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -10,13 +10,13 @@ use Psr\Http\Message\ServerRequestInterface;
  * Find the JSON Web Token in the authorization header as a bearer token. This
  * is the ideal means for passing around JWTs.
  */
-class Bearer implements ParserInterface
+class Bearer implements LocationInterface
 {
-    public function parse(ServerRequestInterface $request): string
+    public function find(ServerRequestInterface $request): string
     {
         $authorization = $request->getHeader('authorization');
 
-        $bearer = array_filter($authorization, function ($item) {
+        $bearer = array_filter($authorization ?? [], function ($item) {
             return (bool) preg_match('/^Bearer\s.+/', $item);
         });
 
