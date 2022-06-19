@@ -9,21 +9,28 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Nyholm\Psr7\Response;
+use PsrJwt\Retrieve;
 
 /**
  * JWT authorisation handler which returns a text/html response on
  * authorisation failure. Allows you to customise the body response with a
  * simple message.
  */
-class Html extends Authorise implements RequestHandlerInterface
+class Html implements RequestHandlerInterface
 {
-    private string $body;
+    private Config $config;
 
-    public function __construct(string $secret, string $tokenKey, string $body)
+    private Retrieve $retrieve;
+
+    private Authorise $authorise;
+
+    public function __construct(Config $config, Retrieve $retrieve, Authorise $authorise)
     {
-        parent::__construct($secret, $tokenKey);
+        $this->config = $config;
 
-        $this->body = $body;
+        $this->retrieve = $retrieve;
+
+        $this->authorise = $authorise;
     }
 
     /**
@@ -32,7 +39,8 @@ class Html extends Authorise implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $auth = $this->authorise($request);
+        $token = $this->retrieve->findToken($request);
+        $auth = $this->authorise->authorise($token);
 
         return new Response(
             $auth->getCode(),

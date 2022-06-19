@@ -11,6 +11,9 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use PsrJwt\Factory\Jwt;
+use PsrJwt\Handler\Config;
+use PsrJwt\Retrieve;
+use PsrJwt\Location\Bearer;
 
 class HtmlTest extends TestCase
 {
@@ -18,13 +21,13 @@ class HtmlTest extends TestCase
      * @covers PsrJwt\Handler\Html::__construct
      * @uses PsrJwt\Auth\Authorise
      */
-    public function testAuthHandler(): void
+    public function testHtmlHandler(): void
     {
-        $auth = new Html('secret', 'tokenKey', 'body');
+        $config = new Config('secret', 'tokenKey', 'body');
+        $handler = new Html($config, new Retrieve([new Bearer()]), new Authorise());
 
-        $this->assertInstanceOf(Html::class, $auth);
-        $this->assertInstanceOf(Authorise::class, $auth);
-        $this->assertInstanceOf(RequestHandlerInterface::class, $auth);
+        $this->assertInstanceOf(Html::class, $handler);
+        $this->assertInstanceOf(RequestHandlerInterface::class, $handler);
     }
 
     /**
