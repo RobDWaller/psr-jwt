@@ -31,7 +31,9 @@ class Authorise implements AuthoriseInterface
             $validator->signature()->expiration()->notBefore();
         } catch (ValidateException | ParsedException $e) {
             if (in_array($e->getCode(), [3, 4, 5], true)) {
-                return new Status(400, 'Bad Request: ' . $e->getMessage());
+                $code = $e->getCode() === 3 ? 401 : 403;
+                $message = $e->getCode() === 3 ? 'Unauthorized' : 'Forbidden';
+                return new Status($code, $message . ': ' . $e->getMessage());
             }
         }
 

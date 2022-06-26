@@ -48,8 +48,8 @@ class AuthoriseTest extends TestCase
         $authorise = new Authorise();
         $result = $authorise->authorise($token, 'Secret123!456$');
 
-        $this->assertSame(400, $result->getCode());
-        $this->assertSame('Bad Request: Expiration claim has expired.', $result->getMessage());
+        $this->assertSame(403, $result->getCode());
+        $this->assertSame('Forbidden: Expiration claim has expired.', $result->getMessage());
     }
 
     /**
@@ -62,8 +62,8 @@ class AuthoriseTest extends TestCase
         $authorise = new Authorise();
         $result = $authorise->authorise('123.abc.456', 'Secret123!456$');
 
-        $this->assertSame(400, $result->getCode());
-        $this->assertSame('Bad Request: Signature is invalid.', $result->getMessage());
+        $this->assertSame(401, $result->getCode());
+        $this->assertSame('Unauthorized: Signature is invalid.', $result->getMessage());
     }
 
     /**
@@ -82,8 +82,8 @@ class AuthoriseTest extends TestCase
         $authorise = new Authorise();
         $result = $authorise->authorise($token, 'Secret123!456$');
 
-        $this->assertSame(400, $result->getCode());
-        $this->assertSame('Bad Request: Not Before claim has not elapsed.', $result->getMessage());
+        $this->assertSame(403, $result->getCode());
+        $this->assertSame('Forbidden: Not Before claim has not elapsed.', $result->getMessage());
     }
 
     /**
