@@ -9,6 +9,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Nyholm\Psr7\Response;
+use PsrJwt\Retrieve;
 
 /**
  * JWT authorisation handler which returns a application/json response on
@@ -17,35 +18,41 @@ use Nyholm\Psr7\Response;
  */
 class Json extends Authorise implements RequestHandlerInterface
 {
-    /**
-     * @var mixed[] The content to add to the response body.
-     */
-    private array $body;
+    private Config $config;
 
-    /**
-     * @param mixed[] $body
-     */
-    public function __construct(string $secret, string $tokenKey, array $body)
+    private Retrieve $retrieve;
+
+    private Authorise $authorise;
+
+    public function __construct(Config $config, Retrieve $retrieve, Authorise $authorise)
     {
-        parent::__construct($secret, $tokenKey);
+        $this->config = $config;
 
-        $this->body = $body;
+        $this->retrieve = $retrieve;
+
+        $this->authorise = $authorise;
     }
 
     /**
-     * Handle the authorisation process and generate the relevant json
+     * Handle the authorisation process and generate the relevant text / json
      * response and code.
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $auth = $this->authorise($request);
+        try {
+            $token = $this->retrieve->findToken($request);
+            $status = $this->authorise->authorise($token, $this->config->getSecret());
+        }
+        catch (LocationException $e) {
+            $status = new Status(401, 'Unauthorized: ' . $e->getMessage());
+        }
 
         return new Response(
-            $auth->getCode(),
+            $status->getCode(),
             ['Content-Type' => 'application/json'],
-            (string) json_encode($this->body),
+            (string) json_encode($this->config->getResponse()),
             '1.1',
-            $auth->getMessage()
+            $status->getMessage()
         );
     }
 }
