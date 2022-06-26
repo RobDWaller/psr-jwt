@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace PsrJwt\Handler;
 
 use PsrJwt\Auth\Authorise;
+use PsrJwt\Location\LocationException;
+use PsrJwt\Status\Status;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -39,15 +41,20 @@ class Html implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $token = $this->retrieve->findToken($request);
-        $auth = $this->authorise->authorise($token);
+        try {
+            $token = $this->retrieve->findToken($request);
+            $status = $this->authorise->authorise($token, $this->config->getSecret());
+        }
+        catch (LocationException $e) {
+            $status = new Status(401, 'Unauthorized: ' . $e->getMessage());
+        }
 
         return new Response(
-            $auth->getCode(),
+            $status->getCode(),
             ['Content-Type' => 'text/html'],
-            $this->body,
+            $this->config->getResponse(),
             '1.1',
-            $auth->getMessage()
+            $status->getMessage()
         );
     }
 }

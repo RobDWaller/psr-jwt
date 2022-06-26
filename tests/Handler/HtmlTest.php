@@ -14,6 +14,10 @@ use PsrJwt\Factory\Jwt;
 use PsrJwt\Handler\Config;
 use PsrJwt\Retrieve;
 use PsrJwt\Location\Bearer;
+use PsrJwt\Location\Cookie;
+use PsrJwt\Location\Body;
+use PsrJwt\Location\Query;
+use PsrJwt\Factory\Retriever;
 
 class HtmlTest extends TestCase
 {
@@ -44,7 +48,7 @@ class HtmlTest extends TestCase
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Request
      */
-    public function testAuthoriseOk(): void
+    public function testHandlerOk(): void
     {
         $jwt = $jwt = new Jwt();
         $jwt = $jwt->builder('Secret123!456$');
@@ -62,16 +66,21 @@ class HtmlTest extends TestCase
         $request->expects($this->once())
             ->method('getCookieParams')
             ->willReturn(['foo' => 'bar']);
-        $request->expects($this->exactly(2))
+        $request->expects($this->once())
             ->method('getParsedBody')
             ->willReturn([]);
         $request->expects($this->once())
             ->method('getQueryParams')
             ->willReturn(['jwt' => $token]);
 
-        $auth = new Html('Secret123!456$', 'jwt', '<h1>Ok</h1>');
+        $config = new Config('Secret123!456$', 'jwt', '<h1>Ok</h1>');
+        $handler = new Html(
+            $config, 
+            Retriever::make('jwt'), 
+            new Authorise()
+        );
 
-        $result = $auth->handle($request);
+        $result = $handler->handle($request);
 
         $this->assertInstanceOf(ResponseInterface::class, $result);
         $this->assertSame(200, $result->getStatusCode());
@@ -94,7 +103,7 @@ class HtmlTest extends TestCase
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Request
      */
-    public function testAuthoriseNoBody(): void
+    public function testHandlerNoBody(): void
     {
         $jwt = $jwt = new Jwt();
         $jwt = $jwt->builder('Secret123!456$');
@@ -112,16 +121,21 @@ class HtmlTest extends TestCase
         $request->expects($this->once())
             ->method('getCookieParams')
             ->willReturn(['foo' => 'bar']);
-        $request->expects($this->exactly(2))
+        $request->expects($this->once())
             ->method('getParsedBody')
             ->willReturn([]);
         $request->expects($this->once())
             ->method('getQueryParams')
             ->willReturn(['jwt' => $token]);
 
-        $auth = new Html('Secret123!456$', 'jwt', '');
+        $config = new Config('Secret123!456$', 'jwt', '');
+        $handler = new Html(
+            $config, 
+            Retriever::make('jwt'), 
+            new Authorise()
+        );
 
-        $result = $auth->handle($request);
+        $result = $handler->handle($request);
 
         $this->assertInstanceOf(ResponseInterface::class, $result);
         $this->assertSame(200, $result->getStatusCode());
@@ -144,7 +158,7 @@ class HtmlTest extends TestCase
      * @uses PsrJwt\Parser\Request
      * @uses PsrJwt\Parser\ParseException
      */
-    public function testAuthoriseBadRequest(): void
+    public function testHandlerBadRequest(): void
     {
         $jwt = $jwt = new Jwt();
         $jwt = $jwt->builder('Secret123!456$');
@@ -162,20 +176,25 @@ class HtmlTest extends TestCase
         $request->expects($this->once())
             ->method('getCookieParams')
             ->willReturn(['foo' => 'bar']);
-        $request->expects($this->exactly(2))
+        $request->expects($this->once())
             ->method('getParsedBody')
             ->willReturn(['jwt' => $token]);
         $request->expects($this->once())
             ->method('getQueryParams')
             ->willReturn([]);
 
-        $auth = new Html('Secret123!456$', '', '<h1>Fail!</h1>');
+        $config = new Config('Secret123!456$', '', '<h1>Fail!</h1>');
+        $handler = new Html(
+            $config, 
+            Retriever::make(''), 
+            new Authorise()
+        );
 
-        $result = $auth->handle($request);
+        $result = $handler->handle($request);
 
         $this->assertInstanceOf(ResponseInterface::class, $result);
-        $this->assertSame(400, $result->getStatusCode());
-        $this->assertSame('Bad Request: JSON Web Token not set in request.', $result->getReasonPhrase());
+        $this->assertSame(401, $result->getStatusCode());
+        $this->assertSame('Unauthorized: JSON Web Token not set in request.', $result->getReasonPhrase());
         $this->assertSame('<h1>Fail!</h1>', $result->getBody()->__toString());
     }
 
@@ -193,7 +212,7 @@ class HtmlTest extends TestCase
      * @uses PsrJwt\Parser\Parse
      * @uses PsrJwt\Parser\Request
      */
-    public function testAuthoriseUnauthorized(): void
+    public function testHandlerUnauthorized(): void
     {
         $jwt = $jwt = new Jwt();
         $jwt = $jwt->builder('Secret123!456$');
@@ -212,9 +231,14 @@ class HtmlTest extends TestCase
             ->method('getCookieParams')
             ->willReturn(['foo' => $token]);
 
-        $auth = new Html('1Secret23!456$', 'foo', '<h1>Fail!</h1>');
+        $config = new Config('1Secret23!456$', 'foo', '<h1>Fail!</h1>');
+        $handler = new Html(
+            $config, 
+            Retriever::make('foo'), 
+            new Authorise()
+        );
 
-        $result = $auth->handle($request);
+        $result = $handler->handle($request);
 
         $this->assertInstanceOf(ResponseInterface::class, $result);
         $this->assertSame(401, $result->getStatusCode());
