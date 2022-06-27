@@ -14,19 +14,9 @@ class ConfigTest extends TestCase
      */
     public function testGetSecret(): void
     {
-        $config = new Config('123', 'Bearer', 'Bar');
+        $config = new Config('123', 'Bar');
 
         $this->assertSame('123', $config->getSecret());
-    }
-
-    /**
-     * @covers PsrJwt\Handler\Config::getKey
-     */
-    public function testGetKey(): void
-    {
-        $config = new Config('456', 'JWT', 'Foo');
-
-        $this->assertSame('JWT', $config->getKey());
     }
 
     /**
@@ -34,7 +24,7 @@ class ConfigTest extends TestCase
      */
     public function testGetResponseAsString(): void
     {
-        $config = new Config('456', 'JWT', 'Hello');
+        $config = new Config('456', 'Hello');
 
         $this->assertSame('Hello', $config->getResponse());
     }
@@ -44,7 +34,7 @@ class ConfigTest extends TestCase
      */
     public function testGetResponseAsArray(): void
     {
-        $config = new Config('456', 'JWT', ['Hello', 'World']);
+        $config = new Config('456', ['Hello', 'World']);
 
         $this->assertCount(2, $config->getResponse());
         $this->assertSame('Hello', $config->getResponse()[0]);
