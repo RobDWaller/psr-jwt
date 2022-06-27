@@ -27,7 +27,7 @@ class JsonTest extends TestCase
      */
     public function testJsonHandler(): void
     {
-        $config = new Config('secret', 'tokenkey', ['body']);
+        $config = new Config('secret', ['body']);
         $handler = new Json(
             $config, 
             Retriever::make('tokenkey'), 
@@ -78,7 +78,7 @@ class JsonTest extends TestCase
             ->method('getQueryParams')
             ->willReturn(['jwt' => $token]);
 
-        $config = new Config('Secret123!456$', 'jwt', ['Ok']);
+        $config = new Config('Secret123!456$', ['Ok']);
         $handler = new Json(
             $config, 
             Retriever::make('jwt'), 
@@ -124,7 +124,7 @@ class JsonTest extends TestCase
             ->with('authorization')
             ->willReturn(['Bearer ' . $token]);
 
-        $config = new Config('Secret123!456', 'jwt', ['message' => 'Bad']);
+        $config = new Config('Secret123!456', ['message' => 'Bad']);
         $handler = new Json(
             $config, 
             Retriever::make('jwt'), 
