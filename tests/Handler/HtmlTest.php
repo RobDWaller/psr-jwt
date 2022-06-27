@@ -27,7 +27,7 @@ class HtmlTest extends TestCase
      */
     public function testHtmlHandler(): void
     {
-        $config = new Config('secret', 'tokenKey', 'body');
+        $config = new Config('secret', 'body');
         $handler = new Html($config, new Retrieve([new Bearer()]), new Authorise());
 
         $this->assertInstanceOf(Html::class, $handler);
@@ -73,7 +73,7 @@ class HtmlTest extends TestCase
             ->method('getQueryParams')
             ->willReturn(['jwt' => $token]);
 
-        $config = new Config('Secret123!456$', 'jwt', '<h1>Ok</h1>');
+        $config = new Config('Secret123!456$', '<h1>Ok</h1>');
         $handler = new Html(
             $config, 
             Retriever::make('jwt'), 
@@ -128,7 +128,7 @@ class HtmlTest extends TestCase
             ->method('getQueryParams')
             ->willReturn(['jwt' => $token]);
 
-        $config = new Config('Secret123!456$', 'jwt', '');
+        $config = new Config('Secret123!456$', '');
         $handler = new Html(
             $config, 
             Retriever::make('jwt'), 
@@ -183,7 +183,7 @@ class HtmlTest extends TestCase
             ->method('getQueryParams')
             ->willReturn([]);
 
-        $config = new Config('Secret123!456$', '', '<h1>Fail!</h1>');
+        $config = new Config('Secret123!456$', '<h1>Fail!</h1>');
         $handler = new Html(
             $config, 
             Retriever::make(''), 
@@ -231,7 +231,7 @@ class HtmlTest extends TestCase
             ->method('getCookieParams')
             ->willReturn(['foo' => $token]);
 
-        $config = new Config('1Secret23!456$', 'foo', '<h1>Fail!</h1>');
+        $config = new Config('1Secret23!456$', '<h1>Fail!</h1>');
         $handler = new Html(
             $config, 
             Retriever::make('foo'), 
