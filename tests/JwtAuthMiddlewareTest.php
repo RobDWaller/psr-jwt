@@ -8,7 +8,6 @@ use PHPUnit\Framework\TestCase;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use PsrJwt\Factory\Jwt;
 use PsrJwt\JwtAuthMiddleware;
-use PsrJwt\Handler\Html;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;

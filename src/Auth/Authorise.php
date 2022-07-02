@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace PsrJwt\Auth;
 
-use Psr\Http\Message\ServerRequestInterface;
 use PsrJwt\Factory\Jwt;
 use PsrJwt\Parser\Parse;
 use PsrJwt\Parser\Request;
-use PsrJwt\Parser\ParseException;
 use PsrJwt\Validation\Validate;
 use PsrJwt\Status\Status;
 use ReallySimpleJWT\Exception\ValidateException;

@@ -8,7 +8,6 @@ use PsrJwt\Handler\Html;
 use PsrJwt\Handler\Json;
 use PsrJwt\Handler\Config;
 use PsrJwt\Auth\Authorise;
-use PsrJwt\Factory\Retriever;
 
 class Handler
 {

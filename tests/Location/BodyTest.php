@@ -8,7 +8,6 @@ use PHPUnit\Framework\TestCase;
 use PsrJwt\Location\Body;
 use PsrJwt\Location\LocationInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use ReflectionMethod;
 
 class BodyTest extends TestCase
 {

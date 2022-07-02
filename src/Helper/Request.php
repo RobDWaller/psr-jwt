@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PsrJwt\Helper;
 
-use PsrJwt\Parser\Parse;
-use PsrJwt\Parser\Request as RequestParser;
 use PsrJwt\Factory\Jwt;
 use ReallySimpleJWT\Parsed;
 use Psr\Http\Message\ServerRequestInterface;

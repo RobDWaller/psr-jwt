@@ -5,12 +5,8 @@ declare(strict_types=1);
 namespace Tests\Auth;
 
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ServerRequestInterface;
 use PsrJwt\Auth\Authorise;
-use PsrJwt\Auth\AuthoriseInterface;
 use PsrJwt\Factory\Jwt;
-use PsrJwt\Parser\ParseException;
-use ReflectionMethod;
 
 class AuthoriseTest extends TestCase
 {

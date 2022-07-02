@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PsrJwt\Factory;
 
 use PsrJwt\JwtAuthMiddleware;
-use PsrJwt\Factory\Handler;
 
 /**
  * Factory to easily add the PSR-JWT middleware to PSR compliant frameworks such

@@ -14,9 +14,6 @@ use PsrJwt\Factory\Jwt;
 use PsrJwt\Handler\Config;
 use PsrJwt\Retrieve;
 use PsrJwt\Location\Bearer;
-use PsrJwt\Location\Cookie;
-use PsrJwt\Location\Body;
-use PsrJwt\Location\Query;
 use PsrJwt\Factory\Retriever;
 
 class HtmlTest extends TestCase
