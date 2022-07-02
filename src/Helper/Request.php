@@ -9,6 +9,7 @@ use PsrJwt\Parser\Request as RequestParser;
 use PsrJwt\Factory\Jwt;
 use ReallySimpleJWT\Parsed;
 use Psr\Http\Message\ServerRequestInterface;
+use PsrJwt\Factory\Retriever;
 
 /**
  * Interact with the request and the JSON web token independent of the
@@ -22,9 +23,9 @@ class Request
      */
     public function getParsedToken(ServerRequestInterface $request, string $tokenKey): Parsed
     {
-        $parseRequest = new RequestParser(new Parse());
+        $retriever = Retriever::make($tokenKey);
 
-        $token = $parseRequest->parse($request, $tokenKey);
+        $token = $retriever->findToken($request);
 
         $jwt = new Jwt();
 
