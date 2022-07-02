@@ -82,6 +82,10 @@ class RetrieveTest extends TestCase
     public function testFindTokenFail(): void
     {
         $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getHeader')
+            ->with('authorization')
+            ->willReturn([]);
 
         $retrieve = new Retrieve([new Bearer()]);
         $this->expectException(LocationException::class);

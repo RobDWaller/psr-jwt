@@ -16,7 +16,7 @@ class Bearer implements LocationInterface
     {
         $authorization = $request->getHeader('authorization');
 
-        $bearer = array_filter($authorization ?? [], function ($item) {
+        $bearer = array_filter($authorization, function ($item) {
             return (bool) preg_match('/^Bearer\s.+/', $item);
         });
 

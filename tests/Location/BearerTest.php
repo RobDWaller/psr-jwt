@@ -55,21 +55,4 @@ class BearerTest extends TestCase
 
         $this->assertEmpty($result);
     }
-
-    /**
-     * @covers PsrJwt\Parser\Bearer::parse
-     */
-    public function testFindNull(): void
-    {
-        $request = $this->createMock(ServerRequestInterface::class);
-        $request->expects($this->once())
-            ->method('getHeader')
-            ->with('authorization')
-            ->willReturn(null);
-
-        $bearer = new Bearer();
-        $result = $bearer->find($request);
-
-        $this->assertEmpty($result);
-    }
 }
