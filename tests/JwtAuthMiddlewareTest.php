@@ -13,6 +13,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Server\MiddlewareInterface;
+use PsrJwt\Factory\Handler;
 
 class JwtAuthMiddlewareTest extends TestCase
 {
@@ -23,9 +24,9 @@ class JwtAuthMiddlewareTest extends TestCase
      */
     public function testJwtAuthProcess(): void
     {
-        $authorise = new Html('secret', 'jwt', '');
+        $handler = Handler::html('secret', 'jwt', '');
 
-        $process = new JwtAuthMiddleware($authorise);
+        $process = new JwtAuthMiddleware($handler);
 
         $this->assertInstanceOf(JwtAuthMiddleware::class, $process);
         $this->assertInstanceOf(MiddlewareInterface::class, $process);
@@ -70,9 +71,9 @@ class JwtAuthMiddlewareTest extends TestCase
             ->method('handle')
             ->willReturn($response);
 
-        $authorise = new Html('Secret123!456$', '', '');
+        $html = Handler::html('', 'Secret123!456$', '');
 
-        $process = new JwtAuthMiddleware($authorise);
+        $process = new JwtAuthMiddleware($html);
 
         $result = $process->process($request, $handler);
 
@@ -106,7 +107,7 @@ class JwtAuthMiddlewareTest extends TestCase
         $request->expects($this->once())
             ->method('getQueryParams')
             ->willReturn(['farm' => 'yard']);
-        $request->expects($this->exactly(2))
+        $request->expects($this->once())
             ->method('getParsedBody')
             ->willReturn(['gary' => 'barlow']);
         $request->expects($this->once())
@@ -116,15 +117,15 @@ class JwtAuthMiddlewareTest extends TestCase
 
         $handler = $this->createMock(RequestHandlerInterface::class);
 
-        $authorise = new Html('Secret123!456$', 'jwt', '');
+        $html = Handler::html('jwt', 'Secret123!456$', '');
 
-        $process = new JwtAuthMiddleware($authorise);
+        $process = new JwtAuthMiddleware($html);
 
         $result = $process->process($request, $handler);
 
         $this->assertInstanceOf(ResponseInterface::class, $result);
-        $this->assertSame(400, $result->getStatusCode());
-        $this->assertSame('Bad Request: JSON Web Token not set in request.', $result->getReasonPhrase());
+        $this->assertSame(401, $result->getStatusCode());
+        $this->assertSame('Unauthorized: JSON Web Token not set in request.', $result->getReasonPhrase());
     }
 
     /**
@@ -171,9 +172,9 @@ class JwtAuthMiddlewareTest extends TestCase
             return $response;
         };
 
-        $auth = new Html('Secret123!456$', 'jwt', '');
+        $html = Handler::html('jwt', 'Secret123!456$', '');
 
-        $invokable = new JwtAuthMiddleware($auth);
+        $invokable = new JwtAuthMiddleware($html);
 
         $result = $invokable($request, $response, $next);
 
@@ -214,7 +215,7 @@ class JwtAuthMiddlewareTest extends TestCase
         $request->expects($this->once())
             ->method('getQueryParams')
             ->willReturn(['jwt' => substr($token, 0, -1)]);
-        $request->expects($this->exactly(2))
+        $request->expects($this->once())
             ->method('getParsedBody')
             ->willReturn(['gary' => 'barlow']);
         $request->expects($this->once())
@@ -228,9 +229,9 @@ class JwtAuthMiddlewareTest extends TestCase
             return $response;
         };
 
-        $auth = new Html('secret', 'jwt', '');
+        $html = Handler::html('jwt', 'secret', '');
 
-        $invokable = new JwtAuthMiddleware($auth);
+        $invokable = new JwtAuthMiddleware($html);
 
         $result = $invokable($request, $response, $next);
 
