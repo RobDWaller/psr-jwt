@@ -29,8 +29,8 @@ class JsonTest extends TestCase
     {
         $config = new Config('secret', ['body']);
         $handler = new Json(
-            $config, 
-            Retriever::make('tokenkey'), 
+            $config,
+            Retriever::make('tokenkey'),
             new Authorise()
         );
 
@@ -80,8 +80,8 @@ class JsonTest extends TestCase
 
         $config = new Config('Secret123!456$', ['Ok']);
         $handler = new Json(
-            $config, 
-            Retriever::make('jwt'), 
+            $config,
+            Retriever::make('jwt'),
             new Authorise()
         );
 
@@ -126,8 +126,8 @@ class JsonTest extends TestCase
 
         $config = new Config('Secret123!456', ['message' => 'Bad']);
         $handler = new Json(
-            $config, 
-            Retriever::make('jwt'), 
+            $config,
+            Retriever::make('jwt'),
             new Authorise()
         );
 

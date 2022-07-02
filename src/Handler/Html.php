@@ -44,8 +44,7 @@ class Html implements RequestHandlerInterface
         try {
             $token = $this->retrieve->findToken($request);
             $status = $this->authorise->authorise($token, $this->config->getSecret());
-        }
-        catch (LocationException $e) {
+        } catch (LocationException $e) {
             $status = new Status(401, 'Unauthorized: ' . $e->getMessage());
         }
 

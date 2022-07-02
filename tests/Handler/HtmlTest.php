@@ -75,8 +75,8 @@ class HtmlTest extends TestCase
 
         $config = new Config('Secret123!456$', '<h1>Ok</h1>');
         $handler = new Html(
-            $config, 
-            Retriever::make('jwt'), 
+            $config,
+            Retriever::make('jwt'),
             new Authorise()
         );
 
@@ -130,8 +130,8 @@ class HtmlTest extends TestCase
 
         $config = new Config('Secret123!456$', '');
         $handler = new Html(
-            $config, 
-            Retriever::make('jwt'), 
+            $config,
+            Retriever::make('jwt'),
             new Authorise()
         );
 
@@ -185,8 +185,8 @@ class HtmlTest extends TestCase
 
         $config = new Config('Secret123!456$', '<h1>Fail!</h1>');
         $handler = new Html(
-            $config, 
-            Retriever::make(''), 
+            $config,
+            Retriever::make(''),
             new Authorise()
         );
 
@@ -233,8 +233,8 @@ class HtmlTest extends TestCase
 
         $config = new Config('1Secret23!456$', '<h1>Fail!</h1>');
         $handler = new Html(
-            $config, 
-            Retriever::make('foo'), 
+            $config,
+            Retriever::make('foo'),
             new Authorise()
         );
 

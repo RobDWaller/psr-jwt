@@ -20,7 +20,7 @@ class Retrieve
     /**
      * The JSON web token can be found in various parts of the request, a new
      * parser is required to search each part.
-     * 
+     *
      * @param LocationInterface[] $locations
      */
     public function __construct(array $locations)
