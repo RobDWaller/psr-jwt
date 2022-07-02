@@ -36,7 +36,7 @@ class ConfigTest extends TestCase
     {
         $config = new Config('456', ['Hello', 'World']);
 
-        $this->assertCount(2, $config->getResponse());
+        $this->assertCount(2, (array) $config->getResponse());
         $this->assertSame('Hello', $config->getResponse()[0]);
         $this->assertSame('World', $config->getResponse()[1]);
     }
