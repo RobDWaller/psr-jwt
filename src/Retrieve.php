@@ -13,7 +13,7 @@ use Psr\Http\Message\ServerRequestInterface;
 class Retrieve
 {
     /**
-     * @var LocationInterface[] $locations
+     * @var Location\LocationInterface[] $locations
      */
     private array $locations;
 
@@ -21,7 +21,7 @@ class Retrieve
      * The JSON web token can be found in various parts of the request, a new
      * parser is required to search each part.
      *
-     * @param LocationInterface[] $locations
+     * @param Location\LocationInterface[] $locations
      */
     public function __construct(array $locations)
     {
