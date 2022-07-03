@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace PsrJwt\Handler;
 
 use PsrJwt\Auth\Authorise;
+use PsrJwt\Retrieve;
+use PsrJwt\Status\Status;
+use PsrJwt\Location\LocationException;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Nyholm\Psr7\Response;
-use PsrJwt\Retrieve;
 
 /**
  * JWT authorisation handler which returns a application/json response on
