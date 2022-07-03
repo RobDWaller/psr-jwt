@@ -20,6 +20,9 @@ class Handler
         );
     }
 
+    /**
+     * @param mixed[] $response
+     */
     public static function json(string $key, string $secret, array $response): Json
     {
         return new Json(
