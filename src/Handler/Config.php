@@ -8,8 +8,14 @@ class Config
 {
     private string $secret;
 
+    /**
+     * @var string | mixed[] $response
+     */
     private string | array $response;
 
+    /**
+     * @param string | mixed[] $response
+     */
     public function __construct(string $secret, string | array $response)
     {
         $this->secret = $secret;
@@ -22,6 +28,9 @@ class Config
         return $this->secret;
     }
 
+    /**
+     * @return string | mixed[]
+     */
     public function getResponse(): string | array
     {
         return $this->response;
