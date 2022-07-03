@@ -48,10 +48,12 @@ class Html implements RequestHandlerInterface
             $status = new Status(401, 'Unauthorized: ' . $e->getMessage());
         }
 
+        $response = $this->config->getResponse();
+
         return new Response(
             $status->getCode(),
             ['Content-Type' => 'text/html'],
-            $this->config->getResponse(),
+            is_string($response) ? $response : '',
             '1.1',
             $status->getMessage()
         );
