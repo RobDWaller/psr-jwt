@@ -61,6 +61,24 @@ class BodyTest extends TestCase
 
     /**
      * @covers PsrJwt\Location\Body::find
+     */
+    public function testFindObjectNoKey(): void
+    {
+        $object = new \stdClass();
+
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getParsedBody')
+            ->willReturn($object);
+
+        $body = new Body('jwt');
+        $result = $body->find($request);
+
+        $this->assertSame('', $result);
+    }
+
+    /**
+     * @covers PsrJwt\Location\Body::find
      * @uses PsrJwt\Location\Body
      */
     public function testFindString(): void
