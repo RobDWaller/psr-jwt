@@ -11,7 +11,7 @@ use PsrJwt\Validate\Validator;
 class ValidatorTest extends TestCase
 {
     /**
-     * @covers PsrJwt\Validation\Validate::__construct
+     * @covers PsrJwt\Validate\Validator::__construct
      * @uses PsrJwt\Factory\Jwt
      */
     public function testValidator(): void
@@ -31,8 +31,7 @@ class ValidatorTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Validation\Validate::validate
-     * @uses PsrJwt\Validation\Validate
+     * @covers PsrJwt\Validate\Validator::validate
      * @uses PsrJwt\Factory\Jwt
      */
     public function testValidateOk(): void
@@ -55,8 +54,7 @@ class ValidatorTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Validation\Validate::validate
-     * @uses PsrJwt\Validation\Validate
+     * @covers PsrJwt\Validate\Validator::validate
      * @uses PsrJwt\Factory\Jwt
      */
     public function testValidateExpiration(): void
@@ -79,8 +77,7 @@ class ValidatorTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Validation\Validate::validate
-     * @uses PsrJwt\Validation\Validate
+     * @covers PsrJwt\Validate\Validator::validate
      * @uses PsrJwt\Factory\Jwt::validator
      */
     public function testValidateBadSignature(): void
@@ -98,8 +95,7 @@ class ValidatorTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Validation\Validate::validateNotBefore
-     * @uses PsrJwt\Validation\Validate
+     * @covers PsrJwt\Validate\Validator::validate
      * @uses PsrJwt\Factory\Jwt
      */
     public function testValidateNotBefore(): void
@@ -123,8 +119,7 @@ class ValidatorTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Validation\Validate::validateNotBefore
-     * @uses PsrJwt\Validation\Validate
+     * @covers PsrJwt\Validate\Validator::validate
      * @uses PsrJwt\Factory\Jwt
      */
     public function testValidateNotBeforeOk(): void
