@@ -31,18 +31,10 @@ class JwtMiddlewareTest extends TestCase
     /**
      * @covers PsrJwt\JwtAuthMiddleware::process
      * @uses PsrJwt\Factory\JwtMiddleware
-     * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Handler\Html
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\JwtAuthMiddleware
-     * @uses PsrJwt\Parser\Bearer
-     * @uses PsrJwt\Parser\Parse
-     * @uses PsrJwt\Validation\Validate
-     * @uses PsrJwt\Parser\Body
-     * @uses PsrJwt\Parser\Cookie
-     * @uses PsrJwt\Parser\Query
-     * @uses PsrJwt\Parser\Request
      */
     public function testFactoryValidation(): void
     {
@@ -76,18 +68,10 @@ class JwtMiddlewareTest extends TestCase
 
     /**
      * @covers PsrJwt\Factory\JwtMiddleware::json
-     * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Auth\Authorise
      * @uses PsrJwt\Handler\Json
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\JwtAuthMiddleware
-     * @uses PsrJwt\Parser\Bearer
-     * @uses PsrJwt\Parser\Parse
-     * @uses PsrJwt\Validation\Validate
-     * @uses PsrJwt\Parser\Body
-     * @uses PsrJwt\Parser\Cookie
-     * @uses PsrJwt\Parser\Query
-     * @uses PsrJwt\Parser\Request
      */
     public function testJsonFactoryValidation(): void
     {
