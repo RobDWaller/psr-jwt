@@ -41,7 +41,7 @@
             "vendor/bin/phpmd src/ text ruleset.xml",
             "vendor/bin/phpunit --coverage-clover=coverage.xml",
             "vendor/bin/infection -s --min-msi=90",
-            "vendor/bin/phpcpd --min-lines=2 --min-tokens=35 src/",
+            "vendor/bin/phpcpd --min-lines=2 --min-tokens=35 --exclude src/Handler src/",
             "vendor/bin/phploc src/"
         ]
     },

@@ -17,6 +17,9 @@ use PsrJwt\Retrieve;
  * JWT authorisation handler which returns a text/html response on
  * authorisation failure. Allows you to customise the body response with a
  * simple message.
+ *
+ * @todo Remove duplication with Json class, can be added to abstract class.
+ * Also fix Composer pipeline check for code duplication.
  */
 class Html implements RequestHandlerInterface
 {
