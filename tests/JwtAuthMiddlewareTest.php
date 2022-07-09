@@ -35,16 +35,7 @@ class JwtAuthMiddlewareTest extends TestCase
      * @covers PsrJwt\JwtAuthMiddleware::process
      * @uses PsrJwt\JwtAuthMiddleware::__construct
      * @uses PsrJwt\Auth\Authorise
-     * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Factory\Jwt
-     * @uses PsrJwt\Parser\Parse
-     * @uses PsrJwt\Validation\Validate
-     * @uses PsrJwt\Parser\Bearer
-     * @uses PsrJwt\Handler\Html
-     * @uses PsrJwt\Parser\Body
-     * @uses PsrJwt\Parser\Cookie
-     * @uses PsrJwt\Parser\Query
-     * @uses PsrJwt\Parser\Request
      */
     public function testProcess(): void
     {
@@ -85,17 +76,7 @@ class JwtAuthMiddlewareTest extends TestCase
      * @covers PsrJwt\JwtAuthMiddleware::process
      * @uses PsrJwt\JwtAuthMiddleware
      * @uses PsrJwt\Auth\Authorise
-     * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Factory\Jwt
-     * @uses PsrJwt\Parser\Parse
-     * @uses PsrJwt\Validation\Validate
-     * @uses PsrJwt\Parser\Bearer
-     * @uses PsrJwt\Parser\Body
-     * @uses PsrJwt\Parser\Cookie
-     * @uses PsrJwt\Parser\Query
-     * @uses PsrJwt\Handler\Html
-     * @uses PsrJwt\Parser\Request
-     * @uses PsrJwt\Parser\ParseException
      */
     public function testProcessFail(): void
     {
@@ -131,17 +112,7 @@ class JwtAuthMiddlewareTest extends TestCase
      * @covers PsrJwt\JwtAuthMiddleware::__invoke
      * @uses PsrJwt\JwtAuthMiddleware::__construct
      * @uses PsrJwt\Auth\Authorise
-     * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Factory\Jwt
-     * @uses PsrJwt\Validation\Validate
-     * @uses PsrJwt\Parser\Parse
-     * @uses PsrJwt\Parser\Bearer
-     * @uses PsrJwt\Parser\Query
-     * @uses PsrJwt\Parser\Cookie
-     * @uses PsrJwt\Parser\Body
-     * @uses PsrJwt\Handler\Html
-     * @uses PsrJwt\Parser\Request
-     * @uses PsrJwt\Handler\Html
      */
     public function testInvoke(): void
     {
@@ -186,16 +157,7 @@ class JwtAuthMiddlewareTest extends TestCase
      * @covers PsrJwt\JwtAuthMiddleware::__invoke
      * @uses PsrJwt\JwtAuthMiddleware
      * @uses PsrJwt\Auth\Authorise
-     * @uses PsrJwt\Auth\Auth
      * @uses PsrJwt\Factory\Jwt
-     * @uses PsrJwt\Validation\Validate
-     * @uses PsrJwt\Parser\Parse
-     * @uses PsrJwt\Parser\Body
-     * @uses PsrJwt\Parser\Bearer
-     * @uses PsrJwt\Parser\Query
-     * @uses PsrJwt\Parser\Cookie
-     * @uses PsrJwt\Handler\Html
-     * @uses PsrJwt\Parser\Request
      */
     public function testInvokeFail(): void
     {

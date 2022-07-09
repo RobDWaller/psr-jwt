@@ -15,7 +15,7 @@ use PsrJwt\Location\Query;
 class RetrieveTest extends TestCase
 {
     /**
-     * @covers PsrJwt\Parser\Parse
+     * @covers PsrJwt\Retrieve::__construct
      */
     public function testRetrieve(): void
     {
@@ -24,10 +24,7 @@ class RetrieveTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Parser\Parse::findToken
-     * @covers PsrJwt\Parser\Parse::addParser
-     * @uses PsrJwt\Parser\Parse
-     * @uses PsrJwt\Parser\Bearer
+     * @covers PsrJwt\Retrieve::findToken
      */
     public function testFindToken(): void
     {
@@ -45,12 +42,7 @@ class RetrieveTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Parser\Parse::findToken
-     * @covers PsrJwt\Parser\Parse::addParser
-     * @uses PsrJwt\Parser\Parse
-     * @uses PsrJwt\Parser\Bearer
-     * @uses PsrJwt\Parser\Body
-     * @uses PsrJwt\Parser\Query
+     * @covers PsrJwt\Retrieve::findToken
      */
     public function testFindTokenMultiParser(): void
     {
@@ -75,9 +67,7 @@ class RetrieveTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Parser\Parse::findToken
-     * @uses PsrJwt\Parser\Parse
-     * @uses PsrJwt\Parser\ParseException
+     * @covers PsrJwt\Retrieve::findToken
      */
     public function testFindTokenFail(): void
     {
