@@ -18,7 +18,6 @@ class JsonTest extends TestCase
 {
     /**
      * @covers PsrJwt\Handler\Json::__construct
-     * @uses PsrJwt\Auth\Authorise
      */
     public function testJsonHandler(): void
     {
@@ -35,18 +34,6 @@ class JsonTest extends TestCase
 
     /**
      * @covers PsrJwt\Handler\Json::handle
-     * @uses PsrJwt\Handler\Json::__construct
-     * @uses PsrJwt\Factory\Jwt
-     * @uses PsrJwt\Auth\Authorise
-     * @uses PsrJwt\Auth\Auth
-     * @uses PsrJwt\Validation\Validate
-     * @uses PsrJwt\Parser\Bearer
-     * @uses PsrJwt\Parser\Cookie
-     * @uses PsrJwt\Parser\Body
-     * @uses PsrJwt\Parser\Query
-     * @uses PsrJwt\Parser\Parse
-     * @uses PsrJwt\Parser\Bearer
-     * @uses PsrJwt\Parser\Request
      */
     public function testAuthoriseOk(): void
     {
@@ -91,17 +78,6 @@ class JsonTest extends TestCase
 
     /**
      * @covers PsrJwt\Handler\Json::handle
-     * @uses PsrJwt\Handler\Json::__construct
-     * @uses PsrJwt\Factory\Jwt
-     * @uses PsrJwt\Auth\Authorise
-     * @uses PsrJwt\Auth\Auth
-     * @uses PsrJwt\Validation\Validate
-     * @uses PsrJwt\Parser\Bearer
-     * @uses PsrJwt\Parser\Cookie
-     * @uses PsrJwt\Parser\Body
-     * @uses PsrJwt\Parser\Query
-     * @uses PsrJwt\Parser\Parse
-     * @uses PsrJwt\Parser\Request
      */
     public function testAuthoriseFail(): void
     {

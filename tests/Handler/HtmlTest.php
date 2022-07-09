@@ -36,14 +36,6 @@ class HtmlTest extends TestCase
      * @uses PsrJwt\Handler\Html::__construct
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Auth\Authorise
-     * @uses PsrJwt\Auth\Auth
-     * @uses PsrJwt\Validation\Validate
-     * @uses PsrJwt\Parser\Bearer
-     * @uses PsrJwt\Parser\Cookie
-     * @uses PsrJwt\Parser\Body
-     * @uses PsrJwt\Parser\Query
-     * @uses PsrJwt\Parser\Parse
-     * @uses PsrJwt\Parser\Request
      */
     public function testHandlerOk(): void
     {
@@ -91,14 +83,6 @@ class HtmlTest extends TestCase
      * @uses PsrJwt\Handler\Html::__construct
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Auth\Authorise
-     * @uses PsrJwt\Auth\Auth
-     * @uses PsrJwt\Validation\Validate
-     * @uses PsrJwt\Parser\Bearer
-     * @uses PsrJwt\Parser\Cookie
-     * @uses PsrJwt\Parser\Body
-     * @uses PsrJwt\Parser\Query
-     * @uses PsrJwt\Parser\Parse
-     * @uses PsrJwt\Parser\Request
      */
     public function testHandlerNoBody(): void
     {
@@ -145,15 +129,6 @@ class HtmlTest extends TestCase
      * @uses PsrJwt\Handler\Html::__construct
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Auth\Authorise
-     * @uses PsrJwt\Auth\Auth
-     * @uses PsrJwt\Validation\Validate
-     * @uses PsrJwt\Parser\Bearer
-     * @uses PsrJwt\Parser\Cookie
-     * @uses PsrJwt\Parser\Body
-     * @uses PsrJwt\Parser\Query
-     * @uses PsrJwt\Parser\Parse
-     * @uses PsrJwt\Parser\Request
-     * @uses PsrJwt\Parser\ParseException
      */
     public function testHandlerBadRequest(): void
     {
@@ -200,14 +175,6 @@ class HtmlTest extends TestCase
      * @uses PsrJwt\Handler\Html::__construct
      * @uses PsrJwt\Factory\Jwt
      * @uses PsrJwt\Auth\Authorise
-     * @uses PsrJwt\Auth\Auth
-     * @uses PsrJwt\Validation\Validate
-     * @uses PsrJwt\Parser\Bearer
-     * @uses PsrJwt\Parser\Cookie
-     * @uses PsrJwt\Parser\Body
-     * @uses PsrJwt\Parser\Query
-     * @uses PsrJwt\Parser\Parse
-     * @uses PsrJwt\Parser\Request
      */
     public function testHandlerUnauthorized(): void
     {
