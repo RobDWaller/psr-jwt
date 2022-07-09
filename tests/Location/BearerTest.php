@@ -12,7 +12,7 @@ use Psr\Http\Message\ServerRequestInterface;
 class BearerTest extends TestCase
 {
     /**
-     * @covers PsrJwt\Parser\Bearer
+     * @covers PsrJwt\Location\Bearer
      */
     public function testBearer(): void
     {
@@ -23,7 +23,7 @@ class BearerTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Parser\Bearer::parse
+     * @covers PsrJwt\Location\Bearer::find
      */
     public function testFind(): void
     {
@@ -40,7 +40,7 @@ class BearerTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Parser\Bearer::parse
+     * @covers PsrJwt\Location\Bearer::find
      */
     public function testFindInvalid(): void
     {

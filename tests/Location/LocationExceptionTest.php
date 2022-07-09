@@ -11,7 +11,7 @@ use Exception;
 class LocationExceptionTest extends TestCase
 {
     /**
-     * @covers PsrJwt\Parser\ParseException
+     * @covers PsrJwt\Location\LocationException
      */
     public function testLocationException(): void
     {

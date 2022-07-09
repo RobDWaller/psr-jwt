@@ -12,7 +12,7 @@ use Psr\Http\Message\ServerRequestInterface;
 class QueryTest extends TestCase
 {
     /**
-     * @covers PsrJwt\Parser\Query::__construct
+     * @covers PsrJwt\Location\Query::__construct
      */
     public function testQuery(): void
     {
@@ -23,8 +23,8 @@ class QueryTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Parser\Query::parse
-     * @uses PsrJwt\Parser\Query::__construct
+     * @covers PsrJwt\Location\Query::find
+     * @uses PsrJwt\Location\Query::__construct
      */
     public function testFind(): void
     {

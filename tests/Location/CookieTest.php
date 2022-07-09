@@ -12,7 +12,7 @@ use Psr\Http\Message\ServerRequestInterface;
 class CookieTest extends TestCase
 {
     /**
-     * @covers PsrJwt\Parser\Cookie::__construct
+     * @covers PsrJwt\Location\Cookie::__construct
      */
     public function testCookie(): void
     {
@@ -23,8 +23,7 @@ class CookieTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Parser\Cookie::parse
-     * @uses PsrJwt\Parser\Cookie::__construct
+     * @covers PsrJwt\Location\Cookie::find
      */
     public function testFind(): void
     {

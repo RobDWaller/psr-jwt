@@ -12,7 +12,7 @@ use Psr\Http\Message\ServerRequestInterface;
 class BodyTest extends TestCase
 {
     /**
-     * @covers PsrJwt\Parser\Body::__construct
+     * @covers PsrJwt\Location\Body::__construct
      */
     public function testBody(): void
     {
@@ -23,8 +23,8 @@ class BodyTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Parser\Body::parse
-     * @uses PsrJwt\Parser\Body::__construct
+     * @covers PsrJwt\Location\Body::find
+     * @uses PsrJwt\Location\Body::__construct
      */
     public function testFind(): void
     {
@@ -40,8 +40,8 @@ class BodyTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Parser\Body::parse
-     * @uses PsrJwt\Parser\Body
+     * @covers PsrJwt\Location\Body::find
+     * @uses PsrJwt\Location\Body
      */
     public function testFindObject(): void
     {
@@ -60,8 +60,8 @@ class BodyTest extends TestCase
     }
 
     /**
-     * @covers PsrJwt\Parser\Body::parse
-     * @uses PsrJwt\Parser\Body
+     * @covers PsrJwt\Location\Body::find
+     * @uses PsrJwt\Location\Body
      */
     public function testFindString(): void
     {
