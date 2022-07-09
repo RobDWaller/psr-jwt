@@ -42,6 +42,40 @@ class BearerTest extends TestCase
     /**
      * @covers PsrJwt\Location\Bearer::find
      */
+    public function testFindBearerAtStart(): void
+    {
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getHeader')
+            ->with('authorization')
+            ->willReturn(['abc.def.ghi Bearer abc.def.ghi']);
+
+        $bearer = new Bearer();
+        $result = $bearer->find($request);
+
+        $this->assertSame('', $result);
+    }
+
+    /**
+     * @covers PsrJwt\Location\Bearer::find
+     */
+    public function testFindMultipleHeaders(): void
+    {
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getHeader')
+            ->with('authorization')
+            ->willReturn(['Hello', 'Bearer abc.def.ghi', 'World']);
+
+        $bearer = new Bearer();
+        $result = $bearer->find($request);
+
+        $this->assertSame('abc.def.ghi', $result);
+    }
+
+    /**
+     * @covers PsrJwt\Location\Bearer::find
+     */
     public function testFindInvalid(): void
     {
         $request = $this->createMock(ServerRequestInterface::class);
@@ -49,6 +83,23 @@ class BearerTest extends TestCase
             ->method('getHeader')
             ->with('authorization')
             ->willReturn(['Bear']);
+
+        $bearer = new Bearer();
+        $result = $bearer->find($request);
+
+        $this->assertEmpty($result);
+    }
+
+    /**
+     * @covers PsrJwt\Location\Bearer::find
+     */
+    public function testFindNoHeader(): void
+    {
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('getHeader')
+            ->with('authorization')
+            ->willReturn([]);
 
         $bearer = new Bearer();
         $result = $bearer->find($request);

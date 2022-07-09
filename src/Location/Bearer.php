@@ -20,6 +20,8 @@ class Bearer implements LocationInterface
             return (bool) preg_match('/^Bearer\s.+/', $item);
         });
 
+        sort($bearer);
+
         $token = explode(' ', $bearer[0] ?? '')[1] ?? '';
 
         return !empty($token) ? $token : '';
